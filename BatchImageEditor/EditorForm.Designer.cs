@@ -42,8 +42,8 @@ namespace BatchImageEditor
 			this.imageListView = new System.Windows.Forms.ListView();
 			this.nameHeader = new System.Windows.Forms.ColumnHeader();
 			this.dateHeader = new System.Windows.Forms.ColumnHeader();
-			this.dimensionHeader = new System.Windows.Forms.ColumnHeader();
 			this.sizeHeader = new System.Windows.Forms.ColumnHeader();
+			this.pathHeader = new System.Windows.Forms.ColumnHeader();
 			this.removeImageButton = new System.Windows.Forms.Button();
 			this.loadFolderButton = new System.Windows.Forms.Button();
 			this.editScenePanel = new System.Windows.Forms.Panel();
@@ -57,12 +57,12 @@ namespace BatchImageEditor
 			// loadImageButton
 			// 
 			this.loadImageButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.loadImageButton.Location = new System.Drawing.Point(592, 47);
+			this.loadImageButton.Location = new System.Drawing.Point(681, 47);
 			this.loadImageButton.Margin = new System.Windows.Forms.Padding(6);
 			this.loadImageButton.Name = "loadImageButton";
 			this.loadImageButton.Size = new System.Drawing.Size(120, 40);
 			this.loadImageButton.TabIndex = 0;
-			this.loadImageButton.Text = "Load image";
+			this.loadImageButton.Text = "Load images";
 			this.loadImageButton.UseVisualStyleBackColor = true;
 			this.loadImageButton.Click += new System.EventHandler(this.loadImageButton_Click);
 			// 
@@ -73,7 +73,7 @@ namespace BatchImageEditor
 			this.menuPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.menuPanel.Location = new System.Drawing.Point(0, 0);
 			this.menuPanel.Name = "menuPanel";
-			this.menuPanel.Size = new System.Drawing.Size(883, 50);
+			this.menuPanel.Size = new System.Drawing.Size(972, 50);
 			this.menuPanel.TabIndex = 1;
 			// 
 			// menuButtonsPanel
@@ -146,7 +146,7 @@ namespace BatchImageEditor
 			this.loadScenePanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.loadScenePanel.Location = new System.Drawing.Point(0, 50);
 			this.loadScenePanel.Name = "loadScenePanel";
-			this.loadScenePanel.Size = new System.Drawing.Size(883, 523);
+			this.loadScenePanel.Size = new System.Drawing.Size(972, 554);
 			this.loadScenePanel.TabIndex = 2;
 			this.loadScenePanel.Tag = "";
 			// 
@@ -154,7 +154,7 @@ namespace BatchImageEditor
 			// 
 			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(592, 240);
+			this.label2.Location = new System.Drawing.Point(681, 271);
 			this.label2.Margin = new System.Windows.Forms.Padding(6);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(63, 20);
@@ -166,10 +166,11 @@ namespace BatchImageEditor
 			this.loadedPreviewBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.loadedPreviewBox.BackColor = System.Drawing.SystemColors.Window;
 			this.loadedPreviewBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.loadedPreviewBox.Location = new System.Drawing.Point(592, 272);
+			this.loadedPreviewBox.Location = new System.Drawing.Point(681, 303);
 			this.loadedPreviewBox.Margin = new System.Windows.Forms.Padding(6);
 			this.loadedPreviewBox.Name = "loadedPreviewBox";
 			this.loadedPreviewBox.Size = new System.Drawing.Size(276, 236);
+			this.loadedPreviewBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.loadedPreviewBox.TabIndex = 5;
 			this.loadedPreviewBox.TabStop = false;
 			// 
@@ -191,18 +192,19 @@ namespace BatchImageEditor
 			this.imageListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.nameHeader,
             this.dateHeader,
-            this.dimensionHeader,
-            this.sizeHeader});
+            this.sizeHeader,
+            this.pathHeader});
 			this.imageListView.FullRowSelect = true;
 			this.imageListView.HideSelection = false;
 			this.imageListView.Location = new System.Drawing.Point(15, 47);
 			this.imageListView.Margin = new System.Windows.Forms.Padding(6);
 			this.imageListView.Name = "imageListView";
-			this.imageListView.Size = new System.Drawing.Size(565, 459);
+			this.imageListView.Size = new System.Drawing.Size(654, 490);
 			this.imageListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
 			this.imageListView.TabIndex = 3;
 			this.imageListView.UseCompatibleStateImageBehavior = false;
 			this.imageListView.View = System.Windows.Forms.View.Details;
+			this.imageListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.imageListView_ItemSelectionChanged);
 			// 
 			// nameHeader
 			// 
@@ -212,22 +214,22 @@ namespace BatchImageEditor
 			// dateHeader
 			// 
 			this.dateHeader.Text = "Date";
-			this.dateHeader.Width = 150;
-			// 
-			// dimensionHeader
-			// 
-			this.dimensionHeader.Text = "Dimensions";
-			this.dimensionHeader.Width = 100;
+			this.dateHeader.Width = 200;
 			// 
 			// sizeHeader
 			// 
 			this.sizeHeader.Text = "Size";
 			this.sizeHeader.Width = 100;
 			// 
+			// pathHeader
+			// 
+			this.pathHeader.Text = "Path";
+			this.pathHeader.Width = 200;
+			// 
 			// removeImageButton
 			// 
 			this.removeImageButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.removeImageButton.Location = new System.Drawing.Point(592, 151);
+			this.removeImageButton.Location = new System.Drawing.Point(681, 151);
 			this.removeImageButton.Margin = new System.Windows.Forms.Padding(6);
 			this.removeImageButton.Name = "removeImageButton";
 			this.removeImageButton.Size = new System.Drawing.Size(120, 40);
@@ -238,7 +240,7 @@ namespace BatchImageEditor
 			// loadFolderButton
 			// 
 			this.loadFolderButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.loadFolderButton.Location = new System.Drawing.Point(592, 99);
+			this.loadFolderButton.Location = new System.Drawing.Point(681, 99);
 			this.loadFolderButton.Margin = new System.Windows.Forms.Padding(6);
 			this.loadFolderButton.Name = "loadFolderButton";
 			this.loadFolderButton.Size = new System.Drawing.Size(120, 40);
@@ -251,7 +253,7 @@ namespace BatchImageEditor
 			this.editScenePanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.editScenePanel.Location = new System.Drawing.Point(0, 0);
 			this.editScenePanel.Name = "editScenePanel";
-			this.editScenePanel.Size = new System.Drawing.Size(883, 573);
+			this.editScenePanel.Size = new System.Drawing.Size(972, 604);
 			this.editScenePanel.TabIndex = 7;
 			// 
 			// processScenePanel
@@ -259,14 +261,14 @@ namespace BatchImageEditor
 			this.processScenePanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.processScenePanel.Location = new System.Drawing.Point(0, 0);
 			this.processScenePanel.Name = "processScenePanel";
-			this.processScenePanel.Size = new System.Drawing.Size(883, 573);
+			this.processScenePanel.Size = new System.Drawing.Size(972, 604);
 			this.processScenePanel.TabIndex = 8;
 			// 
 			// AppForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(883, 573);
+			this.ClientSize = new System.Drawing.Size(972, 604);
 			this.Controls.Add(this.loadScenePanel);
 			this.Controls.Add(this.menuPanel);
 			this.Controls.Add(this.editScenePanel);
@@ -299,13 +301,13 @@ namespace BatchImageEditor
 		private System.Windows.Forms.ListView imageListView;
 		private System.Windows.Forms.ColumnHeader nameHeader;
 		private System.Windows.Forms.ColumnHeader dateHeader;
-		private System.Windows.Forms.ColumnHeader dimensionHeader;
 		private System.Windows.Forms.ColumnHeader sizeHeader;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.PictureBox loadedPreviewBox;
 		private System.Windows.Forms.Panel editScenePanel;
 		private System.Windows.Forms.Panel processScenePanel;
+		private System.Windows.Forms.ColumnHeader pathHeader;
 	}
 }
 

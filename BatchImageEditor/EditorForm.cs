@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Security;
 using System.Linq;
+using System.Collections;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,15 +16,17 @@ namespace BatchImageEditor
 		public AppForm()
 		{
 			InitializeComponent();
+			currentScene = (menuLoadButton, loadScenePanel);
+			loadedImages = new FileListViewWrapper(imageListView,
+				nameHeader, dateHeader, sizeHeader, pathHeader);
 		}
 
+		private readonly FileListViewWrapper loadedImages;
 		private (Button menuButton, Panel scenePanel) currentScene;
-		private List<string> filenames = new List<string>();
 
 		private void Form_Load(object sender, EventArgs e)
 		{
 			CenterMenuButtons();
-			currentScene = (menuLoadButton, loadScenePanel);
 		}
 
 		private void Form_Resize(object sender, EventArgs e)
@@ -49,7 +51,7 @@ namespace BatchImageEditor
 				return;
 			}
 			oldButton.ForeColor = SystemColors.Window;
-			oldButton.BackColor = SystemColors.ControlDarkDark;
+			oldButton.BackColor = Color.Transparent;
 			oldButton.FlatAppearance.MouseDownBackColor = SystemColors.ControlDark;
 			oldButton.FlatAppearance.MouseOverBackColor = SystemColors.ControlDark;
 
@@ -79,54 +81,52 @@ namespace BatchImageEditor
 
 		private void loadImageButton_Click(object sender, EventArgs e)
 		{
-			try
+			using var dialog = new OpenFileDialog();
+			dialog.Title = "Select images";
+			dialog.Filter =
+				"Image files (*.bmp, *.gif, *.jpg, *.jpeg, *.png) | " +
+				"*.bmp; *.gif; *.jpg; *.jpeg; *.png";
+			dialog.Multiselect = true;
+			if (dialog.ShowDialog() == DialogResult.OK)
 			{
-				using (var dialog = new OpenFileDialog())
+				foreach (string filename in dialog.FileNames)
 				{
-					dialog.Title = "Open Image";
-					dialog.Filter =
-						"Image files (*.bmp, *.gif, *.jpg, *.jpeg, *.png) | " +
-						"*.bmp; *.gif; *.jpg; *.jpeg; *.png";
-					if (dialog.ShowDialog() == DialogResult.OK)
-					{
-						MessageBox.Show($"Loaded file: {dialog.FileName}");
-						Bitmap bitmap = null;
-						try
-						{
-							bitmap = new Bitmap(dialog.FileName);
-						}
-						catch (ArgumentException)
-						{
-							MessageBox.Show("File is not an image");
-						}
-						var fileInfo = new FileInfo(dialog.FileName);
-						ListViewItem newItem = CreateImageListViewItem(fileInfo, bitmap);
-						imageListView.Items.Add(newItem);
-						filenames.Add(dialog.FileName);
-					}
+					loadedImages.AddOrUpdate(filename);
 				}
-			}
-			catch (FileNotFoundException)
-			{
-				MessageBox.Show("File could not be found");
-			}
-			catch (IOException)
-			{
-				MessageBox.Show("File could not be read");
 			}
 		}
 
-		private ListViewItem CreateImageListViewItem(
-			FileInfo fileInfo, Bitmap bitmap)
+		private void ShowLoadedImagePreview(string filename)
 		{
-			string[] columnItems = new string[]
+			loadedPreviewBox.Image?.Dispose();
+			loadedPreviewBox.Image = null;
+			try
 			{
-				fileInfo.Name,
-				fileInfo.CreationTime.ToString(),
-				$"{bitmap.Width} x {bitmap.Height}",
-				$"{fileInfo.Length / 1024} kB"
-			};
-			return new ListViewItem(columnItems, -1);
+				loadedPreviewBox.Image = new Bitmap(filename);
+			}
+			catch (Exception ex)
+			{
+				if (ex is ArgumentException ||
+					ex is FileNotFoundException)
+				{
+					return;
+				}
+				throw;
+			}
+		}
+
+		private void imageListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+		{
+			if (e.IsSelected && imageListView.SelectedItems.Count == 1)
+			{
+				string filename = loadedImages.GetFilename(e.Item);
+				ShowLoadedImagePreview(filename);
+			}
+			else if (imageListView.SelectedItems.Count == 0)
+			{
+				loadedPreviewBox.Image?.Dispose();
+				loadedPreviewBox.Image = null;
+			}
 		}
 
 	}
