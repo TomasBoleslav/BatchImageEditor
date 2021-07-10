@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchImageEditor", "BatchImageEditor\BatchImageEditor.csproj", "{A648113D-5F69-47C7-8010-2E19161CB027}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchImageEditor", "BatchImageEditor\BatchImageEditor.csproj", "{23ADAA35-2C6C-4A2E-AB19-D50B6FD2EB80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A648113D-5F69-47C7-8010-2E19161CB027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A648113D-5F69-47C7-8010-2E19161CB027}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A648113D-5F69-47C7-8010-2E19161CB027}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A648113D-5F69-47C7-8010-2E19161CB027}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23ADAA35-2C6C-4A2E-AB19-D50B6FD2EB80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23ADAA35-2C6C-4A2E-AB19-D50B6FD2EB80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23ADAA35-2C6C-4A2E-AB19-D50B6FD2EB80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23ADAA35-2C6C-4A2E-AB19-D50B6FD2EB80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {8D5322AD-9E37-40A3-AE38-4F5F8730E6AA}
+		SolutionGuid = {63423880-2475-45DF-8A25-5531A1A582F3}
 	EndGlobalSection
 EndGlobal
