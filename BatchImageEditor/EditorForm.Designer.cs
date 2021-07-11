@@ -213,7 +213,7 @@ namespace BatchImageEditor
 			// 
 			// dateHeader
 			// 
-			this.dateHeader.Text = "Date";
+			this.dateHeader.Text = "Date modified";
 			this.dateHeader.Width = 200;
 			// 
 			// sizeHeader
@@ -247,6 +247,7 @@ namespace BatchImageEditor
 			this.loadFolderButton.TabIndex = 1;
 			this.loadFolderButton.Text = "Load folder";
 			this.loadFolderButton.UseVisualStyleBackColor = true;
+			this.loadFolderButton.Click += new System.EventHandler(this.loadFolderButton_Click);
 			// 
 			// editScenePanel
 			// 

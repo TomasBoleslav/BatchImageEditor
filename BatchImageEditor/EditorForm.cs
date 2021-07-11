@@ -17,13 +17,14 @@ namespace BatchImageEditor
 		{
 			InitializeComponent();
 			currentScene = (menuLoadButton, loadScenePanel);
-			loadedImages = new FileListViewWrapper(imageListView,
+			loadedImages = new FileListViewManager(imageListView,
 				nameHeader, dateHeader, sizeHeader, pathHeader);
 		}
 
-		private readonly FileListViewWrapper loadedImages;
+		private static readonly string[] SupportedExtensions = { ".jpg", ".jpeg", ".bmp", ".gif", ".png" };
+		private readonly FileListViewManager loadedImages;
 		private (Button menuButton, Panel scenePanel) currentScene;
-
+		
 		private void Form_Load(object sender, EventArgs e)
 		{
 			CenterMenuButtons();
@@ -83,9 +84,8 @@ namespace BatchImageEditor
 		{
 			using var dialog = new OpenFileDialog();
 			dialog.Title = "Select images";
-			dialog.Filter =
-				"Image files (*.bmp, *.gif, *.jpg, *.jpeg, *.png) | " +
-				"*.bmp; *.gif; *.jpg; *.jpeg; *.png";
+			var joinedExtensions = string.Join(';', SupportedExtensions.Select(ext => $"*{ext}"));
+			dialog.Filter = $"Image files ({joinedExtensions}) | {joinedExtensions}";
 			dialog.Multiselect = true;
 			if (dialog.ShowDialog() == DialogResult.OK)
 			{
@@ -129,5 +129,27 @@ namespace BatchImageEditor
 			}
 		}
 
+		private void loadFolderButton_Click(object sender, EventArgs e)
+		{
+			using var folderDialog = new FolderBrowserDialog();
+			if (folderDialog.ShowDialog() == DialogResult.OK) //&& !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+			{
+				LoadFolder(folderDialog.SelectedPath);
+			}
+		}
+
+		private void LoadFolder(string folder)
+		{
+			var extensions = SupportedExtensions.ToHashSet();
+			var filenames = Directory.EnumerateFiles(folder, "*", SearchOption.AllDirectories);
+			foreach (string filename in filenames)
+			{
+				string extension = Path.GetExtension(filename).ToLowerInvariant();
+				if (extensions.Contains(extension))
+				{
+					loadedImages.AddOrUpdate(filename);
+				}
+			}
+		}
 	}
 }

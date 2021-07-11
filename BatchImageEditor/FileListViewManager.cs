@@ -7,9 +7,9 @@ using System.Security;
 
 namespace BatchImageEditor
 {
-	class FileListViewWrapper
+	class FileListViewManager
 	{
-		public FileListViewWrapper(ListView listView,
+		public FileListViewManager(ListView listView,
 			ColumnHeader nameHeader, ColumnHeader dateHeader,
 			ColumnHeader sizeHeader, ColumnHeader pathHeader)
 		{
