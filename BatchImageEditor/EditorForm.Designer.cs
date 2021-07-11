@@ -271,9 +271,9 @@ namespace BatchImageEditor
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(972, 604);
+			this.Controls.Add(this.loadScenePanel);
 			this.Controls.Add(this.processScenePanel);
 			this.Controls.Add(this.editScenePanel);
-			this.Controls.Add(this.loadScenePanel);
 			this.Controls.Add(this.menuPanel);
 			this.Name = "AppForm";
 			this.Text = "Form1";
