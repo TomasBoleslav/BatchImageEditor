@@ -52,6 +52,16 @@ namespace BatchImageEditor
 			return item.SubItems[pathIndex].Text;
 		}
 
+		public void RemoveSelected()
+		{
+			// Must be copied, because the list of selected items changes on removal
+			var selectedItems = listView.SelectedItems.Cast<ListViewItem>().ToList();
+			foreach (var item in selectedItems)
+			{
+				Remove(item);
+			}
+		}
+
 		private const int ColumnCount = 4;
 		private const string NotAvailable = "N/A";
 

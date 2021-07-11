@@ -16,18 +16,18 @@ namespace BatchImageEditor
 		public AppForm()
 		{
 			InitializeComponent();
-			currentScene = (menuLoadButton, loadScenePanel);
-			loadedImages = new FileListViewManager(imageListView,
-				nameHeader, dateHeader, sizeHeader, pathHeader);
 		}
 
 		private static readonly string[] SupportedExtensions = { ".jpg", ".jpeg", ".bmp", ".gif", ".png" };
-		private readonly FileListViewManager loadedImages;
+		private FileListViewManager loadedImages;
 		private (Button menuButton, Panel scenePanel) currentScene;
 		
 		private void Form_Load(object sender, EventArgs e)
 		{
 			CenterMenuButtons();
+			currentScene = (menuLoadButton, loadScenePanel);
+			loadedImages = new FileListViewManager(imageListView,
+				nameHeader, dateHeader, sizeHeader, pathHeader);
 		}
 
 		private void Form_Resize(object sender, EventArgs e)
@@ -132,7 +132,7 @@ namespace BatchImageEditor
 		private void loadFolderButton_Click(object sender, EventArgs e)
 		{
 			using var folderDialog = new FolderBrowserDialog();
-			if (folderDialog.ShowDialog() == DialogResult.OK) //&& !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+			if (folderDialog.ShowDialog() == DialogResult.OK)
 			{
 				LoadFolder(folderDialog.SelectedPath);
 			}
@@ -150,6 +150,11 @@ namespace BatchImageEditor
 					loadedImages.AddOrUpdate(filename);
 				}
 			}
+		}
+
+		private void removeImageButton_Click(object sender, EventArgs e)
+		{
+			loadedImages.RemoveSelected();
 		}
 	}
 }
