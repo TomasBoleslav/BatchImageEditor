@@ -144,9 +144,9 @@ namespace BatchImageEditor
 			this.loadScenePanel.Controls.Add(this.loadFolderButton);
 			this.loadScenePanel.Controls.Add(this.loadImageButton);
 			this.loadScenePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.loadScenePanel.Location = new System.Drawing.Point(0, 0);
+			this.loadScenePanel.Location = new System.Drawing.Point(0, 50);
 			this.loadScenePanel.Name = "loadScenePanel";
-			this.loadScenePanel.Size = new System.Drawing.Size(972, 604);
+			this.loadScenePanel.Size = new System.Drawing.Size(972, 554);
 			this.loadScenePanel.TabIndex = 2;
 			this.loadScenePanel.Tag = "";
 			// 
@@ -154,7 +154,7 @@ namespace BatchImageEditor
 			// 
 			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(681, 321);
+			this.label2.Location = new System.Drawing.Point(681, 271);
 			this.label2.Margin = new System.Windows.Forms.Padding(6);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(63, 20);
@@ -166,7 +166,7 @@ namespace BatchImageEditor
 			this.loadedPreviewBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.loadedPreviewBox.BackColor = System.Drawing.SystemColors.Window;
 			this.loadedPreviewBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.loadedPreviewBox.Location = new System.Drawing.Point(681, 353);
+			this.loadedPreviewBox.Location = new System.Drawing.Point(681, 303);
 			this.loadedPreviewBox.Margin = new System.Windows.Forms.Padding(6);
 			this.loadedPreviewBox.Name = "loadedPreviewBox";
 			this.loadedPreviewBox.Size = new System.Drawing.Size(276, 236);
@@ -199,7 +199,7 @@ namespace BatchImageEditor
 			this.imageListView.Location = new System.Drawing.Point(15, 47);
 			this.imageListView.Margin = new System.Windows.Forms.Padding(6);
 			this.imageListView.Name = "imageListView";
-			this.imageListView.Size = new System.Drawing.Size(654, 540);
+			this.imageListView.Size = new System.Drawing.Size(654, 490);
 			this.imageListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
 			this.imageListView.TabIndex = 3;
 			this.imageListView.UseCompatibleStateImageBehavior = false;
@@ -253,17 +253,17 @@ namespace BatchImageEditor
 			// editScenePanel
 			// 
 			this.editScenePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.editScenePanel.Location = new System.Drawing.Point(0, 0);
+			this.editScenePanel.Location = new System.Drawing.Point(0, 50);
 			this.editScenePanel.Name = "editScenePanel";
-			this.editScenePanel.Size = new System.Drawing.Size(972, 604);
+			this.editScenePanel.Size = new System.Drawing.Size(972, 554);
 			this.editScenePanel.TabIndex = 7;
 			// 
 			// processScenePanel
 			// 
 			this.processScenePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.processScenePanel.Location = new System.Drawing.Point(0, 0);
+			this.processScenePanel.Location = new System.Drawing.Point(0, 50);
 			this.processScenePanel.Name = "processScenePanel";
-			this.processScenePanel.Size = new System.Drawing.Size(972, 604);
+			this.processScenePanel.Size = new System.Drawing.Size(972, 554);
 			this.processScenePanel.TabIndex = 8;
 			// 
 			// AppForm
@@ -271,10 +271,10 @@ namespace BatchImageEditor
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(972, 604);
-			this.Controls.Add(this.menuPanel);
+			this.Controls.Add(this.processScenePanel);
 			this.Controls.Add(this.editScenePanel);
 			this.Controls.Add(this.loadScenePanel);
-			this.Controls.Add(this.processScenePanel);
+			this.Controls.Add(this.menuPanel);
 			this.Name = "AppForm";
 			this.Text = "Form1";
 			this.Load += new System.EventHandler(this.Form_Load);
@@ -307,9 +307,9 @@ namespace BatchImageEditor
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.PictureBox loadedPreviewBox;
+		private System.Windows.Forms.ColumnHeader pathHeader;
 		private System.Windows.Forms.Panel editScenePanel;
 		private System.Windows.Forms.Panel processScenePanel;
-		private System.Windows.Forms.ColumnHeader pathHeader;
 	}
 }
 
