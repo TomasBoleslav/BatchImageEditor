@@ -14,7 +14,7 @@ namespace BatchImageEditor
 			Application.SetHighDpiMode(HighDpiMode.SystemAware);
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new AppForm());
+			Application.Run(new MainForm());
 		}
 	}
 }
