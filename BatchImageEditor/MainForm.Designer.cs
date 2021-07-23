@@ -29,12 +29,32 @@ namespace BatchImageEditor
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
+			this.sceneTabs1 = new BatchImageEditor.SceneTabs();
+			this.SuspendLayout();
+			// 
+			// sceneTabs1
+			// 
+			this.sceneTabs1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.sceneTabs1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.sceneTabs1.Location = new System.Drawing.Point(0, 0);
+			this.sceneTabs1.Name = "sceneTabs1";
+			this.sceneTabs1.Size = new System.Drawing.Size(841, 50);
+			this.sceneTabs1.TabIndex = 0;
+			// 
+			// MainForm
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.ClientSize = new System.Drawing.Size(841, 567);
+			this.Controls.Add(this.sceneTabs1);
+			this.Name = "MainForm";
 			this.Text = "MainForm";
+			this.ResumeLayout(false);
+
 		}
 
 		#endregion
+
+		private SceneTabs sceneTabs1;
 	}
 }

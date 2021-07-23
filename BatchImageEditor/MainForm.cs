@@ -16,7 +16,7 @@ namespace BatchImageEditor
 		{
 			InitializeComponent();
 		}
-
+		/*
 		private static readonly string[] SupportedExtensions = { ".jpg", ".jpeg", ".bmp", ".gif", ".png" };
 		private FileListViewManager loadedImages;
 		private (Button menuButton, Panel scenePanel) currentScene;
@@ -154,6 +154,6 @@ namespace BatchImageEditor
 		private void removeImageButton_Click(object sender, EventArgs e)
 		{
 			loadedImages.RemoveSelected();
-		}
+		}*/
 	}
 }
