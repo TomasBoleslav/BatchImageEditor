@@ -15,6 +15,7 @@ namespace BatchImageEditor
 		{
 			InitializeComponent();
 		}
+
 		public string[] GetAllFilenames()
 		{
 			return filenames.ToArray();
