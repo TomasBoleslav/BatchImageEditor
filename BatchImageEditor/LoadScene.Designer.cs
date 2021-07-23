@@ -36,7 +36,7 @@ namespace BatchImageEditor
 			this.dateHeader = new System.Windows.Forms.ColumnHeader();
 			this.sizeHeader = new System.Windows.Forms.ColumnHeader();
 			this.pathHeader = new System.Windows.Forms.ColumnHeader();
-			this.removeImageButton = new System.Windows.Forms.Button();
+			this.removeButton = new System.Windows.Forms.Button();
 			this.loadFolderButton = new System.Windows.Forms.Button();
 			this.loadImageButton = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -88,6 +88,7 @@ namespace BatchImageEditor
 			this.imageListView.TabIndex = 10;
 			this.imageListView.UseCompatibleStateImageBehavior = false;
 			this.imageListView.View = System.Windows.Forms.View.Details;
+			this.imageListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.ImageListView_ItemSelectionChanged);
 			// 
 			// nameHeader
 			// 
@@ -109,16 +110,17 @@ namespace BatchImageEditor
 			this.pathHeader.Text = "Path";
 			this.pathHeader.Width = 200;
 			// 
-			// removeImageButton
+			// removeButton
 			// 
-			this.removeImageButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.removeImageButton.Location = new System.Drawing.Point(604, 136);
-			this.removeImageButton.Margin = new System.Windows.Forms.Padding(6);
-			this.removeImageButton.Name = "removeImageButton";
-			this.removeImageButton.Size = new System.Drawing.Size(120, 40);
-			this.removeImageButton.TabIndex = 9;
-			this.removeImageButton.Text = "Remove";
-			this.removeImageButton.UseVisualStyleBackColor = true;
+			this.removeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.removeButton.Location = new System.Drawing.Point(604, 136);
+			this.removeButton.Margin = new System.Windows.Forms.Padding(6);
+			this.removeButton.Name = "removeButton";
+			this.removeButton.Size = new System.Drawing.Size(120, 40);
+			this.removeButton.TabIndex = 9;
+			this.removeButton.Text = "Remove";
+			this.removeButton.UseVisualStyleBackColor = true;
+			this.removeButton.Click += new System.EventHandler(this.RemoveButton_Click);
 			// 
 			// loadFolderButton
 			// 
@@ -130,6 +132,7 @@ namespace BatchImageEditor
 			this.loadFolderButton.TabIndex = 8;
 			this.loadFolderButton.Text = "Load folder";
 			this.loadFolderButton.UseVisualStyleBackColor = true;
+			this.loadFolderButton.Click += new System.EventHandler(this.LoadFolderButton_Click);
 			// 
 			// loadImageButton
 			// 
@@ -141,6 +144,7 @@ namespace BatchImageEditor
 			this.loadImageButton.TabIndex = 7;
 			this.loadImageButton.Text = "Load images";
 			this.loadImageButton.UseVisualStyleBackColor = true;
+			this.loadImageButton.Click += new System.EventHandler(this.LoadImageButton_Click);
 			// 
 			// groupBox1
 			// 
@@ -150,7 +154,7 @@ namespace BatchImageEditor
 			this.groupBox1.Controls.Add(this.label2);
 			this.groupBox1.Controls.Add(this.loadedPreviewBox);
 			this.groupBox1.Controls.Add(this.imageListView);
-			this.groupBox1.Controls.Add(this.removeImageButton);
+			this.groupBox1.Controls.Add(this.removeButton);
 			this.groupBox1.Controls.Add(this.loadFolderButton);
 			this.groupBox1.Controls.Add(this.loadImageButton);
 			this.groupBox1.Location = new System.Drawing.Point(23, 23);
@@ -185,7 +189,7 @@ namespace BatchImageEditor
 		private System.Windows.Forms.ColumnHeader dateHeader;
 		private System.Windows.Forms.ColumnHeader sizeHeader;
 		private System.Windows.Forms.ColumnHeader pathHeader;
-		private System.Windows.Forms.Button removeImageButton;
+		private System.Windows.Forms.Button removeButton;
 		private System.Windows.Forms.Button loadFolderButton;
 		private System.Windows.Forms.Button loadImageButton;
 		private System.Windows.Forms.GroupBox groupBox1;

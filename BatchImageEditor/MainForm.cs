@@ -16,6 +16,8 @@ namespace BatchImageEditor
 		{
 			InitializeComponent();
 		}
+
+
 		/*
 		private static readonly string[] SupportedExtensions = { ".jpg", ".jpeg", ".bmp", ".gif", ".png" };
 		private FileListViewManager loadedImages;
@@ -63,97 +65,6 @@ namespace BatchImageEditor
 			scenePanel.BringToFront();
 			currentScene = (menuButton, scenePanel);
 		}
-
-		private void menuLoadButton_Click(object sender, EventArgs e)
-		{
-			ShowScene(menuLoadButton, loadScenePanel);
-		}
-
-		private void menuEditButton_Click(object sender, EventArgs e)
-		{
-			ShowScene(menuEditButton, editScenePanel);
-		}
-
-		private void menuProcessButton_Click(object sender, EventArgs e)
-		{
-			ShowScene(menuProcessButton, processScenePanel);
-		}
-
-		private void loadImageButton_Click(object sender, EventArgs e)
-		{
-			using var dialog = new OpenFileDialog();
-			dialog.Title = "Select images";
-			var joinedExtensions = string.Join(';', SupportedExtensions.Select(ext => $"*{ext}"));
-			dialog.Filter = $"Image files ({joinedExtensions}) | {joinedExtensions}";
-			dialog.Multiselect = true;
-			if (dialog.ShowDialog() == DialogResult.OK)
-			{
-				foreach (string filename in dialog.FileNames)
-				{
-					loadedImages.AddOrUpdate(filename);
-				}
-			}
-		}
-
-		private void ShowLoadedImagePreview(string filename)
-		{
-			loadedPreviewBox.Image?.Dispose();
-			loadedPreviewBox.Image = null;
-			try
-			{
-				loadedPreviewBox.Image = new Bitmap(filename);
-			}
-			catch (Exception ex)
-			{
-				if (ex is ArgumentException ||
-					ex is FileNotFoundException)
-				{
-					return;
-				}
-				throw;
-			}
-		}
-
-		private void imageListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
-		{
-			if (e.IsSelected && imageListView.SelectedItems.Count == 1)
-			{
-				string filename = loadedImages.GetFilename(e.Item);
-				ShowLoadedImagePreview(filename);
-			}
-			else if (imageListView.SelectedItems.Count == 0)
-			{
-				loadedPreviewBox.Image?.Dispose();
-				loadedPreviewBox.Image = null;
-			}
-		}
-
-		private void loadFolderButton_Click(object sender, EventArgs e)
-		{
-			using var folderDialog = new FolderBrowserDialog();
-			if (folderDialog.ShowDialog() == DialogResult.OK)
-			{
-				LoadFolder(folderDialog.SelectedPath);
-			}
-		}
-
-		private void LoadFolder(string folder)
-		{
-			var extensions = SupportedExtensions.ToHashSet();
-			var filenames = Directory.EnumerateFiles(folder, "*", SearchOption.AllDirectories);
-			foreach (string filename in filenames)
-			{
-				string extension = Path.GetExtension(filename).ToLowerInvariant();
-				if (extensions.Contains(extension))
-				{
-					loadedImages.AddOrUpdate(filename);
-				}
-			}
-		}
-
-		private void removeImageButton_Click(object sender, EventArgs e)
-		{
-			loadedImages.RemoveSelected();
-		}*/
+		*/
 	}
 }

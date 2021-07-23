@@ -6,21 +6,24 @@ namespace BatchImageEditor
 {
 	public partial class SceneTabs : UserControl
 	{
-		public event EventHandler LoadTabClick;
-		public event EventHandler EditTabClick;
-		public event EventHandler ProcessTabClick;
+		public event EventHandler LoadTabSelected;
+		public event EventHandler EditTabSelected;
+		public event EventHandler ProcessTabSelected;
 
 		public SceneTabs()
 		{
 			InitializeComponent();
+			selectedTabButton = loadTabButton;
 		}
 
-		private void OnLoad(object sender, EventArgs e)
+		private Button selectedTabButton;
+
+		private void SceneTabs_Load(object sender, EventArgs e)
 		{
 			CenterMenuButtons();
 		}
 
-		private void OnResize(object sender, EventArgs e)
+		private void SceneTabs_Resize(object sender, EventArgs e)
 		{
 			CenterMenuButtons();
 		}
@@ -34,19 +37,39 @@ namespace BatchImageEditor
 			};
 		}
 
-		private void OnLoadTabClick(object sender, EventArgs e)
+		private void LoadTabButton_Click(object sender, EventArgs e)
 		{
-			LoadTabClick?.Invoke(this, EventArgs.Empty);
+			SelectTabButton(loadTabButton, LoadTabSelected);
 		}
 
-		private void OnEditTabClick(object sender, EventArgs e)
+		private void EditTabButton_Click(object sender, EventArgs e)
 		{
-			EditTabClick?.Invoke(this, EventArgs.Empty);
+			SelectTabButton(editTabButton, EditTabSelected);
 		}
 
-		private void OnProcessTabClick(object sender, EventArgs e)
+		private void ProcessTabButton_Click(object sender, EventArgs e)
 		{
-			ProcessTabClick?.Invoke(this, EventArgs.Empty);
+			SelectTabButton(processTabButton, ProcessTabSelected);
+		}
+
+		private void SelectTabButton(Button button, EventHandler tabSelectedEvent)
+		{
+			if (selectedTabButton == button)
+			{
+				return;
+			}
+			selectedTabButton.ForeColor = SystemColors.Window;
+			selectedTabButton.BackColor = Color.Transparent;
+			selectedTabButton.FlatAppearance.MouseDownBackColor = SystemColors.ControlDark;
+			selectedTabButton.FlatAppearance.MouseOverBackColor = SystemColors.ControlDark;
+
+			button.ForeColor = SystemColors.ControlText;
+			button.BackColor = SystemColors.Control;
+			button.FlatAppearance.MouseDownBackColor = SystemColors.Control;
+			button.FlatAppearance.MouseOverBackColor = SystemColors.Control;
+
+			selectedTabButton = button;
+			tabSelectedEvent?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

@@ -60,7 +60,7 @@ namespace BatchImageEditor
 			this.processTabButton.TabIndex = 2;
 			this.processTabButton.Text = "PROCESS";
 			this.processTabButton.UseVisualStyleBackColor = true;
-			this.processTabButton.Click += new System.EventHandler(this.OnProcessTabClick);
+			this.processTabButton.Click += new System.EventHandler(this.ProcessTabButton_Click);
 			// 
 			// editTabButton
 			// 
@@ -76,7 +76,7 @@ namespace BatchImageEditor
 			this.editTabButton.TabIndex = 1;
 			this.editTabButton.Text = "EDIT";
 			this.editTabButton.UseVisualStyleBackColor = false;
-			this.editTabButton.Click += new System.EventHandler(this.OnEditTabClick);
+			this.editTabButton.Click += new System.EventHandler(this.EditTabButton_Click);
 			// 
 			// loadTabButton
 			// 
@@ -92,7 +92,7 @@ namespace BatchImageEditor
 			this.loadTabButton.TabIndex = 0;
 			this.loadTabButton.Text = "LOAD";
 			this.loadTabButton.UseVisualStyleBackColor = false;
-			this.loadTabButton.Click += new System.EventHandler(this.OnLoadTabClick);
+			this.loadTabButton.Click += new System.EventHandler(this.LoadTabButton_Click);
 			// 
 			// SceneTabs
 			// 
@@ -102,7 +102,8 @@ namespace BatchImageEditor
 			this.Controls.Add(this.tabsPanel);
 			this.Name = "SceneTabs";
 			this.Size = new System.Drawing.Size(511, 50);
-			this.Load += new System.EventHandler(this.OnLoad);
+			this.Load += new System.EventHandler(this.SceneTabs_Load);
+			this.Resize += new System.EventHandler(this.SceneTabs_Resize);
 			this.tabsPanel.ResumeLayout(false);
 			this.ResumeLayout(false);
 
