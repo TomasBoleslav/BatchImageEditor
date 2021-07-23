@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BatchImageEditor", "BatchImageEditor\BatchImageEditor.csproj", "{23ADAA35-2C6C-4A2E-AB19-D50B6FD2EB80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageFilters", "ImageFilters\ImageFilters.csproj", "{6E9CFA0E-DF75-4462-BDD4-60ED11A5A410}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageFilters", "ImageFilters\ImageFilters.csproj", "{6E9CFA0E-DF75-4462-BDD4-60ED11A5A410}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Experiments", "Experiments\Experiments.csproj", "{C75F35CF-CBF5-4AA9-9043-8E90097900F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{6E9CFA0E-DF75-4462-BDD4-60ED11A5A410}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E9CFA0E-DF75-4462-BDD4-60ED11A5A410}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E9CFA0E-DF75-4462-BDD4-60ED11A5A410}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C75F35CF-CBF5-4AA9-9043-8E90097900F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C75F35CF-CBF5-4AA9-9043-8E90097900F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C75F35CF-CBF5-4AA9-9043-8E90097900F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C75F35CF-CBF5-4AA9-9043-8E90097900F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
