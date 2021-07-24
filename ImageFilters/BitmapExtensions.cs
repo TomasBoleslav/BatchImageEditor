@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 
-namespace BatchImageEditor
+namespace ImageFilters
 {
-	static class BitmapExtensions
+	public static partial class BitmapExtensions
 	{
 		public static Bitmap Resize(this Bitmap bitmap, int newWidth, int newHeight)
 		{
@@ -36,6 +35,16 @@ namespace BatchImageEditor
 		public static Bitmap Fit(this Bitmap bitmap, Size size)
 		{
 			return bitmap.Fit(size.Width, size.Height);
+		}
+
+		public static Bitmap Copy(this Bitmap bitmap)
+		{
+			var result = new Bitmap(bitmap.Width, bitmap.Height, bitmap.PixelFormat);
+			using (Graphics graphics = Graphics.FromImage(result))
+			{
+				graphics.DrawImage(bitmap, Point.Empty);
+			}
+			return result;
 		}
 	}
 }

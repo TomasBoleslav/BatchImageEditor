@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace ImageFilters
 {
@@ -17,11 +18,18 @@ namespace ImageFilters
 
 		public void Write(Bitmap bitmap)
 		{
-			throw new NotImplementedException();
-
+			try
+			{
+				bitmap.Save(filename);
+			}
+			catch (ExternalException)
+			{
+				FailCallback?.Invoke(filename, "The image was saved with a wrong image format or it cannot be saved to the given file.");
+				return;
+			}
 			SuccessCallback?.Invoke(filename);
 		}
 
-		private string filename;
+		private readonly string filename;
 	}
 }
