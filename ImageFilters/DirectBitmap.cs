@@ -10,6 +10,8 @@ namespace ImageFilters
     {
         public Bitmap Bitmap { get; }
 
+        public byte[] Buffer { get; }
+
         public int Width { get; }
 
         public int Height { get; }
@@ -28,9 +30,9 @@ namespace ImageFilters
 			}
             bytesPerPixel = ComputeBytesPerPixel(pixelFormat);
             int stride = ComputeStride(width, bytesPerPixel);
-            byte[] buffer = new byte[height * stride];
-            bufferHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            pixelExtractor = CreatePixelExtractor(buffer, pixelFormat);
+            Buffer = new byte[height * stride];
+            bufferHandle = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
+            pixelExtractor = CreatePixelExtractor(Buffer, pixelFormat);
             Width = width;
             Height = height;
             Bitmap = new Bitmap(width, height, stride, pixelFormat, bufferHandle.AddrOfPinnedObject());
@@ -38,9 +40,10 @@ namespace ImageFilters
         
         public static DirectBitmap FromBitmap(Bitmap bitmap)
         {
+            ThrowHelper.ThrowIfNull(bitmap, nameof(bitmap));
 			if (SupportedFormats.Contains(bitmap.PixelFormat))
 			{
-                return FromBitmapByReformatting(bitmap, bitmap.PixelFormat);
+                return FromBitmapByCopyingData(bitmap);
             }
             return FromBitmapByReformatting(bitmap, DefaultPixelFormat);
         }
@@ -110,6 +113,20 @@ namespace ImageFilters
             int padding = 4 - remainder;
             return pixelBytesInRow + padding;
 		}
+
+        private static DirectBitmap FromBitmapByCopyingData(Bitmap bitmap)
+        {
+            var directBitmap = new DirectBitmap(bitmap.Width, bitmap.Height, bitmap.PixelFormat);
+            BitmapData data = bitmap.LockBits(
+                new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                ImageLockMode.ReadOnly,
+                bitmap.PixelFormat
+                );
+            IntPtr dataPointer = data.Scan0;
+            Marshal.Copy(dataPointer, directBitmap.Buffer, 0, directBitmap.Buffer.Length);
+            bitmap.UnlockBits(data);
+            return directBitmap;
+        }
 
         private static DirectBitmap FromBitmapByReformatting(Bitmap bitmap, PixelFormat pixelFormat)
 		{

@@ -99,18 +99,17 @@ namespace ImageFilters.Tests
 		[InlineData(PixelFormat.Format24bppRgb, 1, 2, 3)]
 		[InlineData(PixelFormat.Format32bppRgb, 1, 2, 3)]
 		[InlineData(PixelFormat.Format32bppArgb, 1, 2, 3)]
-		[InlineData(PixelFormat.Format32bppArgb, 1, 2, 3, 4)]
+		[InlineData(PixelFormat.Format32bppArgb, 50, 100, 150, 200)]
 		public void FromBitmap_PixelFormatSupported_SetsColorFromOriginalBitmap(PixelFormat pixelFormat, byte r, byte g, byte b, byte a = 255)
 		{
 			Color clearColor = Color.FromArgb(a, r, g, b);
 			using var bitmap = CreateBitmap(1, 1, pixelFormat, clearColor);
 			Color expectedColor = bitmap.GetPixel(0, 0);
 
-			// TODO: clearing color does not work for 32bppArgb with alpha set to 4
 			using var directBitmap = DirectBitmap.FromBitmap(bitmap);
 			Color actualColor = directBitmap.GetPixel(0, 0);
 
-			Assert.Equal(clearColor, actualColor);
+			Assert.Equal(expectedColor, actualColor);
 		}
 
 		private Bitmap CreateBitmap(int width, int height, PixelFormat pixelFormat, Color color)
@@ -119,8 +118,6 @@ namespace ImageFilters.Tests
 			using (var graphics = Graphics.FromImage(bitmap))
 			{
 				graphics.Clear(color);
-				graphics.FillRectangle(new SolidBrush(color), 0, 0, bitmap.Width, bitmap.Height);
-				graphics.Flush();
 			}
 			return bitmap;
 		}

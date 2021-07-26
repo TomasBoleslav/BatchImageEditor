@@ -3,6 +3,7 @@ using ImageFilters;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Diagnostics.Contracts;
 
 namespace Experiments
 {
@@ -26,6 +27,7 @@ namespace Experiments
 			byte* pixelPtr = (byte*)data.Scan0;
 			Console.WriteLine($"Color from ptr: {pixelPtr[0]}, {pixelPtr[1]}, {pixelPtr[2]}, {pixelPtr[3]}");
 			/**/
+			/*/
 			int width = 100;
 			int height = 100;
 			using var bitmap = new Bitmap(width, height, PixelFormat.Format16bppGrayScale);
@@ -34,6 +36,22 @@ namespace Experiments
 				graphics.Clear(Color.FromArgb(50, 50, 50));
 			}
 			bitmap.Save(@"C:\Users\boles\Plocha\sedy.png");
+			/**/
+			DoSomething(null);
+		}
+
+		private static void DoSomething(byte? x)
+		{
+			ThrowIfNull(x);
+			ThrowIfNull(x, nameof(x));
+		}
+
+		private static void ThrowIfNull(object parameter, string name = null)
+		{
+			if (parameter == null)
+			{
+				throw new ArgumentNullException(name);
+			}
 		}
 	}
 }
