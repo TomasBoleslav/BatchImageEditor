@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ImageFilters
@@ -13,10 +15,12 @@ namespace ImageFilters
 
 		public FileActionFailCallback FailCallback { get; set; }
 
-		public FileBitmapReader(string filename)
+		// TODO: accept Dictionary<PixelFormat, PixelFormat> - to what format to reformat (e.g. 32Pargb into 32argb)
+		public FileBitmapReader(string filename, IReadOnlySet<PixelFormat> supportedFormats, PixelFormat defaultFormat)
 		{
 			this.filename = filename;
-			throw new NotImplementedException();
+			this.supportedFormats = supportedFormats;
+			this.defaultFormat = defaultFormat;
 		}
 
 		public Bitmap Read()
@@ -25,8 +29,15 @@ namespace ImageFilters
 			try
 			{
 				using var loadedBitmap = new Bitmap(filename);
-				// Dispose of the loaded bitmap so that the file lock is released and return a copy instead
-				bitmap = loadedBitmap.Copy();
+				if (supportedFormats.Contains(loadedBitmap.PixelFormat))
+				{
+					// Make a copy so that loaded bitmap can be disposed of and file lock can be released
+					bitmap = loadedBitmap.Copy();
+				}
+				else
+				{
+					bitmap = loadedBitmap.Reformat(defaultFormat);
+				}
 			}
 			catch (OutOfMemoryException)
 			{
@@ -48,5 +59,7 @@ namespace ImageFilters
 		}
 
 		private readonly string filename;
+		private readonly IReadOnlySet<PixelFormat> supportedFormats;
+		private readonly PixelFormat defaultFormat;
 	}
 }

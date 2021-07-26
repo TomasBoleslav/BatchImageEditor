@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace ImageFilters
 {
@@ -40,6 +41,16 @@ namespace ImageFilters
 		public static Bitmap Copy(this Bitmap bitmap)
 		{
 			var result = new Bitmap(bitmap.Width, bitmap.Height, bitmap.PixelFormat);
+			using (Graphics graphics = Graphics.FromImage(result))
+			{
+				graphics.DrawImage(bitmap, Point.Empty);
+			}
+			return result;
+		}
+
+		public static Bitmap Reformat(this Bitmap bitmap, PixelFormat newPixelFormat)
+		{
+			var result = new Bitmap(bitmap.Width, bitmap.Height, newPixelFormat);
 			using (Graphics graphics = Graphics.FromImage(result))
 			{
 				graphics.DrawImage(bitmap, Point.Empty);

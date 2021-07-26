@@ -1,6 +1,7 @@
 ﻿using System;
 using ImageFilters;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 
 namespace Experiments
@@ -9,13 +10,8 @@ namespace Experiments
 	{
 		static void Main(string[] args)
 		{
-			Bitmap bitmap;
-			var fs = new FileStream(@"C:\Users\boles\Plocha\image.png", FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-			using (var loadedBitmap = new Bitmap(@"C:\Users\boles\Plocha\web-inspirace2.jpg"))
-			{
-				bitmap = loadedBitmap.Copy();
-			}
-			bitmap.Save(@"C:\Users\boles\Plocha\image.png");
+			Bitmap bitmap = new Bitmap(100, 100, PixelFormat.1);
+			bitmap.Save(@"C:\Users\boles\Plocha\image.jpg", ImageFormat.Jpeg);
 			bitmap.Dispose();
 		}
 	}
