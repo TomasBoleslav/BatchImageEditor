@@ -12,19 +12,19 @@ namespace ImageFilters
 		public Color GetPixel(int index)
 		{
 			return Color.FromArgb(
-				buffer[index],
-				buffer[index + 1],
+				buffer[index + 3],
 				buffer[index + 2],
-				buffer[index + 3]);
+				buffer[index + 1],
+				buffer[index]
+				);
 		}
 
 		public void SetPixel(int index, Color color)
 		{
-			// TODO: test that the order is correct
-			buffer[index] = color.A;
-			buffer[index + 1] = color.R;
-			buffer[index + 2] = color.G;
-			buffer[index + 3] = color.B;
+			buffer[index + 3] = color.A;
+			buffer[index + 2] = color.R;
+			buffer[index + 1] = color.G;
+			buffer[index] = color.B;
 		}
 
 		private readonly byte[] buffer;
