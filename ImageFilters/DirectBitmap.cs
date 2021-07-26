@@ -10,9 +10,9 @@ namespace ImageFilters
     {
         public Bitmap Bitmap { get; }
 
-        public int Height { get; }
-
         public int Width { get; }
+
+        public int Height { get; }
 
         public bool IsDisposed { get; private set; }
 
@@ -26,13 +26,23 @@ namespace ImageFilters
 			{
                 throw new ArgumentException("The given pixel format is not supported.");
 			}
+            bytesPerPixel = ComputeBytesPerPixel(pixelFormat);
+            int stride = ComputeStride(width, bytesPerPixel);
+            byte[] buffer = new byte[height * stride];
+            bufferHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            pixelExtractor = CreatePixelExtractor(buffer, pixelFormat);
             Width = width;
             Height = height;
-            bytesPerPixel = Image.GetPixelFormatSize(pixelFormat) / 8;
-            byte[] buffer = new byte[width * height * bytesPerPixel];
-            bufferHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            Bitmap = new Bitmap(width, height, width * bytesPerPixel, pixelFormat, bufferHandle.AddrOfPinnedObject());
-            pixelExtractor = CreateExtractor(buffer, pixelFormat);
+            Bitmap = new Bitmap(width, height, stride, pixelFormat, bufferHandle.AddrOfPinnedObject());
+        }
+        
+        public static DirectBitmap FromBitmap(Bitmap bitmap)
+        {
+			if (SupportedFormats.Contains(bitmap.PixelFormat))
+			{
+                return FromBitmapByReformatting(bitmap, bitmap.PixelFormat);
+            }
+            return FromBitmapByReformatting(bitmap, DefaultPixelFormat);
         }
 
         public Color GetPixel(int x, int y)
@@ -59,16 +69,7 @@ namespace ImageFilters
             GC.SuppressFinalize(this);
         }
 
-        public static DirectBitmap FromBitmap(Bitmap bitmap)
-        {
-			if (SupportedFormats.Contains(bitmap.PixelFormat))
-			{
-                return FromBitmapByReformatting(bitmap, bitmap.PixelFormat);
-            }
-            return FromBitmapByReformatting(bitmap, DefaultFormat);
-        }
-
-        private const PixelFormat DefaultFormat = PixelFormat.Format32bppArgb;
+        private const PixelFormat DefaultPixelFormat = PixelFormat.Format32bppArgb;
         private static readonly IReadOnlySet<PixelFormat> SupportedFormats =
             new HashSet<PixelFormat>(
                 new[]
@@ -83,7 +84,7 @@ namespace ImageFilters
         private readonly GCHandle bufferHandle;
         private readonly IPixelExtractor pixelExtractor;
 
-        private static IPixelExtractor CreateExtractor(byte[] buffer, PixelFormat pixelFormat)
+        private static IPixelExtractor CreatePixelExtractor(byte[] buffer, PixelFormat pixelFormat)
 		{
 			return pixelFormat switch
 			{
@@ -91,6 +92,23 @@ namespace ImageFilters
 				PixelFormat.Format32bppArgb => new PixelExtractor32Argb(buffer),
 				_ => throw new ArgumentException("The given format is not supported."),
 			};
+		}
+
+        private static int ComputeBytesPerPixel(PixelFormat pixelFormat)
+		{
+            return Image.GetPixelFormatSize(pixelFormat) / 8;
+        }
+
+        private static int ComputeStride(int width, int bytesPerPixel)
+		{
+            int pixelBytesInRow = width * bytesPerPixel;
+            int remainder = pixelBytesInRow % 4;
+			if (remainder == 0)
+			{
+                return pixelBytesInRow;
+			}
+            int padding = 4 - remainder;
+            return pixelBytesInRow + padding;
 		}
 
         private static DirectBitmap FromBitmapByReformatting(Bitmap bitmap, PixelFormat pixelFormat)
