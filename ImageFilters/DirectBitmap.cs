@@ -18,6 +18,10 @@ namespace ImageFilters
 
         public DirectBitmap(int width, int height, PixelFormat pixelFormat)
         {
+			if (width <= 0 || height <= 0)
+			{
+                throw new ArgumentException("Width and height must be greater than zero.");
+			}
 			if (!SupportedFormats.Contains(pixelFormat))
 			{
                 throw new ArgumentException("The given pixel format is not supported.");

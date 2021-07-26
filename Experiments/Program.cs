@@ -10,7 +10,7 @@ namespace Experiments
 	{
 		static void Main(string[] args)
 		{
-			Bitmap bitmap = new Bitmap(100, 100, PixelFormat.1);
+			Bitmap bitmap = new Bitmap(100, 100, PixelFormat.Format32bppArgb);
 			bitmap.Save(@"C:\Users\boles\Plocha\image.jpg", ImageFormat.Jpeg);
 			bitmap.Dispose();
 		}

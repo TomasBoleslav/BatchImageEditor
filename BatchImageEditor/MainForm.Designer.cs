@@ -41,7 +41,7 @@ namespace BatchImageEditor
 			this.sceneTabs.Name = "sceneTabs";
 			this.sceneTabs.Size = new System.Drawing.Size(904, 50);
 			this.sceneTabs.TabIndex = 0;
-			this.sceneTabs.LoadTabSelected += new System.EventHandler(this.sceneTabs_LoadTabSelected);
+			this.sceneTabs.LoadTabSelected += new System.EventHandler(this.SceneTabs_LoadTabSelected);
 			// 
 			// loadScene
 			// 
