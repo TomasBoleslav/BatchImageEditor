@@ -5,6 +5,9 @@ using System.Runtime.InteropServices;
 
 namespace ImageFilters
 {
+	public delegate void FileActionSuccessCallback(string filename);
+	public delegate void FileActionFailCallback(string filename, string message);
+
 	public class FileBitmapReaderWriter : IReaderWriter<DirectBitmap>
 	{
 		public FileActionSuccessCallback SuccessCallback { get; set; }
