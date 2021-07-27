@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace ImageFilters
@@ -22,7 +23,7 @@ namespace ImageFilters
         {
 			if (width <= 0 || height <= 0)
 			{
-                throw new ArgumentException("Width and height must be greater than zero.");
+                throw new ArgumentException("Width and height must be positive integers.");
 			}
 			if (!SupportedFormats.Contains(pixelFormat))
 			{
@@ -48,12 +49,37 @@ namespace ImageFilters
             return FromBitmapByReformatting(bitmap, DefaultPixelFormat);
         }
 
+        // Exceptions:
+        // IOException
+        public static DirectBitmap FromFile(string filename)
+        {
+            ThrowHelper.ThrowIfNull(filename, nameof(filename));
+            Bitmap loadedBitmap;
+            DirectBitmap directBitmap;
+            try
+            {
+                loadedBitmap = new Bitmap(filename);
+            }
+            // When file does not exist the constructor should throw a FileNotFoundException according
+            // to the documentation, but in reality throws an ArgumentException instead.
+            // Solution: catch any of these exceptions and wrap it in an IOException.
+            catch (Exception e) when (e is FileNotFoundException || e is ArgumentException)
+            {
+                throw new IOException($"The file {filename} does not exist or is not a valid image.", e);
+            }
+            directBitmap = FromBitmap(loadedBitmap);
+            loadedBitmap.Dispose();
+            return directBitmap;
+        }
+
+        // IndexOutOfRangeException - but only for some values
         public Color GetPixel(int x, int y)
         {
             int index = (x + y * Width) * bytesPerPixel;
             return pixelExtractor.GetPixel(index);
         }
-        
+
+        // IndexOutOfRangeException - but only for some values
         public void SetPixel(int x, int y, Color color)
         {
             int index = (x + y * Width) * bytesPerPixel;
@@ -102,6 +128,7 @@ namespace ImageFilters
             return Image.GetPixelFormatSize(pixelFormat) / 8;
         }
 
+        // Ensures the stride is a multiple of four
         private static int ComputeStride(int width, int bytesPerPixel)
 		{
             int pixelBytesInRow = width * bytesPerPixel;

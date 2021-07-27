@@ -37,7 +37,7 @@ namespace Experiments
 			}
 			bitmap.Save(@"C:\Users\boles\Plocha\sedy.png");
 			/**/
-			DoSomething(null);
+			new Bitmap(@"C:\Users\boles\Plocha\image5.png");
 		}
 
 		private static void DoSomething(byte? x)
