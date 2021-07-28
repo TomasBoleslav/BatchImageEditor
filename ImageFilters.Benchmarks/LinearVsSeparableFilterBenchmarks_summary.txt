@@ -1,0 +1,59 @@
+// * Summary *
+
+BenchmarkDotNet=v0.13.0, OS=Windows 10.0.19042.1110 (20H2/October2020Update)
+Intel Core i7-6500U CPU 2.50GHz (Skylake), 1 CPU, 4 logical and 2 physical cores
+.NET SDK=5.0.301
+  [Host]     : .NET 5.0.7 (5.0.721.25508), X64 RyuJIT  [AttachedDebugger]
+  DefaultJob : .NET 5.0.7 (5.0.721.25508), X64 RyuJIT
+
+
+|                    Method | KernelSize |         Mean |       Error |      StdDev |
+|-------------------------- |----------- |-------------:|------------:|------------:|
+|      LinearFilter_100x100 |          3 |     4.981 ms |   0.1193 ms |   0.3481 ms |
+|    LinearFilter_1000x1000 |          3 |   474.021 ms |   9.0031 ms |  21.9148 ms |
+|   SeparableFilter_100x100 |          3 |     5.522 ms |   0.1700 ms |   0.4877 ms |
+| SeparableFilter_1000x1000 |          3 |   531.332 ms |  14.4572 ms |  40.3008 ms |
+|      LinearFilter_100x100 |          7 |    18.535 ms |   0.4594 ms |   1.3182 ms |
+|    LinearFilter_1000x1000 |          7 | 1,774.222 ms |  35.3784 ms |  48.4263 ms |
+|   SeparableFilter_100x100 |          7 |     7.226 ms |   0.1439 ms |   0.2940 ms |
+| SeparableFilter_1000x1000 |          7 |   723.648 ms |  14.3994 ms |  36.3892 ms |
+|      LinearFilter_100x100 |         15 |    75.508 ms |   1.4953 ms |   3.8600 ms |
+|    LinearFilter_1000x1000 |         15 | 7,232.102 ms | 122.5680 ms | 102.3498 ms |
+|   SeparableFilter_100x100 |         15 |    11.751 ms |   0.2326 ms |   0.5618 ms |
+| SeparableFilter_1000x1000 |         15 | 1,147.028 ms |  22.8695 ms |  36.2735 ms |
+
+// * Warnings *
+MultimodalDistribution
+  LinearVsSeparableFilterBenchmarks.SeparableFilter_100x100: Default -> It seems that the distribution is bimodal (mValue = 3.41)
+  LinearVsSeparableFilterBenchmarks.LinearFilter_100x100: Default    -> It seems that the distribution can have several modes (mValue = 2.95)
+Environment
+  Summary -> Benchmark was executed with attached debugger
+
+// * Hints *
+Outliers
+  LinearVsSeparableFilterBenchmarks.LinearFilter_100x100: Default      -> 2 outliers were removed (6.88 ms, 7.34 ms)
+  LinearVsSeparableFilterBenchmarks.LinearFilter_1000x1000: Default    -> 3 outliers were removed (544.30 ms..563.45 ms)
+  LinearVsSeparableFilterBenchmarks.SeparableFilter_100x100: Default   -> 5 outliers were removed (7.03 ms..8.94 ms)
+  LinearVsSeparableFilterBenchmarks.SeparableFilter_1000x1000: Default -> 10 outliers were removed (686.49 ms..857.11 ms)
+  LinearVsSeparableFilterBenchmarks.LinearFilter_100x100: Default      -> 5 outliers were removed (22.79 ms..24.70 ms)
+  LinearVsSeparableFilterBenchmarks.LinearFilter_1000x1000: Default    -> 1 outlier  was  removed (2.06 s)
+  LinearVsSeparableFilterBenchmarks.SeparableFilter_100x100: Default   -> 1 outlier  was  removed (8.33 ms)
+  LinearVsSeparableFilterBenchmarks.SeparableFilter_1000x1000: Default -> 3 outliers were removed (877.84 ms..972.08 ms)
+  LinearVsSeparableFilterBenchmarks.LinearFilter_100x100: Default      -> 2 outliers were removed (89.37 ms, 89.41 ms)
+  LinearVsSeparableFilterBenchmarks.LinearFilter_1000x1000: Default    -> 2 outliers were removed (7.67 s, 7.78 s)
+  LinearVsSeparableFilterBenchmarks.SeparableFilter_100x100: Default   -> 2 outliers were removed (15.10 ms, 15.33 ms)
+  LinearVsSeparableFilterBenchmarks.SeparableFilter_1000x1000: Default -> 2 outliers were removed (1.31 s, 1.55 s)
+
+// * Legends *
+  KernelSize : Value of the 'KernelSize' parameter
+  Mean       : Arithmetic mean of all measurements
+  Error      : Half of 99.9% confidence interval
+  StdDev     : Standard deviation of all measurements
+  1 ms       : 1 Millisecond (0.001 sec)
+
+// ***** BenchmarkRunner: End *****
+// ** Remained 0 benchmark(s) to run **
+Run time: 00:14:12 (852 sec), executed benchmarks: 12
+
+Global total time: 00:14:30 (870.13 sec), executed benchmarks: 12
+// * Artifacts cleanup *

@@ -9,7 +9,7 @@ namespace Experiments
 {
 	class Program
 	{
-		static unsafe void Main(string[] args)
+		static void Main(string[] args)
 		{
 			/*/
 			int width = 2;
