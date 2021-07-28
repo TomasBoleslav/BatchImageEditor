@@ -9,11 +9,12 @@ namespace ImageFilters
 		{
 			ThrowHelper.ThrowIfNull(HorizontalVector, nameof(HorizontalVector));
 			ThrowHelper.ThrowIfNull(VerticalVector, nameof(VerticalVector));
-			var result = new DirectBitmap(input.Width, input.Height, input.Bitmap.PixelFormat);
-			ApplyHorizontalVector(input, result);
-			ApplyVerticalVector(input, result); // TODO: this wont work !!! it must be applied to result from ApplyHorizontal
-												//ApplyVerticalVector(result, result); // TODO: this also wont work !!! values are overwritten
+			var intermediate = new DirectBitmap(input.Width, input.Height, input.PixelFormat);
+			ApplyHorizontalVector(input, intermediate);
+			var result = new DirectBitmap(input.Width, input.Height, input.PixelFormat);
+			ApplyVerticalVector(intermediate, result);
 			input.Dispose();
+			intermediate.Dispose();
 			input = result;
 		}
 
