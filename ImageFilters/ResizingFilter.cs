@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ImageFilters
 {
+	/*
 	public class ResizingFilter : IImageFilter
 	{
 		public ResizingFilter(int newWidth, int newHeight)
@@ -22,5 +23,5 @@ namespace ImageFilters
 
 		private readonly int newWidth;
 		private readonly int newHeight;
-	}
+	}*/
 }

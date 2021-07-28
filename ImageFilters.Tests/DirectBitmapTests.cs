@@ -110,6 +110,7 @@ namespace ImageFilters.Tests
 			Color actualColor = directBitmap.GetPixel(0, 0);
 
 			Assert.Equal(expectedColor, actualColor);
+
 		}
 
 		private Bitmap CreateBitmap(int width, int height, PixelFormat pixelFormat, Color color)

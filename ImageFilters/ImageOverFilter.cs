@@ -2,6 +2,7 @@
 
 namespace ImageFilters
 {
+	/*
 	public class ImageOverFilter : IImageFilter
 	{
 		public ImageOverFilter(Bitmap bitmapToDraw, ImagePosition position, int dx, int dy)
@@ -57,5 +58,5 @@ namespace ImageFilters
 		private readonly ImagePosition position;
 		private readonly int dx;
 		private readonly int dy;
-	}
+	}*/
 }

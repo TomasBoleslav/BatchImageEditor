@@ -1,5 +1,5 @@
 ﻿using System;
-using ImageFilters;
+//using ImageFilters;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -37,7 +37,25 @@ namespace Experiments
 			}
 			bitmap.Save(@"C:\Users\boles\Plocha\sedy.png");
 			/**/
-			new Bitmap(@"C:\Users\boles\Plocha\image5.png");
+			Console.WriteLine(GaussianBlurSum(0, 1));
+			Console.WriteLine(GaussianBlurSum(1, 1));
+			Console.WriteLine(GaussianBlurSum(1, 2));
+		}
+
+		private static double GaussianBlurSum(int radius, double sigma)
+		{
+			double sum = 0;
+			float[] convolutionVector = new float[2 * radius + 1];
+			for (int x = -radius; x <= radius; x++)
+			{
+				double exponent = -(x * x) / (sigma * sigma);
+				double eExpression = Math.Pow(Math.E, exponent);
+				double denominator = 2 * Math.PI * sigma * sigma;
+				double vectorValue = Math.Sqrt(eExpression / denominator);
+				convolutionVector[x + radius] = (float)vectorValue;
+				sum += vectorValue;
+			}
+			return sum;
 		}
 
 		private static void DoSomething(byte? x)

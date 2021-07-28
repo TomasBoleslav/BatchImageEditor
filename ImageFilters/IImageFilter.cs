@@ -1,18 +1,17 @@
 ﻿
 namespace ImageFilters
 {
-	// TOOD: Apply(ref DirectBitmap) instead of returning?
 	public interface IImageFilter
 	{
 		/// <summary>
 		/// Applies the image filter on a <see cref="DirectBitmap"/>.
 		/// </summary>
 		/// <remarks>
-		/// In some cases the filter is applied directly on the given bitmap and the same bitmap is returned.
-		/// In other cases a new bitmap is created and returned as a result, in which case the old bitmap is disposed.
+		/// Depending on the operation a new bitmap can be created.
+		/// In that case the old bitmap is properly disposed and the reference is set to the new bitmap.
+		/// Otherwise the reference remains the same and only the content of the bitmap is changed.
 		/// </remarks>
-		/// <param name="directBitmap"></param>
-		/// <returns></returns>
-		DirectBitmap Apply(DirectBitmap directBitmap);
+		/// <param name="inputBitmap">A bitmap to which the filter will be applied.</param>
+		void Apply(ref DirectBitmap inputBitmap);
 	}
 }

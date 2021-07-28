@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace ImageFilters
 {
 	// Base class for filters that compute new pixel color from the old color only
+	/*
 	public abstract class PerPixelFilter : IImageFilter
 	{
 		public Bitmap Apply(Bitmap bitmap)
@@ -16,5 +17,5 @@ namespace ImageFilters
 		}
 
 		protected abstract Color GetNewPixelColor(Color color);
-	}
+	}*/
 }

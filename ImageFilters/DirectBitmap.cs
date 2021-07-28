@@ -72,6 +72,13 @@ namespace ImageFilters
             return directBitmap;
         }
 
+        public DirectBitmap Copy()
+        {
+            var directBitmap = new DirectBitmap(Width, Height, Bitmap.PixelFormat);
+            Buffer.CopyTo(directBitmap.Buffer, 0);
+            return directBitmap;
+        }
+
         // IndexOutOfRangeException - but only for some values
         public Color GetPixel(int x, int y)
         {
