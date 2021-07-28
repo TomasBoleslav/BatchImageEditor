@@ -11,11 +11,8 @@ namespace ImageFilters
 			ThrowHelper.ThrowIfNull(VerticalVector, nameof(VerticalVector));
 			var intermediate = new DirectBitmap(input.Width, input.Height, input.PixelFormat);
 			ApplyHorizontalVector(input, intermediate);
-			var result = new DirectBitmap(input.Width, input.Height, input.PixelFormat);
-			ApplyVerticalVector(intermediate, result);
-			input.Dispose();
+			ApplyVerticalVector(intermediate, input);
 			intermediate.Dispose();
-			input = result;
 		}
 
 		protected float[] HorizontalVector { get; private set; }

@@ -8,7 +8,7 @@ namespace ImageFilters.Tests
 	public class CustomSeparableLinearFilterTests
 	{
 		[Fact]
-		public void Apply_AssignsNewBitmapToParameter()
+		public void Apply_AssignedBitmapIsInputBitmap()
 		{
 			var directBitmap = new DirectBitmap(5, 5, PixelFormat.Format24bppRgb);
 			var oldDirectBitmap = directBitmap;
@@ -17,11 +17,11 @@ namespace ImageFilters.Tests
 
 			filter.Apply(ref directBitmap);
 
-			Assert.NotSame(oldDirectBitmap, directBitmap);
+			Assert.Same(oldDirectBitmap, directBitmap);
 		}
 
 		[Fact]
-		public void Apply_DisposesOldBitmap()
+		public void Apply_DoesNotDisposeInputBitmap()
 		{
 			var directBitmap = new DirectBitmap(5, 5, PixelFormat.Format24bppRgb);
 			var oldDirectBitmap = directBitmap;
@@ -30,7 +30,7 @@ namespace ImageFilters.Tests
 
 			filter.Apply(ref directBitmap);
 
-			Assert.True(oldDirectBitmap.IsDisposed);
+			Assert.False(oldDirectBitmap.IsDisposed);
 		}
 
 		[Theory]
