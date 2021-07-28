@@ -118,8 +118,8 @@ namespace ImageFilters
 							Color inputColor = input.GetPixel(x, y);
 							float kernelValue = Kernel[n][m];
 							sumR += inputColor.R * kernelValue;
-							sumB += inputColor.G * kernelValue;
-							sumG += inputColor.B * kernelValue;
+							sumG += inputColor.G * kernelValue;
+							sumB += inputColor.B * kernelValue;
 						}
 					}
 					Color outputColor = Utils.GetColorByClamping(sumR, sumG, sumB);

@@ -54,13 +54,17 @@ namespace ImageFilters.Tests
 		}
 
 		[Theory]
-		[InlineData(1, 1, PixelFormat.Format24bppRgb, 0, 0, 1, 2, 3)]
-		[InlineData(5, 5, PixelFormat.Format24bppRgb, 1, 1, 1, 2, 3)]
-		[InlineData(5, 5, PixelFormat.Format24bppRgb, 2, 2, 1, 2, 3)]
-		[InlineData(1, 1, PixelFormat.Format32bppRgb, 0, 0, 1, 2, 3)]
-		[InlineData(1, 1, PixelFormat.Format32bppArgb, 0, 0, 1, 2, 3)]
-		[InlineData(1, 1, PixelFormat.Format32bppArgb, 0, 0, 1, 2, 3, 4)]
-		public void GetPixel_ReturnsCorrectColor(int width, int height, PixelFormat pixelFormat, int x, int y, byte r, byte g, byte b, byte a = 255)
+		[InlineData(1, 1, 0, 0, PixelFormat.Format24bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 1, 1, PixelFormat.Format24bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 2, 3, PixelFormat.Format24bppRgb, 10, 20, 30)]
+		[InlineData(1, 1, 0, 0, PixelFormat.Format32bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 1, 1, PixelFormat.Format32bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 2, 3, PixelFormat.Format32bppRgb, 10, 20, 30)]
+		[InlineData(1, 1, 0, 0, PixelFormat.Format32bppArgb, 10, 20, 30)]
+		[InlineData(1, 1, 0, 0, PixelFormat.Format32bppArgb, 10, 20, 30, 40)]
+		[InlineData(5, 5, 1, 1, PixelFormat.Format32bppArgb, 10, 20, 30, 40)]
+		[InlineData(5, 5, 2, 3, PixelFormat.Format32bppArgb, 10, 20, 30, 40)]
+		public void GetPixel_AfterSetPixel_ReturnsSameColor(int width, int height, int x, int y, PixelFormat pixelFormat, byte r, byte g, byte b, byte a = 255)
 		{
 			Color color = Color.FromArgb(a, r, g, b);
 			using var directBitmap = new DirectBitmap(width, height, pixelFormat);
@@ -69,6 +73,77 @@ namespace ImageFilters.Tests
 			Color actualColor = directBitmap.GetPixel(x, y);
 
 			Assert.Equal(color, actualColor);
+		}
+
+		[Theory]
+		[InlineData(1, 1, 0, 0, PixelFormat.Format24bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 1, 1, PixelFormat.Format24bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 2, 3, PixelFormat.Format24bppRgb, 10, 20, 30)]
+		[InlineData(1, 1, 0, 0, PixelFormat.Format32bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 1, 1, PixelFormat.Format32bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 2, 3, PixelFormat.Format32bppRgb, 10, 20, 30)]
+		[InlineData(1, 1, 0, 0, PixelFormat.Format32bppArgb, 10, 20, 30)]
+		[InlineData(1, 1, 0, 0, PixelFormat.Format32bppArgb, 10, 20, 30, 40)]
+		[InlineData(5, 5, 1, 1, PixelFormat.Format32bppArgb, 10, 20, 30, 40)]
+		[InlineData(5, 5, 2, 3, PixelFormat.Format32bppArgb, 10, 20, 30, 40)]
+		public void GetPixel_AfterBitmapSetPixel_ReturnsSameColor(int width, int height, int x, int y, PixelFormat pixelFormat, byte r, byte g, byte b, byte a = 255)
+		{
+			Color color = Color.FromArgb(a, r, g, b);
+			using var directBitmap = new DirectBitmap(width, height, pixelFormat);
+			directBitmap.Bitmap.SetPixel(x, y, color);
+
+			Color actualColor = directBitmap.GetPixel(x, y);
+
+			Assert.Equal(color, actualColor);
+		}
+
+		[Theory]
+		[InlineData(1, 1, 0, 0, PixelFormat.Format24bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 1, 1, PixelFormat.Format24bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 2, 3, PixelFormat.Format24bppRgb, 10, 20, 30)]
+		[InlineData(1, 1, 0, 0, PixelFormat.Format32bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 1, 1, PixelFormat.Format32bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 2, 3, PixelFormat.Format32bppRgb, 10, 20, 30)]
+		[InlineData(1, 1, 0, 0, PixelFormat.Format32bppArgb, 10, 20, 30)]
+		[InlineData(1, 1, 0, 0, PixelFormat.Format32bppArgb, 10, 20, 30, 40)]
+		[InlineData(5, 5, 1, 1, PixelFormat.Format32bppArgb, 10, 20, 30, 40)]
+		[InlineData(5, 5, 2, 3, PixelFormat.Format32bppArgb, 10, 20, 30, 40)]
+		public void GetPixel_AfterSetPixel_ReturnsSameColorAsBitmapGetPixel(int width, int height, int x, int y, PixelFormat pixelFormat, byte r, byte g, byte b, byte a = 255)
+		{
+			Color color = Color.FromArgb(a, r, g, b);
+			using var directBitmap = new DirectBitmap(width, height, pixelFormat);
+			directBitmap.SetPixel(x, y, color);
+			Color expectedColor = directBitmap.Bitmap.GetPixel(x, y);
+
+			Color actualColor = directBitmap.GetPixel(x, y);
+
+			Assert.Equal(expectedColor, actualColor);
+		}
+
+		[Theory]
+		[InlineData(1, 1, 0, 0, PixelFormat.Format24bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 1, 1, PixelFormat.Format24bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 2, 3, PixelFormat.Format24bppRgb, 10, 20, 30)]
+		[InlineData(1, 1, 0, 0, PixelFormat.Format32bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 1, 1, PixelFormat.Format32bppRgb, 10, 20, 30)]
+		[InlineData(5, 5, 2, 3, PixelFormat.Format32bppRgb, 10, 20, 30)]
+		[InlineData(1, 1, 0, 0, PixelFormat.Format32bppArgb, 10, 20, 30)]
+		[InlineData(1, 1, 0, 0, PixelFormat.Format32bppArgb, 10, 20, 30, 40)]
+		[InlineData(5, 5, 1, 1, PixelFormat.Format32bppArgb, 10, 20, 30, 40)]
+		[InlineData(5, 5, 2, 3, PixelFormat.Format32bppArgb, 10, 20, 30, 40)]
+		public void GetPixel_AfterBitmapClear_ReturnsSameColorAsBitmapGetPixel(int width, int height, int x, int y, PixelFormat pixelFormat, byte r, byte g, byte b, byte a = 255)
+		{
+			Color clearColor = Color.FromArgb(a, r, g, b);
+			using var directBitmap = new DirectBitmap(width, height, pixelFormat);
+			using (var graphics = Graphics.FromImage(directBitmap.Bitmap))
+			{
+				graphics.Clear(clearColor);
+			}
+			Color expectedColor = directBitmap.Bitmap.GetPixel(x, y);
+
+			Color actualColor = directBitmap.GetPixel(x, y);
+
+			Assert.Equal(expectedColor, actualColor);
 		}
 
 		[Theory]
@@ -100,8 +175,8 @@ namespace ImageFilters.Tests
 		[InlineData(PixelFormat.Format32bppArgb, 50, 100, 150, 200)]
 		public void FromBitmap_PixelFormatSupported_SetsColorFromOriginalBitmap(PixelFormat pixelFormat, byte r, byte g, byte b, byte a = 255)
 		{
-			Color clearColor = Color.FromArgb(a, r, g, b);
-			using var bitmap = CreateBitmap(1, 1, pixelFormat, clearColor);
+			Color color = Color.FromArgb(a, r, g, b);
+			using var bitmap = CreateBitmapWithColor(1, 1, pixelFormat, color);
 			Color expectedColor = bitmap.GetPixel(0, 0);
 
 			using var directBitmap = DirectBitmap.FromBitmap(bitmap);
@@ -111,7 +186,7 @@ namespace ImageFilters.Tests
 
 		}
 
-		private Bitmap CreateBitmap(int width, int height, PixelFormat pixelFormat, Color color)
+		private static Bitmap CreateBitmapWithColor(int width, int height, PixelFormat pixelFormat, Color color)
 		{
 			var bitmap = new Bitmap(width, height, pixelFormat);
 			using (var graphics = Graphics.FromImage(bitmap))
@@ -119,11 +194,6 @@ namespace ImageFilters.Tests
 				graphics.Clear(color);
 			}
 			return bitmap;
-		}
-
-		private void Clear()
-		{
-
 		}
 	}
 }

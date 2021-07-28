@@ -52,8 +52,8 @@ namespace ImageFilters
 						Color inputColor = input.GetPixel(j, y);
 						float kernelValue = vector[n];
 						sumR += inputColor.R * kernelValue;
-						sumB += inputColor.G * kernelValue;
-						sumG += inputColor.B * kernelValue;
+						sumG += inputColor.G * kernelValue;
+						sumB += inputColor.B * kernelValue;
 					}
 					Color outputColor = Utils.ColorFromNonnegativeNumbers(sumR, sumG, sumB);
 					result.SetPixel(j, i, outputColor);
@@ -80,8 +80,8 @@ namespace ImageFilters
 						Color inputColor = input.GetPixel(x, i);
 						float kernelValue = vector[n];
 						sumR += inputColor.R * kernelValue;
-						sumB += inputColor.G * kernelValue;
-						sumG += inputColor.B * kernelValue;
+						sumG += inputColor.G * kernelValue;
+						sumB += inputColor.B * kernelValue;
 					}
 					Color outputColor = Utils.ColorFromNonnegativeNumbers(sumR, sumG, sumB);
 					result.SetPixel(j, i, outputColor);
