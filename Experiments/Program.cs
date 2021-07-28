@@ -40,6 +40,13 @@ namespace Experiments
 			Console.WriteLine(GaussianBlurSum(0, 1));
 			Console.WriteLine(GaussianBlurSum(1, 1));
 			Console.WriteLine(GaussianBlurSum(1, 2));
+			string s = null;
+			FuncWithRef(ref s);
+		}
+
+		private static void FuncWithRef(ref string value)
+		{
+
 		}
 
 		private static double GaussianBlurSum(int radius, double sigma)

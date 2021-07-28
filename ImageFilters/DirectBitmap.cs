@@ -29,14 +29,14 @@ namespace ImageFilters
 			{
                 throw new ArgumentException("The given pixel format is not supported.");
 			}
-            bytesPerPixel = ComputeBytesPerPixel(pixelFormat);
-            int stride = ComputeStride(width, bytesPerPixel);
-            Buffer = new byte[height * stride];
-            bufferHandle = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
-            pixelExtractor = CreatePixelExtractor(Buffer, pixelFormat);
+            _bytesPerPixel = ComputeBytesPerPixel(pixelFormat);
+            _stride = ComputeStride(width, _bytesPerPixel);
+            Buffer = new byte[height * _stride];
+            _bufferHandle = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
+            _pixelExtractor = CreatePixelExtractor(Buffer, pixelFormat);
             Width = width;
             Height = height;
-            Bitmap = new Bitmap(width, height, stride, pixelFormat, bufferHandle.AddrOfPinnedObject());
+            Bitmap = new Bitmap(width, height, _stride, pixelFormat, _bufferHandle.AddrOfPinnedObject());
         }
         
         public static DirectBitmap FromBitmap(Bitmap bitmap)
@@ -82,15 +82,15 @@ namespace ImageFilters
         // IndexOutOfRangeException - but only for some values
         public Color GetPixel(int x, int y)
         {
-            int index = (x + y * Width) * bytesPerPixel;
-            return pixelExtractor.GetPixel(index);
+            int index = x * _bytesPerPixel + y * _stride;
+            return _pixelExtractor.GetPixel(index);
         }
 
         // IndexOutOfRangeException - but only for some values
         public void SetPixel(int x, int y, Color color)
         {
-            int index = (x + y * Width) * bytesPerPixel;
-            pixelExtractor.SetPixel(index, color);
+            int index = x * _bytesPerPixel + y * _stride;
+            _pixelExtractor.SetPixel(index, color);
         }
 
         public void Dispose()
@@ -101,7 +101,7 @@ namespace ImageFilters
             }
             IsDisposed = true;
             Bitmap.Dispose();
-            bufferHandle.Free();
+            _bufferHandle.Free();
             GC.SuppressFinalize(this);
         }
 
@@ -116,9 +116,10 @@ namespace ImageFilters
                 }
             );
 
-        private readonly int bytesPerPixel;
-        private readonly GCHandle bufferHandle;
-        private readonly IPixelExtractor pixelExtractor;
+        private readonly int _bytesPerPixel;
+        private readonly int _stride;
+        private readonly GCHandle _bufferHandle;
+        private readonly IPixelExtractor _pixelExtractor;
 
         private static IPixelExtractor CreatePixelExtractor(byte[] buffer, PixelFormat pixelFormat)
 		{
@@ -135,17 +136,17 @@ namespace ImageFilters
             return Image.GetPixelFormatSize(pixelFormat) / 8;
         }
 
-        // Ensures the stride is a multiple of four
         private static int ComputeStride(int width, int bytesPerPixel)
 		{
-            int pixelBytesInRow = width * bytesPerPixel;
-            int remainder = pixelBytesInRow % 4;
+            int usedBytesInRow = width * bytesPerPixel;
+            // Ensure that the stride is a multiple of four
+            int remainder = usedBytesInRow % 4;
 			if (remainder == 0)
 			{
-                return pixelBytesInRow;
+                return usedBytesInRow;
 			}
             int padding = 4 - remainder;
-            return pixelBytesInRow + padding;
+            return usedBytesInRow + padding;
 		}
 
         private static DirectBitmap FromBitmapByCopyingData(Bitmap bitmap)

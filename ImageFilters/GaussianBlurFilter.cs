@@ -2,38 +2,32 @@
 
 namespace ImageFilters
 {
-	public class GaussianBlurFilter : SeparableLinearFilter
+	public class GaussianBlurFilter : LinearFilter
 	{
 		public GaussianBlurFilter(int radius, double sigma)
 		{
-			double sum = 0.0;
-			double[] vectorDouble = new double[2 * radius + 1];
+            if (radius < 0)
+            {
+                throw new ArgumentException("Radius must be a nonnegative integer.");
+            }
+            Kernel = CreateKernel(radius, sigma);
+        }
+
+        private static float[][] CreateKernel(int radius, double sigma)
+		{
+            int kernelSize = 2 * radius + 1;
+            double[][] kernelDouble = Utils.CreateJagged2DArray<double>(kernelSize, kernelSize);
 			for (int x = -radius; x <= radius; x++)
 			{
-				double exponent = -(x * x) / (sigma * sigma);
-				double eExpression = Math.Pow(Math.E, exponent);
-				double denominator = Math.Sqrt(2 * Math.PI * sigma * sigma);
-				double vectorValue = eExpression / denominator;
-				convolutionVector[x + radius] = (float)vectorValue;
-				sum += vectorValue;
+				for (int y = -radius; y <= radius; y++)
+				{
+                    double eExponent = -(x * x + y * y) / (2 * sigma * sigma);
+                    double eExpression = Math.Pow(Math.E, eExponent);
+                    double kernelValue = eExpression / (2 * Math.PI * sigma * sigma);
+                    kernelDouble[x + radius][y + radius] = kernelValue;
+				}
 			}
-			convolutionVector = new float[vectorDouble.Length];
-			for (int i = 0; i < convolutionVector.Length; i++)
-			{
-				convolutionVector[i] = (float)(vectorDouble[i] / sum);
-			}
-		}
-
-		protected override float[] GetHorizontalVector()
-		{
-			return convolutionVector;
-		}
-
-		protected override float[] GetVerticalVector()
-		{
-			return convolutionVector;
-		}
-
-		private readonly float[] convolutionVector;
+            return NormalizeKernel(kernelDouble);
+        }
 	}
 }
