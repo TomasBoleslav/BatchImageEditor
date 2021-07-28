@@ -13,9 +13,11 @@ namespace ImageFilters
 
         public byte[] Buffer { get; }
 
-        public int Width { get; }
+        public int Width { get { return Bitmap.Width; } }
 
-        public int Height { get; }
+        public int Height { get { return Bitmap.Height; } }
+
+        public PixelFormat PixelFormat { get { return Bitmap.PixelFormat; } }
 
         public bool IsDisposed { get; private set; }
 
@@ -34,8 +36,6 @@ namespace ImageFilters
             Buffer = new byte[height * _stride];
             _bufferHandle = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
             _pixelExtractor = CreatePixelExtractor(Buffer, pixelFormat);
-            Width = width;
-            Height = height;
             Bitmap = new Bitmap(width, height, _stride, pixelFormat, _bufferHandle.AddrOfPinnedObject());
         }
         
