@@ -185,7 +185,6 @@ namespace ImageFilters.Tests
 			Assert.Equal(expectedColor, actualColor);
 
 		}
-
 		private static Bitmap CreateBitmapWithColor(int width, int height, PixelFormat pixelFormat, Color color)
 		{
 			var bitmap = new Bitmap(width, height, pixelFormat);

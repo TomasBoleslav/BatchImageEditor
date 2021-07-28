@@ -7,8 +7,6 @@ namespace ImageFilters
 	{
 		public void Apply(ref DirectBitmap input)
 		{
-			// TODO: make speed test for gaussian blur using LinearFilter and SeparableFilter where 2 bitmaps are created
-			// TODO: or just use LinearFilter
 			ThrowHelper.ThrowIfNull(input, nameof(input));
 			ThrowHelper.ThrowIfNull(Kernel, nameof(input));
 			var result = new DirectBitmap(input.Width, input.Height, input.Bitmap.PixelFormat);

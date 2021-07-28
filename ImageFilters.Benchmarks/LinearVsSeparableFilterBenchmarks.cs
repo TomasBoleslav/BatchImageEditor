@@ -1,5 +1,4 @@
-﻿using BenchmarkDotNet;
-using BenchmarkDotNet.Attributes;
+﻿using BenchmarkDotNet.Attributes;
 using System.Drawing;
 using System.Drawing.Imaging;
 
@@ -10,7 +9,7 @@ namespace ImageFilters.Benchmarks
 	{
 		private static readonly PixelFormat pixelFormat = PixelFormat.Format24bppRgb;
 
-		[Params(3, 7, 15)]
+		[Params(3, 5, 9)]
 		public int KernelSize { get; set; }
 
 		[Benchmark]
