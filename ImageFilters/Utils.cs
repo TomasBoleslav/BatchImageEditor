@@ -27,12 +27,21 @@ namespace ImageFilters
 				);
 		}
 
-		public static Color GetColorByClamping(float r, float g, float b)
+		public static Color CreateColorByClamping(float r, float g, float b)
 		{
 			return Color.FromArgb(
 				ClampColorChannel(r),
 				ClampColorChannel(g),
 				ClampColorChannel(b)
+				);
+		}
+
+		public static Color CreateColorByClamping(int r, int g, int b)
+		{
+			return Color.FromArgb(
+				Math.Clamp(r, 0, byte.MaxValue),
+				Math.Clamp(g, 0, byte.MaxValue),
+				Math.Clamp(b, 0, byte.MaxValue)
 				);
 		}
 

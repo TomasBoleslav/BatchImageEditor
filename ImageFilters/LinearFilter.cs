@@ -116,7 +116,7 @@ namespace ImageFilters
 							sumB += inputColor.B * kernelValue;
 						}
 					}
-					Color outputColor = Utils.GetColorByClamping(sumR, sumG, sumB);
+					Color outputColor = Utils.CreateColorByClamping(sumR, sumG, sumB);
 					output.SetPixel(j, i, outputColor);
 				}
 			}
