@@ -3,18 +3,18 @@ using System.Drawing;
 
 namespace ImageFilters
 {
-	public abstract class SeparableLinearFilter : IImageFilter
+	public abstract class SeparableFilter : IImageFilter
 	{
 		public void Apply(ref DirectBitmap input)
 		{
 			ThrowHelper.ThrowIfNull(HorizontalVector, nameof(HorizontalVector));
 			ThrowHelper.ThrowIfNull(VerticalVector, nameof(VerticalVector));
-			var intermediate = new DirectBitmap(input.Width, input.Height, input.PixelFormat);
-			ApplyHorizontalVector(input, intermediate);
-			ApplyVerticalVector(intermediate, input);
-			intermediate.Dispose();
+			using var intermediateResult = new DirectBitmap(input.Width, input.Height, input.PixelFormat);
+			ApplyHorizontalVector(input, intermediateResult);
+			ApplyVerticalVector(intermediateResult, input);
 		}
 
+		// TODO: does not have to be protected, use private member instead?
 		protected float[] HorizontalVector { get; private set; }
 
 		protected float[] VerticalVector { get; private set; }
@@ -31,14 +31,29 @@ namespace ImageFilters
 			VerticalVector = vertical;
 		}
 
-		private void ApplyHorizontalVector(DirectBitmap input, DirectBitmap result)
+		protected static float[] NormalizeVector(double[] vector)
+		{
+			double sum = 0.0;
+			for (int i = 0; i < vector.Length; i++)
+			{
+				sum += vector[i];
+			}
+			float[] normalizedVector = new float[vector.Length];
+			for (int i = 0; i < vector.Length; i++)
+			{
+				normalizedVector[i] = (float)(vector[i] / sum);
+			}
+			return normalizedVector;
+		}
+
+		private void ApplyHorizontalVector(DirectBitmap input, DirectBitmap output)
 		{
 			float[] vector = HorizontalVector;
 			int vectorHalf = vector.Length / 2;
-			int maxY = result.Height - 1;
-			for (int i = 0; i < result.Height; i++)
+			int maxY = output.Height - 1;
+			for (int i = 0; i < output.Height; i++)
 			{
-				for (int j = 0; j < result.Width; j++)
+				for (int j = 0; j < output.Width; j++)
 				{
 					float sumR = 0;
 					float sumB = 0;
@@ -54,19 +69,19 @@ namespace ImageFilters
 						sumB += inputColor.B * kernelValue;
 					}
 					Color outputColor = Utils.ColorFromNonnegativeNumbers(sumR, sumG, sumB);
-					result.SetPixel(j, i, outputColor);
+					output.SetPixel(j, i, outputColor);
 				}
 			}
 		}
 
-		private void ApplyVerticalVector(DirectBitmap input, DirectBitmap result)
+		private void ApplyVerticalVector(DirectBitmap input, DirectBitmap output)
 		{
 			float[] vector = VerticalVector;
 			int vectorHalf = vector.Length / 2;
-			int maxX = result.Width - 1;
-			for (int i = 0; i < result.Height; i++)
+			int maxX = output.Width - 1;
+			for (int i = 0; i < output.Height; i++)
 			{
-				for (int j = 0; j < result.Width; j++)
+				for (int j = 0; j < output.Width; j++)
 				{
 					float sumR = 0;
 					float sumB = 0;
@@ -82,7 +97,7 @@ namespace ImageFilters
 						sumB += inputColor.B * kernelValue;
 					}
 					Color outputColor = Utils.ColorFromNonnegativeNumbers(sumR, sumG, sumB);
-					result.SetPixel(j, i, outputColor);
+					output.SetPixel(j, i, outputColor);
 				}
 			}
 		}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>ImageFilters.Benchmarks.LinearVsSeparableFilterBenchmarks-20210728-223547</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.0, OS=Windows 10.0.19042.1110 (20H2/October2020Update)
+Intel Core i7-6500U CPU 2.50GHz (Skylake), 1 CPU, 4 logical and 2 physical cores
+.NET SDK=5.0.301
+  [Host]     : .NET 5.0.7 (5.0.721.25508), X64 RyuJIT  [AttachedDebugger]
+  DefaultJob : .NET 5.0.7 (5.0.721.25508), X64 RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>             Method</th><th>KernelSize</th><th>  Mean</th><th>Error</th><th>StdDev</th>
+</tr>
+</thead><tbody><tr><td>LinearFilter_100x100</td><td>3</td><td>4.459 ms</td><td>0.0884 ms</td><td>0.1940 ms</td>
+</tr><tr><td>LinearFilter_1000x1000</td><td>3</td><td>431.859 ms</td><td>8.5469 ms</td><td>22.3657 ms</td>
+</tr><tr><td>SeparableFilter_100x100</td><td>3</td><td>4.688 ms</td><td>0.0932 ms</td><td>0.1965 ms</td>
+</tr><tr><td>SeparableFilter_1000x1000</td><td>3</td><td>463.235 ms</td><td>9.2379 ms</td><td>24.8170 ms</td>
+</tr><tr><td>LinearFilter_100x100</td><td>5</td><td>9.592 ms</td><td>0.1901 ms</td><td>0.4011 ms</td>
+</tr><tr><td>LinearFilter_1000x1000</td><td>5</td><td>940.236 ms</td><td>18.5940 ms</td><td>33.5287 ms</td>
+</tr><tr><td>SeparableFilter_100x100</td><td>5</td><td>5.790 ms</td><td>0.1147 ms</td><td>0.1885 ms</td>
+</tr><tr><td>SeparableFilter_1000x1000</td><td>5</td><td>580.274 ms</td><td>11.4667 ms</td><td>28.7676 ms</td>
+</tr><tr><td>LinearFilter_100x100</td><td>9</td><td>28.650 ms</td><td>0.6960 ms</td><td>1.9859 ms</td>
+</tr><tr><td>LinearFilter_1000x1000</td><td>9</td><td>2,687.628 ms</td><td>53.3874 ms</td><td>49.9386 ms</td>
+</tr><tr><td>SeparableFilter_100x100</td><td>9</td><td>8.165 ms</td><td>0.1591 ms</td><td>0.2569 ms</td>
+</tr><tr><td>SeparableFilter_1000x1000</td><td>9</td><td>804.435 ms</td><td>16.0158 ms</td><td>31.9854 ms</td>
+</tr></tbody></table>
+</body>
+</html>

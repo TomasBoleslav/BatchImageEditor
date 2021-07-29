@@ -8,24 +8,21 @@ namespace ImageFilters
 		public void Apply(ref DirectBitmap input)
 		{
 			ThrowHelper.ThrowIfNull(input, nameof(input));
-			ThrowHelper.ThrowIfNull(Kernel, nameof(input));
-			var result = new DirectBitmap(input.Width, input.Height, input.Bitmap.PixelFormat);
+			ThrowHelper.ThrowIfNull(_kernel, nameof(_kernel));
+			var result = new DirectBitmap(input.Width, input.Height, input.PixelFormat);
 			ApplyKernel(input, result);
 			input.Dispose();
 			input = result;
 		}
 
-		protected float[][] Kernel
+		protected void SetKernel(float[][] kernel)
 		{
-			get
-			{
-				return _kernel;
-			}
-			set
-			{
-				VerifyKernel(value);
-				_kernel = value;
-			}
+			VerifyKernelCorectness(kernel);
+			_kernel = kernel;
+			_kernelHeight = kernel.Length;
+			_kernelWidth = kernel[0].Length;
+			_radiusVertical = _kernelHeight / 2;
+			_radiusHorizontal = _kernelWidth / 2;
 		}
 
 		protected static float[][] NormalizeKernel(double[][] kernel)
@@ -52,8 +49,12 @@ namespace ImageFilters
 		}
 
 		private float[][] _kernel;
+		private int _kernelHeight;
+		private int _kernelWidth;
+		private int _radiusVertical;
+		private int _radiusHorizontal;
 
-		private static void VerifyKernel(float[][] kernel)
+		private static void VerifyKernelCorectness(float[][] kernel)
 		{
 			ThrowHelper.ThrowIfNull(kernel, nameof(kernel));
 			if (kernel.Length == 0)
@@ -88,40 +89,35 @@ namespace ImageFilters
 			}
 		}
 
-		private void ApplyKernel(DirectBitmap input, DirectBitmap result)
+		private void ApplyKernel(DirectBitmap input, DirectBitmap output)
 		{
-			int kernelHeight = Kernel.Length;
-			int kernelWidth = Kernel[0].Length;
-			int kernelTop = kernelHeight / 2;
-			int kernelLeft = kernelWidth / 2;
-			int maxX = result.Width - 1;
-			int maxY = result.Height - 1;
-
-			for (int i = 0; i < result.Height; i++)
+			int maxX = input.Width - 1;
+			int maxY = input.Height - 1;
+			for (int i = 0; i < input.Height; i++)
 			{
-				for (int j = 0; j < result.Width; j++)
+				for (int j = 0; j < input.Width; j++)
 				{
 					float sumR = 0;
 					float sumB = 0;
 					float sumG = 0;
-					for (int n = 0; n < kernelHeight; n++)
+					for (int n = 0; n < _kernelHeight; n++)
 					{
-						for (int m = 0; m < kernelWidth; m++)
+						for (int m = 0; m < _kernelWidth; m++)
 						{
 							// Input pixel coordinates
-							int y = i + n - kernelTop;
-							int x = j + m - kernelLeft;
+							int y = i + n - _radiusVertical;
+							int x = j + m - _radiusHorizontal;
 							y = Math.Clamp(y, 0, maxY);
 							x = Math.Clamp(x, 0, maxX);
 							Color inputColor = input.GetPixel(x, y);
-							float kernelValue = Kernel[n][m];
+							float kernelValue = _kernel[n][m];
 							sumR += inputColor.R * kernelValue;
 							sumG += inputColor.G * kernelValue;
 							sumB += inputColor.B * kernelValue;
 						}
 					}
 					Color outputColor = Utils.GetColorByClamping(sumR, sumG, sumB);
-					result.SetPixel(j, i, outputColor);
+					output.SetPixel(j, i, outputColor);
 				}
 			}
 		}

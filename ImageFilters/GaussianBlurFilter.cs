@@ -2,32 +2,32 @@
 
 namespace ImageFilters
 {
-	public class GaussianBlurFilter : LinearFilter
+	public sealed class GaussianBlurFilter : SeparableFilter
 	{
 		public GaussianBlurFilter(int radius, double sigma)
 		{
-            if (radius < 0)
-            {
-                throw new ArgumentException("Radius must be a nonnegative integer.");
-            }
-            Kernel = CreateKernel(radius, sigma);
-        }
+			if (radius <= 0)
+			{
+				throw new ArgumentException("Radius must be a positive integer.");
+			}
+			if (sigma <= 0.0)
+			{
+				throw new ArgumentException("Sigma must be a positive value.");
+			}
+			float[] vector = CreateConvolutionVector(radius, sigma);
+			SetVectors(vector, vector);
+		}
 
-        private static float[][] CreateKernel(int radius, double sigma)
+		private static float[] CreateConvolutionVector(int radius, double sigma)
 		{
-            int kernelSize = 2 * radius + 1;
-            double[][] kernelDouble = Utils.CreateJagged2DArray<double>(kernelSize, kernelSize);
+			double[] vectorDouble = new double[2 * radius + 1];
 			for (int x = -radius; x <= radius; x++)
 			{
-				for (int y = -radius; y <= radius; y++)
-				{
-                    double eExponent = -(x * x + y * y) / (2 * sigma * sigma);
-                    double eExpression = Math.Pow(Math.E, eExponent);
-                    double kernelValue = eExpression / (2 * Math.PI * sigma * sigma);
-                    kernelDouble[x + radius][y + radius] = kernelValue;
-				}
+				double exponent = -(x * x) / (sigma * sigma);
+				double vectorValue = Math.Pow(Math.E, exponent);	// denominator skipped, vector will be normalized
+				vectorDouble[x + radius] = vectorValue;
 			}
-            return NormalizeKernel(kernelDouble);
-        }
+			return NormalizeVector(vectorDouble);
+		}
 	}
 }

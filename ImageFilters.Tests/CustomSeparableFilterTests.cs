@@ -5,15 +5,15 @@ using System.Drawing.Imaging;
 
 namespace ImageFilters.Tests
 {
-	public class CustomSeparableLinearFilterTests
+	public sealed class CustomSeparableFilterTests
 	{
 		[Fact]
 		public void Apply_AssignedBitmapIsInputBitmap()
 		{
 			var directBitmap = new DirectBitmap(5, 5, PixelFormat.Format24bppRgb);
 			var oldDirectBitmap = directBitmap;
-			float[] vector = CreateVectorOfOnes(1);
-			var filter = new CustomSeparableLinearFilter(vector, vector);
+			float[] vector = MathHelper.CreateVectorOfOnes(1);
+			var filter = new CustomSeparableFilter(vector, vector);
 
 			filter.Apply(ref directBitmap);
 
@@ -25,8 +25,8 @@ namespace ImageFilters.Tests
 		{
 			var directBitmap = new DirectBitmap(5, 5, PixelFormat.Format24bppRgb);
 			var oldDirectBitmap = directBitmap;
-			float[] vector = CreateVectorOfOnes(1);
-			var filter = new CustomSeparableLinearFilter(vector, vector);
+			float[] vector = MathHelper.CreateVectorOfOnes(1);
+			var filter = new CustomSeparableFilter(vector, vector);
 
 			filter.Apply(ref directBitmap);
 
@@ -45,10 +45,10 @@ namespace ImageFilters.Tests
 		{
 			Color clearColor = Color.FromArgb(a, r, g, b);
 			var directBitmap = new DirectBitmap(width, height, pixelFormat);
-			ClearBitmap(directBitmap, clearColor);
-			float[] vector = CreateVectorOfOnes(vectorLength);
-			var filter = new CustomSeparableLinearFilter(vector, vector);
-			Color expectedColor = MultiplyColor(clearColor, vectorLength * vectorLength);
+			BitmapHelper.Clear(directBitmap, clearColor);
+			float[] vector = MathHelper.CreateVectorOfOnes(vectorLength);
+			var filter = new CustomSeparableFilter(vector, vector);
+			Color expectedColor = clearColor.Multiply(vectorLength * vectorLength);
 
 			filter.Apply(ref directBitmap);
 
@@ -60,34 +60,6 @@ namespace ImageFilters.Tests
 					Assert.Equal(expectedColor, actualColor);
 				}
 			}
-		}
-
-		private static float[] CreateVectorOfOnes(int length)
-		{
-			float[] vector = new float[length];
-			for (int i = 0; i < length; i++)
-			{
-				vector[i] = 1.0f;
-			}
-			return vector;
-		}
-
-		private static void ClearBitmap(DirectBitmap bitmap, Color color)
-		{
-			using (var graphics = Graphics.FromImage(bitmap.Bitmap))
-			{
-				graphics.Clear(color);
-			}
-		}
-
-		private static Color MultiplyColor(Color color, int factor)
-		{
-			return Color.FromArgb(
-				Math.Clamp(color.A * factor, 0, byte.MaxValue),
-				Math.Clamp(color.R * factor, 0, byte.MaxValue),
-				Math.Clamp(color.G * factor, 0, byte.MaxValue),
-				Math.Clamp(color.B * factor, 0, byte.MaxValue)
-				);
 		}
 	}
 }

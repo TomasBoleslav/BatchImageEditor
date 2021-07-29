@@ -48,7 +48,7 @@ namespace ImageFilters.Benchmarks
 		{
 			var directBitmap = new DirectBitmap(width, height, pixelFormat);
 			float[] vector = CreateVectorOfOnes(KernelSize);
-			var filter = new CustomSeparableLinearFilter(vector, vector);
+			var filter = new CustomSeparableFilter(vector, vector);
 			filter.Apply(ref directBitmap);
 		}
 

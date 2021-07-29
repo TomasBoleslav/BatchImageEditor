@@ -5,14 +5,14 @@ using System.Drawing.Imaging;
 
 namespace ImageFilters.Tests
 {
-	public class CustomLinearFilterTests
+	public sealed class CustomLinearFilterTests
 	{
 		[Fact]
 		public void Apply_AssignsNewBitmapToParameter()
 		{
 			var directBitmap = new DirectBitmap(5, 5, PixelFormat.Format24bppRgb);
 			var oldDirectBitmap = directBitmap;
-			float[][] kernel = CreateMatrixOfOnes(1, 1);
+			float[][] kernel = MathHelper.CreateMatrixOfOnes(1, 1);
 			var filter = new CustomLinearFilter(kernel);
 
 			filter.Apply(ref directBitmap);
@@ -25,7 +25,7 @@ namespace ImageFilters.Tests
 		{
 			var directBitmap = new DirectBitmap(5, 5, PixelFormat.Format24bppRgb);
 			var oldDirectBitmap = directBitmap;
-			float[][] kernel = CreateMatrixOfOnes(1, 1);
+			float[][] kernel = MathHelper.CreateMatrixOfOnes(1, 1);
 			var filter = new CustomLinearFilter(kernel);
 
 			filter.Apply(ref directBitmap);
@@ -46,9 +46,9 @@ namespace ImageFilters.Tests
 			Color clearColor = Color.FromArgb(a, r, g, b);
 			var directBitmap = new DirectBitmap(width, height, pixelFormat);
 			ClearBitmap(directBitmap, clearColor);
-			float[][] kernel = CreateMatrixOfOnes(kernelSize, kernelSize);
+			float[][] kernel = MathHelper.CreateMatrixOfOnes(kernelSize, kernelSize);
 			var filter = new CustomLinearFilter(kernel);
-			Color expectedColor = MultiplyColor(clearColor, kernelSize * kernelSize);
+			Color expectedColor = clearColor.Multiply(kernelSize * kernelSize);
 
 			filter.Apply(ref directBitmap);
 
@@ -62,36 +62,15 @@ namespace ImageFilters.Tests
 			}
 		}
 
-		private static float[][] CreateMatrixOfOnes(int rowCount, int columnCount)
-		{
-			float[][] matrix = new float[rowCount][];
-			for (int i = 0; i < rowCount; i++)
-			{
-				matrix[i] = new float[columnCount];
-				for (int j = 0; j < columnCount; j++)
-				{
-					matrix[i][j] = 1.0f;
-				}
-			}
-			return matrix;
-		}
-
 		private static void ClearBitmap(DirectBitmap bitmap, Color color)
 		{
-			using (var graphics = Graphics.FromImage(bitmap.Bitmap))
+			for (int x = 0; x < bitmap.Width; x++)
 			{
-				graphics.Clear(color);
+				for (int y = 0; y < bitmap.Height; y++)
+				{
+					bitmap.SetPixel(x, y, color);
+				}
 			}
-		}
-
-		private static Color MultiplyColor(Color color, int factor)
-		{
-			return Color.FromArgb(
-				Math.Clamp(color.A * factor, 0, byte.MaxValue),
-				Math.Clamp(color.R * factor, 0, byte.MaxValue),
-				Math.Clamp(color.G * factor, 0, byte.MaxValue),
-				Math.Clamp(color.B * factor, 0, byte.MaxValue)
-				);
 		}
 	}
 }

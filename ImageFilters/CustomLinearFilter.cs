@@ -5,7 +5,7 @@ namespace ImageFilters
 	{
 		public CustomLinearFilter(float[][] kernel)
 		{
-			Kernel = kernel;
+			SetKernel(kernel);
 		}
 	}
 }

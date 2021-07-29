@@ -2,6 +2,7 @@
 using ImageFilters;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Diagnostics;
 
 namespace Experiments
 {
@@ -9,6 +10,10 @@ namespace Experiments
 	{
 		static void Main(string[] args)
 		{
+			byte[] array = new byte[10];
+			var random = new Random(1);
+			random.NextBytes(array);
+			/*
 			using var bitmap = new Bitmap(1, 1, PixelFormat.Format32bppArgb);
 			using (var g = Graphics.FromImage(bitmap))
 			{
@@ -27,6 +32,7 @@ namespace Experiments
 
 			directBitmap.SetPixel(0, 0, Color.FromArgb(255, 1, 2, 3));
 			Console.WriteLine(directBitmap.GetPixel(0, 0));
+			*/
 		}
 
 		private static void FuncWithRef(ref string value)
