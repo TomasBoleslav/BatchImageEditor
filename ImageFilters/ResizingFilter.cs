@@ -1,42 +1,57 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace ImageFilters
 {
+	// TODO: make abstract, use ResizingByFactorFilter, FixedResizingFilter
 	public class ResizingFilter : IImageFilter
 	{
 		public ResizingFilter(int newWidth, int newHeight)
 		{
-			_resizingStrategy = new FixedResizing(newWidth, newHeight);
+			_resizingAlgorithm = new FixedResizing(newWidth, newHeight);
 		}
 
 		public ResizingFilter(float factor)
 		{
-			_resizingStrategy = new ResizingByFactor(factor);
+			_resizingAlgorithm = new ResizingByFactor(factor);
 		}
 
-		public void Apply(ref DirectBitmap input)
+		public void Apply(ref DirectBitmap inputBitmap)
 		{
-			Size newSize = _resizingStrategy.ComputeNewSize(input.Width, input.Height);
+			ThrowHelper.ThrowIfNull(inputBitmap, nameof(inputBitmap));
+			DirectBitmap output = Resize(inputBitmap);
+			inputBitmap.Dispose();
+			inputBitmap = output;
+		}
+
+		private readonly IResizingAlgorithm _resizingAlgorithm;
+
+		private DirectBitmap Resize(DirectBitmap input)
+		{
+			Size newSize = _resizingAlgorithm.ComputeNewSize(input.Width, input.Height);
+			newSize = new Size
+			{
+				Width = Math.Max(newSize.Width, 1),
+				Height = Math.Max(newSize.Height, 1)
+			};
 			var output = new DirectBitmap(newSize.Width, newSize.Height, input.PixelFormat);
 			using (var graphics = Graphics.FromImage(output.Bitmap))
 			{
 				graphics.DrawImage(input.Bitmap, 0, 0, output.Width, output.Height);
 			}
-			input.Dispose();
-			input = output;
+			return output;
 		}
 
-		private readonly IResizingStrategy _resizingStrategy;
-
-		private interface IResizingStrategy
+		private interface IResizingAlgorithm
 		{
 			Size ComputeNewSize(int width, int height);
 		}
 
-		private class ResizingByFactor : IResizingStrategy
+		private class ResizingByFactor : IResizingAlgorithm
 		{
 			public ResizingByFactor(float factor)
 			{
+				ThrowHelper.ThrowIfNotPositive(factor, nameof(factor));
 				_factor = factor;
 			}
 
@@ -52,10 +67,12 @@ namespace ImageFilters
 			private readonly float _factor;
 		}
 
-		private class FixedResizing : IResizingStrategy
+		private class FixedResizing : IResizingAlgorithm
 		{
 			public FixedResizing(int width, int height)
 			{
+				ThrowHelper.ThrowIfNotPositive(width, nameof(width));
+				ThrowHelper.ThrowIfNotPositive(height, nameof(height));
 				_newWidth = width;
 				_newHeight = height;
 			}

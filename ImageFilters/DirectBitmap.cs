@@ -9,6 +9,8 @@ namespace ImageFilters
 {
     public sealed class DirectBitmap : IDisposable
     {
+        // TODO: properties Stride, BytesInRow?
+
         public Bitmap Bitmap { get; }
 
         public byte[] Buffer { get; }
@@ -23,16 +25,15 @@ namespace ImageFilters
 
         public DirectBitmap(int width, int height, PixelFormat pixelFormat)
         {
-			if (width <= 0 || height <= 0)
-			{
-                throw new ArgumentException("Width and height must be positive integers.");
-			}
+            ThrowHelper.ThrowIfNotPositive(width, nameof(width));
+            ThrowHelper.ThrowIfNotPositive(height, nameof(height));
 			if (!SupportedFormats.Contains(pixelFormat))
 			{
                 throw new ArgumentException("The given pixel format is not supported.");
 			}
             _bytesPerPixel = ComputeBytesPerPixel(pixelFormat);
-            _stride = ComputeStride(width, _bytesPerPixel);
+            _usedBytesInRow = width * _bytesPerPixel;
+            _stride = _usedBytesInRow + ComputePadding(_usedBytesInRow);
             Buffer = new byte[height * _stride];
             _bufferHandle = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
             _pixelExtractor = CreatePixelExtractor(Buffer, pixelFormat);
@@ -105,6 +106,33 @@ namespace ImageFilters
             GC.SuppressFinalize(this);
         }
 
+        public void FlipVertically()
+		{
+            // Does not work !!! it will also reverse color channels
+			for (int rowIndex = 0; rowIndex < Height; rowIndex++)
+			{
+                int rowStart = rowIndex * _stride;
+                Array.Reverse(Buffer, rowStart, _usedBytesInRow);
+			}
+        }
+
+        public void FlipHorizontally()
+        {
+            byte[] rowTemporary = new byte[_usedBytesInRow];
+            int row1Index = 0;
+            int row2Index = Height - 1;
+			while (row1Index < row2Index)
+			{
+                int row1Start = row1Index * _stride;
+                int row2Start = row2Index * _stride;
+                System.Buffer.BlockCopy(Buffer, row1Start, rowTemporary, 0, _usedBytesInRow);       // temp <- row1
+                System.Buffer.BlockCopy(Buffer, row2Start, Buffer, row1Start, _usedBytesInRow);     // row1 <- row2
+                System.Buffer.BlockCopy(rowTemporary, 0, Buffer, row2Start, _usedBytesInRow);       // row2 <- temp
+                row1Index++;
+                row2Index--;
+			}
+        }
+
         private const PixelFormat DefaultPixelFormat = PixelFormat.Format32bppArgb;
         private static readonly IReadOnlySet<PixelFormat> SupportedFormats =
             new HashSet<PixelFormat>(
@@ -117,6 +145,7 @@ namespace ImageFilters
             );
 
         private readonly int _bytesPerPixel;
+        private readonly int _usedBytesInRow;
         private readonly int _stride;
         private readonly GCHandle _bufferHandle;
         private readonly IPixelExtractor _pixelExtractor;
@@ -148,6 +177,16 @@ namespace ImageFilters
             int padding = 4 - remainder;
             return usedBytesInRow + padding;
 		}
+
+        private static int ComputePadding(int usedBytesInRow)
+		{
+            int remainder = usedBytesInRow % 4;
+            if (remainder == 0)
+            {
+                return 0;
+            }
+            return 4 - remainder;
+        }
 
         private static DirectBitmap FromBitmapByCopyingData(Bitmap bitmap)
         {

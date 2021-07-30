@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 
 namespace ImageFilters
 {
-	public class MedianFilter : IImageFilter
+	public sealed class MedianFilter : IImageFilter
 	{
 		public MedianFilter(int radius)
 		{

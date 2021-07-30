@@ -3,7 +3,7 @@
 namespace ImageFilters
 {
 	// TODO: bad name
-	public class OverImageFilter : IImageFilter
+	public sealed class OverImageFilter : IImageFilter
 	{
 		public OverImageFilter(DirectBitmap bitmapToDrawOver, ImagePosition position, int dx, int dy)
 		{

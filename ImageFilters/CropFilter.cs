@@ -12,7 +12,7 @@ namespace ImageFilters
 	//     - sometimes good, sometimes not (it can lead to many classes, if there are many options, e.g. for ImageOverFilter)
 	// Confusion with LinearFilter - it could be also solved using strategy, but is not - GaussianBlur, ...
 	// In these cases strategy pattern is very valid - we choose part of the algorithm at runtime (by the choice of the user)
-	public class CropFilter : IImageFilter
+	public sealed class CropFilter : IImageFilter
 	{
 		public CropFilter(Rectangle absoluteCropArea)
 		{
