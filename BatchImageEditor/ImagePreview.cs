@@ -10,6 +10,7 @@ namespace BatchImageEditor
 		public ImagePreview()
 		{
 			InitializeComponent();
+			SetSizeLabel(0, 0);
 			ResetZoomLevel();
 			CenterControlHorizontally(_zoomPanel);
 		}
@@ -90,6 +91,7 @@ namespace BatchImageEditor
 			if (image == null)
 			{
 				_imageBox.Image = null;
+				SetSizeLabel(0, 0);
 				return;
 			}
 			if (zoomChanged || zoomedImage == null)
@@ -97,7 +99,12 @@ namespace BatchImageEditor
 				zoomedImage = ZoomImage(image);
 			}
 			_imageBox.Image = zoomedImage;
-			_sizeLabel.Text = $"{image.Width} x {image.Height} px";
+			SetSizeLabel(image.Width, image.Height);
+		}
+
+		public void SetSizeLabel(int width, int height)
+		{
+			_sizeLabel.Text = $"{width} x {height} px";
 		}
 
 		private static void CenterControlHorizontally(Control control)

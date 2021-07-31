@@ -38,6 +38,11 @@ namespace BatchImageEditor
 			return MinWidth;
 		}
 
+		public override string ToString()
+		{
+			return "Median";
+		}
+
 		private const int MinRadius = 1;
 		private const int MaxRadius = 20;
 		private const int DefaultRadius = 1;

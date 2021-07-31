@@ -42,7 +42,8 @@ namespace BatchImageEditor
 			// 
 			// _imageBox
 			// 
-			this._imageBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this._imageBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this._imageBox.BackColor = System.Drawing.Color.White;
 			this._imageBox.Location = new System.Drawing.Point(3, 44);
@@ -103,6 +104,7 @@ namespace BatchImageEditor
 			// 
 			// _zoomPanel
 			// 
+			this._zoomPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this._zoomPanel.Controls.Add(this._zoomOutButton);
 			this._zoomPanel.Controls.Add(this._zoomInButton);
 			this._zoomPanel.Controls.Add(this._zoomLabel);
