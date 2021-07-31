@@ -121,6 +121,7 @@ namespace BatchImageEditor
 			this.Controls.Add(this._imageBox);
 			this.Name = "ImagePreview";
 			this.Size = new System.Drawing.Size(485, 410);
+			this.Resize += new System.EventHandler(this.ImagePreview_Resize);
 			((System.ComponentModel.ISupportInitialize)(this._imageBox)).EndInit();
 			this._zoomPanel.ResumeLayout(false);
 			this._zoomPanel.PerformLayout();

@@ -29,58 +29,62 @@ namespace BatchImageEditor
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.button3 = new System.Windows.Forms.Button();
-			this.button2 = new System.Windows.Forms.Button();
-			this.button1 = new System.Windows.Forms.Button();
-			this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+			this._editButton = new System.Windows.Forms.Button();
+			this._removeButton = new System.Windows.Forms.Button();
+			this._addButton = new System.Windows.Forms.Button();
+			this._filterList = new System.Windows.Forms.CheckedListBox();
 			this.SuspendLayout();
 			// 
-			// button3
+			// _editButton
 			// 
-			this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.button3.Location = new System.Drawing.Point(257, 85);
-			this.button3.Name = "button3";
-			this.button3.Size = new System.Drawing.Size(100, 35);
-			this.button3.TabIndex = 4;
-			this.button3.Text = "Edit";
-			this.button3.UseVisualStyleBackColor = true;
+			this._editButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this._editButton.Location = new System.Drawing.Point(257, 85);
+			this._editButton.Name = "_editButton";
+			this._editButton.Size = new System.Drawing.Size(100, 35);
+			this._editButton.TabIndex = 4;
+			this._editButton.Text = "Edit";
+			this._editButton.UseVisualStyleBackColor = true;
 			// 
-			// button2
+			// _removeButton
 			// 
-			this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.button2.Location = new System.Drawing.Point(257, 44);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(100, 35);
-			this.button2.TabIndex = 3;
-			this.button2.Text = "Remove";
-			this.button2.UseVisualStyleBackColor = true;
+			this._removeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this._removeButton.Location = new System.Drawing.Point(257, 44);
+			this._removeButton.Name = "_removeButton";
+			this._removeButton.Size = new System.Drawing.Size(100, 35);
+			this._removeButton.TabIndex = 3;
+			this._removeButton.Text = "Remove";
+			this._removeButton.UseVisualStyleBackColor = true;
 			// 
-			// button1
+			// _addButton
 			// 
-			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.button1.Location = new System.Drawing.Point(257, 3);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(100, 35);
-			this.button1.TabIndex = 2;
-			this.button1.Text = "Add";
-			this.button1.UseVisualStyleBackColor = true;
+			this._addButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this._addButton.Location = new System.Drawing.Point(257, 3);
+			this._addButton.Name = "_addButton";
+			this._addButton.Size = new System.Drawing.Size(100, 35);
+			this._addButton.TabIndex = 2;
+			this._addButton.Text = "Add";
+			this._addButton.UseVisualStyleBackColor = true;
+			this._addButton.Click += new System.EventHandler(this.AddButton_Click);
 			// 
-			// checkedListBox1
+			// _filterList
 			// 
-			this.checkedListBox1.FormattingEnabled = true;
-			this.checkedListBox1.Location = new System.Drawing.Point(3, 3);
-			this.checkedListBox1.Name = "checkedListBox1";
-			this.checkedListBox1.Size = new System.Drawing.Size(248, 488);
-			this.checkedListBox1.TabIndex = 5;
+			this._filterList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this._filterList.FormattingEnabled = true;
+			this._filterList.Location = new System.Drawing.Point(3, 3);
+			this._filterList.Name = "_filterList";
+			this._filterList.Size = new System.Drawing.Size(248, 488);
+			this._filterList.TabIndex = 5;
 			// 
 			// FilterList
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.checkedListBox1);
-			this.Controls.Add(this.button1);
-			this.Controls.Add(this.button2);
-			this.Controls.Add(this.button3);
+			this.Controls.Add(this._filterList);
+			this.Controls.Add(this._addButton);
+			this.Controls.Add(this._removeButton);
+			this.Controls.Add(this._editButton);
 			this.Name = "FilterList";
 			this.Size = new System.Drawing.Size(360, 507);
 			this.ResumeLayout(false);
@@ -89,9 +93,9 @@ namespace BatchImageEditor
 
 		#endregion
 
-		private System.Windows.Forms.Button button3;
-		private System.Windows.Forms.Button button2;
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.CheckedListBox checkedListBox1;
+		private System.Windows.Forms.Button _editButton;
+		private System.Windows.Forms.Button _removeButton;
+		private System.Windows.Forms.Button _addButton;
+		private System.Windows.Forms.CheckedListBox _filterList;
 	}
 }
