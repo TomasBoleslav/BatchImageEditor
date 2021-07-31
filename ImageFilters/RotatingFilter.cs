@@ -15,7 +15,7 @@ namespace ImageFilters
 
 		public void Apply(ref DirectBitmap inputBitmap)
 		{
-			ThrowHelper.ThrowIfNull(inputBitmap, nameof(inputBitmap));
+			Thrower.ThrowIfNull(inputBitmap, nameof(inputBitmap));
 			DirectBitmap output = RotateImage(inputBitmap);
 			inputBitmap.Dispose();
 			inputBitmap = output;

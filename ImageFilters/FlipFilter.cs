@@ -3,45 +3,37 @@ using System.Drawing;
 
 namespace ImageFilters
 {
-	// TODO: pass enum or strategy to constructor? - if using common ancestor for Resize, Flip and Rotate, then pass strategy to constructor (too many options)
 	public enum FlipType
 	{
 		Horizontal,
-		Vertical
+		Vertical,
+		Both
 	}
 
 	public sealed class FlipFilter : IImageFilter
 	{
 		public FlipFilter(FlipType flipType)
 		{
-			switch (flipType)
+			if (!Enum.IsDefined(typeof(FlipType), flipType))
 			{
-				case FlipType.Horizontal:
-					_flipStrategy = new HorizontalFlipping();
-					break;
-				case FlipType.Vertical:
-					_flipStrategy = new VerticalFlipping();
-					break;
-				default:
-					throw new ArgumentException("Invalid flip type.");
+				throw new ArgumentException("Invalid flip type.");
 			}
 		}
 
 		public void Apply(ref DirectBitmap inputBitmap)
 		{
-			ThrowHelper.ThrowIfNull(inputBitmap, nameof(inputBitmap));
+			Thrower.ThrowIfNull(inputBitmap, nameof(inputBitmap));
 			DirectBitmap outputBitmap = Flip(inputBitmap);
 			inputBitmap.Dispose();
 			inputBitmap = outputBitmap;
 		}
 
-		private readonly IFlipStrategy _flipStrategy;
+		private readonly FlipType _flipType;
 
 		private DirectBitmap Flip(DirectBitmap input)
 		{
-			Size inputSize = input.Bitmap.Size;
 			Rectangle srcRect = new Rectangle(0, 0, input.Width, input.Height);
-			Rectangle destRect = _flipStrategy.ComputeDestRect(inputSize);
+			Rectangle destRect = ComputeDestRect(input.Bitmap.Size);
 			int outputWidth = Math.Abs(destRect.Width);
 			int outputHeight = Math.Abs(destRect.Height);
 			var output = new DirectBitmap(outputWidth, outputHeight, input.PixelFormat);
@@ -52,37 +44,33 @@ namespace ImageFilters
 			return output;
 		}
 
-		private interface IFlipStrategy
+		private Rectangle ComputeDestRect(Size inputSize)
 		{
-			Rectangle ComputeDestRect(Size inputSize);
-		}
-
-		private class VerticalFlipping : IFlipStrategy
-		{
-			public Rectangle ComputeDestRect(Size inputSize)
+			return _flipType switch
 			{
-				return new Rectangle
-				{
-					X = inputSize.Width,
-					Y = 0,
-					Width = -inputSize.Width,
-					Height = inputSize.Height
-				};
-			}
-		}
-
-		private class HorizontalFlipping : IFlipStrategy
-		{
-			public Rectangle ComputeDestRect(Size inputSize)
-			{
-				return new Rectangle
+				FlipType.Horizontal => new Rectangle
 				{
 					X = 0,
 					Y = inputSize.Height,
 					Width = inputSize.Width,
 					Height = -inputSize.Height
-				};
-			}
+				},
+				FlipType.Vertical => new Rectangle
+				{
+					X = inputSize.Width,
+					Y = 0,
+					Width = -inputSize.Width,
+					Height = inputSize.Height
+				},
+				FlipType.Both => new Rectangle
+				{
+					X = inputSize.Width,
+					Y = inputSize.Height,
+					Width = -inputSize.Width,
+					Height = -inputSize.Height
+				},
+				_ => throw new ArgumentException("Invalid flip type.")
+			};
 		}
 	}
 }

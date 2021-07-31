@@ -2,24 +2,30 @@
 
 namespace ImageFilters
 {
-	public abstract class ColorAdjustingFilter : IImageFilter
+	public sealed class ColorAdjustingFilter : IImageFilter
 	{
-		public void Apply(ref DirectBitmap inputBitmap)
+		public ColorAdjustingFilter(IColorAdjuster colorAdjuster)
 		{
-			ThrowHelper.ThrowIfNull(inputBitmap, nameof(inputBitmap));
-			ApplyColorAdjustment(inputBitmap);
+			Thrower.ThrowIfNull(colorAdjuster, nameof(colorAdjuster));
+			_colorAdjuster = colorAdjuster;
 		}
 
-		protected abstract Color AdjustColor(Color color);
+		public void Apply(ref DirectBitmap inputBitmap)
+		{
+			Thrower.ThrowIfNull(inputBitmap, nameof(inputBitmap));
+			AdjustColors(inputBitmap);
+		}
 
-		private void ApplyColorAdjustment(DirectBitmap input)
+		private readonly IColorAdjuster _colorAdjuster;
+
+		private void AdjustColors(DirectBitmap input)
 		{
 			for (int y = 0; y < input.Height; y++)
 			{
 				for (int x = 0; x < input.Width; x++)
 				{
 					Color inputColor = input.GetPixel(x, y);
-					Color outputColor = AdjustColor(inputColor);
+					Color outputColor = _colorAdjuster.Adjust(inputColor);
 					input.SetPixel(x, y, outputColor);
 				}
 			}

@@ -3,8 +3,7 @@ using System.Drawing;
 
 namespace ImageFilters
 {
-	// TODO: make abstract, use ResizingByFactorFilter, FixedResizingFilter
-	public class ResizingFilter : IImageFilter
+	public sealed class ResizingFilter : IImageFilter
 	{
 		public ResizingFilter(int newWidth, int newHeight)
 		{
@@ -18,7 +17,7 @@ namespace ImageFilters
 
 		public void Apply(ref DirectBitmap inputBitmap)
 		{
-			ThrowHelper.ThrowIfNull(inputBitmap, nameof(inputBitmap));
+			Thrower.ThrowIfNull(inputBitmap, nameof(inputBitmap));
 			DirectBitmap output = Resize(inputBitmap);
 			inputBitmap.Dispose();
 			inputBitmap = output;
@@ -51,7 +50,7 @@ namespace ImageFilters
 		{
 			public ResizingByFactor(float factor)
 			{
-				ThrowHelper.ThrowIfNotPositive(factor, nameof(factor));
+				Thrower.ThrowIfNotPositive(factor, nameof(factor));
 				_factor = factor;
 			}
 
@@ -71,8 +70,8 @@ namespace ImageFilters
 		{
 			public FixedResizing(int width, int height)
 			{
-				ThrowHelper.ThrowIfNotPositive(width, nameof(width));
-				ThrowHelper.ThrowIfNotPositive(height, nameof(height));
+				Thrower.ThrowIfNotPositive(width, nameof(width));
+				Thrower.ThrowIfNotPositive(height, nameof(height));
 				_newWidth = width;
 				_newHeight = height;
 			}

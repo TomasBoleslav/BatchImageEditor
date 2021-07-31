@@ -15,7 +15,7 @@ namespace ImageFilters
 
 		public void Apply(ref DirectBitmap inputBitmap)
 		{
-			ThrowHelper.ThrowIfNull(inputBitmap, nameof(inputBitmap));
+			Thrower.ThrowIfNull(inputBitmap, nameof(inputBitmap));
 			Point destination = ComputeDestinationOfImageToDraw(inputBitmap);
 			using var graphics = Graphics.FromImage(inputBitmap.Bitmap);
 			graphics.DrawImage(_bitmapOver.Bitmap, destination);

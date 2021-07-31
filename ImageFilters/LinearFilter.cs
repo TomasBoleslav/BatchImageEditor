@@ -7,8 +7,8 @@ namespace ImageFilters
 	{
 		public void Apply(ref DirectBitmap input)
 		{
-			ThrowHelper.ThrowIfNull(input, nameof(input));
-			ThrowHelper.ThrowIfNull(_kernel, nameof(_kernel));
+			Thrower.ThrowIfNull(input, nameof(input));
+			Thrower.ThrowIfNull(_kernel, nameof(_kernel));
 			var result = new DirectBitmap(input.Width, input.Height, input.PixelFormat);
 			ApplyKernel(input, result);
 			input.Dispose();
@@ -56,7 +56,7 @@ namespace ImageFilters
 
 		private static void VerifyKernelCorectness(float[][] kernel)
 		{
-			ThrowHelper.ThrowIfNull(kernel, nameof(kernel));
+			Thrower.ThrowIfNull(kernel, nameof(kernel));
 			if (kernel.Length == 0)
 			{
 				throw new ArgumentException("Kernel matrix cannot be empty.");

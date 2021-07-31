@@ -2,7 +2,7 @@
 
 namespace ImageFilters
 {
-	internal class PixelExtractor24Rgb : IPixelExtractor
+	internal sealed class PixelExtractor24Rgb : IPixelExtractor
 	{
 		public PixelExtractor24Rgb(byte[] buffer)
 		{

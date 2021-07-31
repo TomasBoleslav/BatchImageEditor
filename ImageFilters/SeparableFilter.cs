@@ -7,8 +7,8 @@ namespace ImageFilters
 	{
 		public void Apply(ref DirectBitmap input)
 		{
-			ThrowHelper.ThrowIfNull(HorizontalVector, nameof(HorizontalVector));
-			ThrowHelper.ThrowIfNull(VerticalVector, nameof(VerticalVector));
+			Thrower.ThrowIfNull(HorizontalVector, nameof(HorizontalVector));
+			Thrower.ThrowIfNull(VerticalVector, nameof(VerticalVector));
 			using var intermediateResult = new DirectBitmap(input.Width, input.Height, input.PixelFormat);
 			ApplyHorizontalVector(input, intermediateResult);
 			ApplyVerticalVector(intermediateResult, input);
@@ -21,8 +21,8 @@ namespace ImageFilters
 
 		protected void SetVectors(float[] horizontal, float[] vertical)
 		{
-			ThrowHelper.ThrowIfNull(horizontal, nameof(horizontal));
-			ThrowHelper.ThrowIfNull(vertical, nameof(vertical));
+			Thrower.ThrowIfNull(horizontal, nameof(horizontal));
+			Thrower.ThrowIfNull(vertical, nameof(vertical));
 			if (horizontal.Length != vertical.Length)
 			{
 				throw new ArgumentException("Vectors must have the same length.");

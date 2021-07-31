@@ -15,7 +15,7 @@ namespace ImageFilters
 	// - only question: what is absolute value of color?
 	// - choose L^1-norm, which is |x| = |x1| + ... + |xn|
 	// - that means a table for values 0, ..., 255 * 3 (maximum diference is for (0,0,0) and (255,255,255))
-	public class BilateralFilter : IImageFilter
+	public sealed class BilateralFilter : IImageFilter
 	{
 		public BilateralFilter(int radius, double sigmaSpacial, double sigmaRange)
 		{
