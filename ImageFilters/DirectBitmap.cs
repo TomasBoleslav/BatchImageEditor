@@ -25,8 +25,8 @@ namespace ImageFilters
 
         public DirectBitmap(int width, int height, PixelFormat pixelFormat)
         {
-            Thrower.ThrowIfNotPositive(width, nameof(width));
-            Thrower.ThrowIfNotPositive(height, nameof(height));
+            Ensure.Positive(width, nameof(width));
+            Ensure.Positive(height, nameof(height));
 			if (!SupportedFormats.Contains(pixelFormat))
 			{
                 throw new ArgumentException("The given pixel format is not supported.");
@@ -42,7 +42,7 @@ namespace ImageFilters
         
         public static DirectBitmap FromBitmap(Bitmap bitmap)
         {
-            Thrower.ThrowIfNull(bitmap, nameof(bitmap));
+            Ensure.NotNull(bitmap, nameof(bitmap));
 			if (SupportedFormats.Contains(bitmap.PixelFormat))
 			{
                 return FromBitmapByCopyingData(bitmap);
@@ -54,7 +54,7 @@ namespace ImageFilters
         // IOException
         public static DirectBitmap FromFile(string filename)
         {
-            Thrower.ThrowIfNull(filename, nameof(filename));
+            Ensure.NotNull(filename, nameof(filename));
             Bitmap loadedBitmap;
             DirectBitmap directBitmap;
             try

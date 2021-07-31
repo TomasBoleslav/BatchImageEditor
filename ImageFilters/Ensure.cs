@@ -2,9 +2,9 @@
 
 namespace ImageFilters
 {
-	internal static class Thrower
+	internal static class Ensure
 	{
-		public static void ThrowIfNull(object instance, string name)
+		public static void NotNull(object instance, string name)
 		{
 			if (instance == null)
 			{
@@ -12,7 +12,7 @@ namespace ImageFilters
 			}
 		}
 
-		public static void ThrowIfNotPositive(int value, string name)
+		public static void Positive(int value, string name)
 		{
 			if (value <= 0)
 			{
@@ -23,7 +23,7 @@ namespace ImageFilters
 			}
 		}
 
-		public static void ThrowIfNotPositive(float value, string name)
+		public static void Positive(float value, string name)
 		{
 			if (value <= 0f)
 			{
@@ -34,7 +34,7 @@ namespace ImageFilters
 			}
 		}
 
-		public static void ThrowIfNegative(float value, string name)
+		public static void NotNegative(float value, string name)
 		{
 			if (value < 0f)
 			{
@@ -45,7 +45,7 @@ namespace ImageFilters
 			}
 		}
 
-		public static void ThrowIfLessThan<T>(IComparable<T> value, string name, T other)
+		public static void NotLessThan<T>(IComparable<T> value, string name, T other)
 		{
 			if (value.LessThan(other))
 			{
@@ -56,7 +56,7 @@ namespace ImageFilters
 			}
 		}
 
-		public static void ThrowIfNotLessThan<T>(IComparable<T> value, string name, T other)
+		public static void LessThan<T>(IComparable<T> value, string name, T other)
 		{
 			if (!value.LessThan(other))
 			{
@@ -67,7 +67,7 @@ namespace ImageFilters
 			}
 		}
 
-		public static void ThrowIfGreaterThan<T>(IComparable<T> value, string name, T other)
+		public static void NotGreaterThan<T>(IComparable<T> value, string name, T other)
 		{
 			if (value.GreaterThan(other))
 			{
@@ -78,9 +78,9 @@ namespace ImageFilters
 			}
 		}
 
-		public static void ThrowIfNotGreaterThan<T>(IComparable<T> value, string name, T other)
+		public static void GreaterThan<T>(IComparable<T> value, string name, T other)
 		{
-			if (value.GreaterThan(other))
+			if (!value.GreaterThan(other))
 			{
 				throw new ArgumentException(
 					$"Value of {name} must be greater than {other}.",
@@ -90,7 +90,7 @@ namespace ImageFilters
 		}
 
 		// The same for ThrowIfLessThan, ThrowIfGreaterThan, use T.ToString()
-		public static void ThrowIfNotInRange<T>(IComparable<T> value, string name, T lowerBound, T upperBound)
+		public static void InRange<T>(IComparable<T> value, string name, T lowerBound, T upperBound)
 		{
 			if (value.LessThan(lowerBound) || value.GreaterThan(upperBound))
 			{

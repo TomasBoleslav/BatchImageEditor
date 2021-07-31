@@ -5,19 +5,14 @@ namespace ImageFilters
 {
 	public sealed class ResizingFilter : IImageFilter
 	{
-		public ResizingFilter(int newWidth, int newHeight)
+		public ResizingFilter(IResizingAlgorithm resizingAlgorithm)
 		{
-			_resizingAlgorithm = new FixedResizing(newWidth, newHeight);
-		}
-
-		public ResizingFilter(float factor)
-		{
-			_resizingAlgorithm = new ResizingByFactor(factor);
+			_resizingAlgorithm = resizingAlgorithm;
 		}
 
 		public void Apply(ref DirectBitmap inputBitmap)
 		{
-			Thrower.ThrowIfNull(inputBitmap, nameof(inputBitmap));
+			Ensure.NotNull(inputBitmap, nameof(inputBitmap));
 			DirectBitmap output = Resize(inputBitmap);
 			inputBitmap.Dispose();
 			inputBitmap = output;
@@ -27,62 +22,16 @@ namespace ImageFilters
 
 		private DirectBitmap Resize(DirectBitmap input)
 		{
-			Size newSize = _resizingAlgorithm.ComputeNewSize(input.Width, input.Height);
-			newSize = new Size
-			{
-				Width = Math.Max(newSize.Width, 1),
-				Height = Math.Max(newSize.Height, 1)
-			};
+			Size newSize = _resizingAlgorithm.ComputeNewSize(input.Bitmap.Size);
+			newSize.Width = Math.Max(newSize.Width, 1);
+			newSize.Height = Math.Max(newSize.Height, 1);
 			var output = new DirectBitmap(newSize.Width, newSize.Height, input.PixelFormat);
 			using (var graphics = Graphics.FromImage(output.Bitmap))
 			{
+				// TODO: high quality settings?
 				graphics.DrawImage(input.Bitmap, 0, 0, output.Width, output.Height);
 			}
 			return output;
-		}
-
-		private interface IResizingAlgorithm
-		{
-			Size ComputeNewSize(int width, int height);
-		}
-
-		private class ResizingByFactor : IResizingAlgorithm
-		{
-			public ResizingByFactor(float factor)
-			{
-				Thrower.ThrowIfNotPositive(factor, nameof(factor));
-				_factor = factor;
-			}
-
-			public Size ComputeNewSize(int width, int height)
-			{
-				return new Size
-				{
-					Width = (int)(width * _factor),
-					Height = (int)(height * _factor)
-				};
-			}
-
-			private readonly float _factor;
-		}
-
-		private class FixedResizing : IResizingAlgorithm
-		{
-			public FixedResizing(int width, int height)
-			{
-				Thrower.ThrowIfNotPositive(width, nameof(width));
-				Thrower.ThrowIfNotPositive(height, nameof(height));
-				_newWidth = width;
-				_newHeight = height;
-			}
-
-			public Size ComputeNewSize(int width, int height)
-			{
-				return new Size(_newWidth, _newHeight);
-			}
-
-			private readonly int _newWidth;
-			private readonly int _newHeight;
 		}
 	}
 }

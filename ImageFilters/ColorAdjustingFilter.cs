@@ -6,13 +6,13 @@ namespace ImageFilters
 	{
 		public ColorAdjustingFilter(IColorAdjuster colorAdjuster)
 		{
-			Thrower.ThrowIfNull(colorAdjuster, nameof(colorAdjuster));
+			Ensure.NotNull(colorAdjuster, nameof(colorAdjuster));
 			_colorAdjuster = colorAdjuster;
 		}
 
 		public void Apply(ref DirectBitmap inputBitmap)
 		{
-			Thrower.ThrowIfNull(inputBitmap, nameof(inputBitmap));
+			Ensure.NotNull(inputBitmap, nameof(inputBitmap));
 			AdjustColors(inputBitmap);
 		}
 

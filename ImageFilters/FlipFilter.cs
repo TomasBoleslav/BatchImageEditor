@@ -3,13 +3,6 @@ using System.Drawing;
 
 namespace ImageFilters
 {
-	public enum FlipType
-	{
-		Horizontal,
-		Vertical,
-		Both
-	}
-
 	public sealed class FlipFilter : IImageFilter
 	{
 		public FlipFilter(FlipType flipType)
@@ -18,11 +11,12 @@ namespace ImageFilters
 			{
 				throw new ArgumentException("Invalid flip type.");
 			}
+			_flipType = flipType;
 		}
 
 		public void Apply(ref DirectBitmap inputBitmap)
 		{
-			Thrower.ThrowIfNull(inputBitmap, nameof(inputBitmap));
+			Ensure.NotNull(inputBitmap, nameof(inputBitmap));
 			DirectBitmap outputBitmap = Flip(inputBitmap);
 			inputBitmap.Dispose();
 			inputBitmap = outputBitmap;
@@ -32,13 +26,13 @@ namespace ImageFilters
 
 		private DirectBitmap Flip(DirectBitmap input)
 		{
-			Rectangle srcRect = new Rectangle(0, 0, input.Width, input.Height);
 			Rectangle destRect = ComputeDestRect(input.Bitmap.Size);
 			int outputWidth = Math.Abs(destRect.Width);
 			int outputHeight = Math.Abs(destRect.Height);
 			var output = new DirectBitmap(outputWidth, outputHeight, input.PixelFormat);
 			using (var graphics = Graphics.FromImage(output.Bitmap))
 			{
+				Rectangle srcRect = new Rectangle(0, 0, input.Width, input.Height);
 				graphics.DrawImage(input.Bitmap, srcRect, destRect, GraphicsUnit.Pixel);
 			}
 			return output;
