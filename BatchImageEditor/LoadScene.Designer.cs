@@ -113,10 +113,10 @@ namespace BatchImageEditor
 			// removeButton
 			// 
 			this.removeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.removeButton.Location = new System.Drawing.Point(604, 136);
+			this.removeButton.Location = new System.Drawing.Point(604, 126);
 			this.removeButton.Margin = new System.Windows.Forms.Padding(6);
 			this.removeButton.Name = "removeButton";
-			this.removeButton.Size = new System.Drawing.Size(120, 40);
+			this.removeButton.Size = new System.Drawing.Size(110, 35);
 			this.removeButton.TabIndex = 9;
 			this.removeButton.Text = "Remove";
 			this.removeButton.UseVisualStyleBackColor = true;
@@ -125,10 +125,10 @@ namespace BatchImageEditor
 			// loadFolderButton
 			// 
 			this.loadFolderButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.loadFolderButton.Location = new System.Drawing.Point(604, 84);
+			this.loadFolderButton.Location = new System.Drawing.Point(604, 79);
 			this.loadFolderButton.Margin = new System.Windows.Forms.Padding(6);
 			this.loadFolderButton.Name = "loadFolderButton";
-			this.loadFolderButton.Size = new System.Drawing.Size(120, 40);
+			this.loadFolderButton.Size = new System.Drawing.Size(110, 35);
 			this.loadFolderButton.TabIndex = 8;
 			this.loadFolderButton.Text = "Load folder";
 			this.loadFolderButton.UseVisualStyleBackColor = true;
@@ -140,7 +140,7 @@ namespace BatchImageEditor
 			this.loadImageButton.Location = new System.Drawing.Point(604, 32);
 			this.loadImageButton.Margin = new System.Windows.Forms.Padding(6);
 			this.loadImageButton.Name = "loadImageButton";
-			this.loadImageButton.Size = new System.Drawing.Size(120, 40);
+			this.loadImageButton.Size = new System.Drawing.Size(110, 35);
 			this.loadImageButton.TabIndex = 7;
 			this.loadImageButton.Text = "Load images";
 			this.loadImageButton.UseVisualStyleBackColor = true;

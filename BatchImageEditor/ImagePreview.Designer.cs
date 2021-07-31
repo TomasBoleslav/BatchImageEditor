@@ -33,7 +33,7 @@ namespace BatchImageEditor
 			this._sizeLabel = new System.Windows.Forms.Label();
 			this._zoomInButton = new System.Windows.Forms.Button();
 			this._zoomOutButton = new System.Windows.Forms.Button();
-			this._zoomPercentage = new System.Windows.Forms.Label();
+			this._zoomLabel = new System.Windows.Forms.Label();
 			this._previewSwitchButton = new System.Windows.Forms.Button();
 			this._zoomPanel = new System.Windows.Forms.Panel();
 			((System.ComponentModel.ISupportInitialize)(this._imageBox)).BeginInit();
@@ -45,9 +45,9 @@ namespace BatchImageEditor
 			this._imageBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this._imageBox.BackColor = System.Drawing.Color.White;
-			this._imageBox.Location = new System.Drawing.Point(3, 38);
+			this._imageBox.Location = new System.Drawing.Point(3, 44);
 			this._imageBox.Name = "_imageBox";
-			this._imageBox.Size = new System.Drawing.Size(589, 305);
+			this._imageBox.Size = new System.Drawing.Size(479, 322);
 			this._imageBox.TabIndex = 0;
 			this._imageBox.TabStop = false;
 			// 
@@ -55,7 +55,7 @@ namespace BatchImageEditor
 			// 
 			this._sizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._sizeLabel.AutoSize = true;
-			this._sizeLabel.Location = new System.Drawing.Point(500, 7);
+			this._sizeLabel.Location = new System.Drawing.Point(390, 10);
 			this._sizeLabel.Name = "_sizeLabel";
 			this._sizeLabel.Size = new System.Drawing.Size(92, 20);
 			this._sizeLabel.TabIndex = 3;
@@ -64,50 +64,51 @@ namespace BatchImageEditor
 			// _zoomInButton
 			// 
 			this._zoomInButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this._zoomInButton.Location = new System.Drawing.Point(155, 0);
+			this._zoomInButton.Location = new System.Drawing.Point(170, 0);
 			this._zoomInButton.Name = "_zoomInButton";
-			this._zoomInButton.Size = new System.Drawing.Size(95, 30);
+			this._zoomInButton.Size = new System.Drawing.Size(100, 35);
 			this._zoomInButton.TabIndex = 5;
 			this._zoomInButton.Text = "Zoom in";
 			this._zoomInButton.UseVisualStyleBackColor = true;
+			this._zoomInButton.Click += new System.EventHandler(this.ZoomInButton_Click);
 			// 
 			// _zoomOutButton
 			// 
-			this._zoomOutButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._zoomOutButton.Location = new System.Drawing.Point(0, 0);
 			this._zoomOutButton.Name = "_zoomOutButton";
-			this._zoomOutButton.Size = new System.Drawing.Size(95, 30);
+			this._zoomOutButton.Size = new System.Drawing.Size(100, 35);
 			this._zoomOutButton.TabIndex = 6;
 			this._zoomOutButton.Text = "Zoom out";
 			this._zoomOutButton.UseVisualStyleBackColor = true;
+			this._zoomOutButton.Click += new System.EventHandler(this.ZoomOutButton_Click);
 			// 
-			// _zoomPercentage
+			// _zoomLabel
 			// 
-			this._zoomPercentage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this._zoomPercentage.AutoSize = true;
-			this._zoomPercentage.Location = new System.Drawing.Point(104, 5);
-			this._zoomPercentage.Name = "_zoomPercentage";
-			this._zoomPercentage.Size = new System.Drawing.Size(45, 20);
-			this._zoomPercentage.TabIndex = 7;
-			this._zoomPercentage.Text = "100%";
+			this._zoomLabel.AutoSize = true;
+			this._zoomLabel.Location = new System.Drawing.Point(110, 7);
+			this._zoomLabel.Name = "_zoomLabel";
+			this._zoomLabel.Size = new System.Drawing.Size(45, 20);
+			this._zoomLabel.TabIndex = 7;
+			this._zoomLabel.Text = "100%";
 			// 
 			// _previewSwitchButton
 			// 
 			this._previewSwitchButton.Location = new System.Drawing.Point(3, 3);
 			this._previewSwitchButton.Name = "_previewSwitchButton";
-			this._previewSwitchButton.Size = new System.Drawing.Size(143, 29);
+			this._previewSwitchButton.Size = new System.Drawing.Size(120, 35);
 			this._previewSwitchButton.TabIndex = 8;
-			this._previewSwitchButton.Text = "Show preview";
+			this._previewSwitchButton.Text = "Show original";
 			this._previewSwitchButton.UseVisualStyleBackColor = true;
+			this._previewSwitchButton.Click += new System.EventHandler(this.PreviewSwitchButton_Click);
 			// 
 			// _zoomPanel
 			// 
 			this._zoomPanel.Controls.Add(this._zoomOutButton);
 			this._zoomPanel.Controls.Add(this._zoomInButton);
-			this._zoomPanel.Controls.Add(this._zoomPercentage);
-			this._zoomPanel.Location = new System.Drawing.Point(175, 349);
+			this._zoomPanel.Controls.Add(this._zoomLabel);
+			this._zoomPanel.Location = new System.Drawing.Point(103, 372);
 			this._zoomPanel.Name = "_zoomPanel";
-			this._zoomPanel.Size = new System.Drawing.Size(250, 30);
+			this._zoomPanel.Size = new System.Drawing.Size(270, 35);
 			this._zoomPanel.TabIndex = 9;
 			// 
 			// ImagePreview
@@ -119,7 +120,7 @@ namespace BatchImageEditor
 			this.Controls.Add(this._sizeLabel);
 			this.Controls.Add(this._imageBox);
 			this.Name = "ImagePreview";
-			this.Size = new System.Drawing.Size(595, 382);
+			this.Size = new System.Drawing.Size(485, 410);
 			((System.ComponentModel.ISupportInitialize)(this._imageBox)).EndInit();
 			this._zoomPanel.ResumeLayout(false);
 			this._zoomPanel.PerformLayout();
@@ -134,7 +135,7 @@ namespace BatchImageEditor
 		private System.Windows.Forms.Label _sizeLabel;
 		private System.Windows.Forms.Button _zoomInButton;
 		private System.Windows.Forms.Button _zoomOutButton;
-		private System.Windows.Forms.Label _zoomPercentage;
+		private System.Windows.Forms.Label _zoomLabel;
 		private System.Windows.Forms.Button _previewSwitchButton;
 		private System.Windows.Forms.Panel _zoomPanel;
 	}

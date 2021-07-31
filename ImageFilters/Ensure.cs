@@ -2,7 +2,7 @@
 
 namespace ImageFilters
 {
-	internal static class Ensure
+	public static class Ensure
 	{
 		public static void NotNull(object instance, string name)
 		{
