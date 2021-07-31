@@ -29,27 +29,30 @@ namespace BatchImageEditor
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.imagePreview1 = new BatchImageEditor.ImagePreview();
 			this._previewGroup = new System.Windows.Forms.GroupBox();
+			this.imagePreview1 = new BatchImageEditor.ImagePreview();
 			this._previewGroup.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// imagePreview1
-			// 
-			this.imagePreview1.Location = new System.Drawing.Point(6, 26);
-			this.imagePreview1.Name = "imagePreview1";
-			this.imagePreview1.Size = new System.Drawing.Size(461, 394);
-			this.imagePreview1.TabIndex = 0;
 			// 
 			// _previewGroup
 			// 
 			this._previewGroup.Controls.Add(this.imagePreview1);
 			this._previewGroup.Location = new System.Drawing.Point(12, 12);
 			this._previewGroup.Name = "_previewGroup";
-			this._previewGroup.Size = new System.Drawing.Size(473, 426);
+			this._previewGroup.Size = new System.Drawing.Size(385, 426);
 			this._previewGroup.TabIndex = 1;
 			this._previewGroup.TabStop = false;
 			this._previewGroup.Text = "Preview";
+			// 
+			// imagePreview1
+			// 
+			this.imagePreview1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.imagePreview1.Location = new System.Drawing.Point(6, 26);
+			this.imagePreview1.Name = "imagePreview1";
+			this.imagePreview1.Size = new System.Drawing.Size(373, 394);
+			this.imagePreview1.TabIndex = 2;
 			// 
 			// FilterEditForm
 			// 
@@ -65,8 +68,7 @@ namespace BatchImageEditor
 		}
 
 		#endregion
-
-		private ImagePreview imagePreview1;
 		private System.Windows.Forms.GroupBox _previewGroup;
+		private ImagePreview imagePreview1;
 	}
 }
