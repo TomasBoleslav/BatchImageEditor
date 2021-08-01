@@ -69,6 +69,7 @@ namespace BatchImageEditor
 			this._addButton.TabIndex = 3;
 			this._addButton.Text = "Add";
 			this._addButton.UseVisualStyleBackColor = true;
+			this._addButton.Click += new System.EventHandler(this.AddButton_Click);
 			// 
 			// _resetButton
 			// 

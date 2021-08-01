@@ -56,6 +56,7 @@ namespace BatchImageEditor
             0,
             0,
             0});
+			this._radiusInput.ValueChanged += new System.EventHandler(this.RadiusInput_ValueChanged);
 			// 
 			// _radiusLabel
 			// 

@@ -7,6 +7,8 @@ namespace BatchImageEditor
 {
 	public partial class MedianFilterSettings : UserControl, IFilterSettings
 	{
+		public event EventHandler Changed;
+
 		public MedianFilterSettings()
 		{
 			InitializeComponent();
@@ -48,5 +50,10 @@ namespace BatchImageEditor
 		private const int DefaultRadius = 1;
 		private const int MinWidth = 190;
 		private const int MinHeight = 40;
+
+		private void RadiusInput_ValueChanged(object sender, EventArgs e)
+		{
+			Changed?.Invoke(this, EventArgs.Empty);
+		}
 	}
 }
