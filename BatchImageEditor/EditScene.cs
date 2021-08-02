@@ -16,5 +16,10 @@ namespace BatchImageEditor
 		{
 			InitializeComponent();
 		}
+
+		public void SetFilenames(IReadOnlySet<string> filenames)
+		{
+
+		}
 	}
 }

@@ -29,27 +29,27 @@ namespace BatchImageEditor
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.filterList1 = new BatchImageEditor.FilterList();
+			this._filterListControl = new BatchImageEditor.FilterList();
 			this._filtersGroup = new System.Windows.Forms.GroupBox();
 			this._previewGroup = new System.Windows.Forms.GroupBox();
-			this.imagePreview1 = new BatchImageEditor.ImagePreview();
-			this._selectedImageComboBox = new System.Windows.Forms.ComboBox();
+			this._fileSelectionControl = new BatchImageEditor.FileSelection();
+			this._previewControl = new BatchImageEditor.ImagePreview();
 			this._filtersGroup.SuspendLayout();
 			this._previewGroup.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// filterList1
+			// _filterListControl
 			// 
-			this.filterList1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.filterList1.InputBitmap = null;
-			this.filterList1.Location = new System.Drawing.Point(10, 30);
-			this.filterList1.Name = "filterList1";
-			this.filterList1.Size = new System.Drawing.Size(335, 500);
-			this.filterList1.TabIndex = 0;
+			this._filterListControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._filterListControl.InputBitmap = null;
+			this._filterListControl.Location = new System.Drawing.Point(10, 30);
+			this._filterListControl.Name = "_filterListControl";
+			this._filterListControl.Size = new System.Drawing.Size(335, 500);
+			this._filterListControl.TabIndex = 0;
 			// 
 			// _filtersGroup
 			// 
-			this._filtersGroup.Controls.Add(this.filterList1);
+			this._filtersGroup.Controls.Add(this._filterListControl);
 			this._filtersGroup.Location = new System.Drawing.Point(18, 18);
 			this._filtersGroup.Name = "_filtersGroup";
 			this._filtersGroup.Padding = new System.Windows.Forms.Padding(10);
@@ -63,8 +63,8 @@ namespace BatchImageEditor
 			this._previewGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this._previewGroup.Controls.Add(this.imagePreview1);
-			this._previewGroup.Controls.Add(this._selectedImageComboBox);
+			this._previewGroup.Controls.Add(this._previewControl);
+			this._previewGroup.Controls.Add(this._fileSelectionControl);
 			this._previewGroup.Location = new System.Drawing.Point(379, 18);
 			this._previewGroup.Name = "_previewGroup";
 			this._previewGroup.Padding = new System.Windows.Forms.Padding(10);
@@ -73,23 +73,21 @@ namespace BatchImageEditor
 			this._previewGroup.TabStop = false;
 			this._previewGroup.Text = "Preview";
 			// 
-			// imagePreview1
+			// _fileSelectionControl
 			// 
-			this.imagePreview1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.imagePreview1.Location = new System.Drawing.Point(10, 58);
-			this.imagePreview1.Name = "imagePreview1";
-			this.imagePreview1.Size = new System.Drawing.Size(594, 472);
-			this.imagePreview1.TabIndex = 1;
+			this._fileSelectionControl.Dock = System.Windows.Forms.DockStyle.Top;
+			this._fileSelectionControl.Location = new System.Drawing.Point(10, 30);
+			this._fileSelectionControl.Name = "_fileSelectionControl";
+			this._fileSelectionControl.Size = new System.Drawing.Size(594, 34);
+			this._fileSelectionControl.TabIndex = 0;
 			// 
-			// _selectedImageComboBox
+			// _previewControl
 			// 
-			this._selectedImageComboBox.Dock = System.Windows.Forms.DockStyle.Top;
-			this._selectedImageComboBox.FormattingEnabled = true;
-			this._selectedImageComboBox.Location = new System.Drawing.Point(10, 30);
-			this._selectedImageComboBox.Name = "_selectedImageComboBox";
-			this._selectedImageComboBox.Size = new System.Drawing.Size(594, 28);
-			this._selectedImageComboBox.TabIndex = 0;
-			this._selectedImageComboBox.Text = "Select image for preview";
+			this._previewControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._previewControl.Location = new System.Drawing.Point(10, 64);
+			this._previewControl.Name = "_previewControl";
+			this._previewControl.Size = new System.Drawing.Size(594, 466);
+			this._previewControl.TabIndex = 1;
 			// 
 			// EditScene
 			// 
@@ -108,10 +106,10 @@ namespace BatchImageEditor
 
 		#endregion
 
-		private FilterList filterList1;
+		private FilterList _filterListControl;
 		private System.Windows.Forms.GroupBox _filtersGroup;
 		private System.Windows.Forms.GroupBox _previewGroup;
-		private ImagePreview imagePreview1;
-		private System.Windows.Forms.ComboBox _selectedImageComboBox;
+		private ImagePreview _previewControl;
+		private FileSelection _fileSelectionControl;
 	}
 }
