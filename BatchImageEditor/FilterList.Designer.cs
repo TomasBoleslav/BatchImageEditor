@@ -85,6 +85,7 @@ namespace BatchImageEditor
 			this._filterList.Name = "_filterList";
 			this._filterList.Size = new System.Drawing.Size(248, 488);
 			this._filterList.TabIndex = 5;
+			this._filterList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.FilterList_ItemCheck);
 			// 
 			// contextMenuStrip1
 			// 

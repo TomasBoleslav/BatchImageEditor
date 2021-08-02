@@ -45,19 +45,18 @@ namespace BatchImageEditor
 			this._previewGroup.Controls.Add(this._previewControl);
 			this._previewGroup.Location = new System.Drawing.Point(12, 12);
 			this._previewGroup.Name = "_previewGroup";
+			this._previewGroup.Padding = new System.Windows.Forms.Padding(10);
 			this._previewGroup.Size = new System.Drawing.Size(510, 446);
 			this._previewGroup.TabIndex = 1;
 			this._previewGroup.TabStop = false;
 			this._previewGroup.Text = "Preview";
 			// 
-			// _imagePreview
+			// _previewControl
 			// 
-			this._previewControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this._previewControl.Location = new System.Drawing.Point(6, 26);
-			this._previewControl.Name = "_imagePreview";
-			this._previewControl.Size = new System.Drawing.Size(498, 414);
+			this._previewControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._previewControl.Location = new System.Drawing.Point(10, 30);
+			this._previewControl.Name = "_previewControl";
+			this._previewControl.Size = new System.Drawing.Size(490, 406);
 			this._previewControl.TabIndex = 2;
 			// 
 			// _okButton
@@ -87,6 +86,7 @@ namespace BatchImageEditor
             | System.Windows.Forms.AnchorStyles.Right)));
 			this._settingsPanel.Location = new System.Drawing.Point(528, 12);
 			this._settingsPanel.Name = "_settingsPanel";
+			this._settingsPanel.Padding = new System.Windows.Forms.Padding(10);
 			this._settingsPanel.Size = new System.Drawing.Size(258, 405);
 			this._settingsPanel.TabIndex = 5;
 			// 

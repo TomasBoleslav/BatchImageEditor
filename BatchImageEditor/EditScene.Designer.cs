@@ -32,8 +32,8 @@ namespace BatchImageEditor
 			this._filterListControl = new BatchImageEditor.FilterList();
 			this._filtersGroup = new System.Windows.Forms.GroupBox();
 			this._previewGroup = new System.Windows.Forms.GroupBox();
-			this._fileSelectionControl = new BatchImageEditor.FileSelection();
 			this._previewControl = new BatchImageEditor.ImagePreview();
+			this._fileSelectionControl = new BatchImageEditor.FileSelection();
 			this._filtersGroup.SuspendLayout();
 			this._previewGroup.SuspendLayout();
 			this.SuspendLayout();
@@ -46,6 +46,7 @@ namespace BatchImageEditor
 			this._filterListControl.Name = "_filterListControl";
 			this._filterListControl.Size = new System.Drawing.Size(335, 500);
 			this._filterListControl.TabIndex = 0;
+			this._filterListControl.ListChanged += new System.EventHandler(this.FilterListControl_ListChanged);
 			// 
 			// _filtersGroup
 			// 
@@ -73,14 +74,6 @@ namespace BatchImageEditor
 			this._previewGroup.TabStop = false;
 			this._previewGroup.Text = "Preview";
 			// 
-			// _fileSelectionControl
-			// 
-			this._fileSelectionControl.Dock = System.Windows.Forms.DockStyle.Top;
-			this._fileSelectionControl.Location = new System.Drawing.Point(10, 30);
-			this._fileSelectionControl.Name = "_fileSelectionControl";
-			this._fileSelectionControl.Size = new System.Drawing.Size(594, 34);
-			this._fileSelectionControl.TabIndex = 0;
-			// 
 			// _previewControl
 			// 
 			this._previewControl.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -88,6 +81,15 @@ namespace BatchImageEditor
 			this._previewControl.Name = "_previewControl";
 			this._previewControl.Size = new System.Drawing.Size(594, 466);
 			this._previewControl.TabIndex = 1;
+			// 
+			// _fileSelectionControl
+			// 
+			this._fileSelectionControl.Dock = System.Windows.Forms.DockStyle.Top;
+			this._fileSelectionControl.Location = new System.Drawing.Point(10, 30);
+			this._fileSelectionControl.Name = "_fileSelectionControl";
+			this._fileSelectionControl.Size = new System.Drawing.Size(594, 34);
+			this._fileSelectionControl.TabIndex = 0;
+			this._fileSelectionControl.SelectionChanged += new System.EventHandler(this.FileSelectionControl_SelectionChanged);
 			// 
 			// EditScene
 			// 

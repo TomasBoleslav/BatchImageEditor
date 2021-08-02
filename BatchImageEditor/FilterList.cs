@@ -23,7 +23,8 @@ namespace BatchImageEditor
 
 		public IEnumerable<IImageFilter> CreateFilters()
 		{
-			foreach (var settings in _filterList.Items.Cast<FilterSettingsBase>())
+			var checkedSettings = _filterList.CheckedItems.Cast<FilterSettingsBase>();
+			foreach (var settings in checkedSettings)
 			{
 				foreach (IImageFilter filter in settings.CreateFiltersFromSavedSettings())
 				{
@@ -110,6 +111,13 @@ namespace BatchImageEditor
 			{
 				OnListChanged();
 			}
+		}
+
+		private void FilterList_ItemCheck(object sender, ItemCheckEventArgs e)
+		{
+			this.BeginInvoke((MethodInvoker)(
+				() => OnListChanged()
+				));
 		}
 	}
 }
