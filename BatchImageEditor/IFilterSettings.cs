@@ -7,14 +7,16 @@ namespace BatchImageEditor
 {
 	internal interface IFilterSettings
 	{
-		event EventHandler Changed;
+		event EventHandler Changed; // Settings changed -> call CreateFilters and create and show new preview
 
-		void Reset();
+		void Show();
+
+		void Hide();
+
+		void ResetViewed();
+
+		void Save();
 
 		IEnumerable<IImageFilter> CreateFilters();
-		
-		int GetMinimumWidth();
-
-		int GetMinimumHeight();
 	}
 }

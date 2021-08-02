@@ -28,7 +28,7 @@ namespace BatchImageEditor
 		private IFilterSettings _filterSettings;
 		private DirectBitmap _inputImage;
 
-		private void AddButton_Click(object sender, EventArgs e)
+		private void OkButton_Click(object sender, EventArgs e)
 		{
 			Confirmed?.Invoke(this, EventArgs.Empty);
 		}

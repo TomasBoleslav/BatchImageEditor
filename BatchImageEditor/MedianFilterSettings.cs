@@ -5,21 +5,13 @@ using System.Windows.Forms;
 
 namespace BatchImageEditor
 {
-	public partial class MedianFilterSettings : UserControl, IFilterSettings
+	public partial class MedianFilterSettings : FilterSettings<MedianSettingsModel>
 	{
-		public event EventHandler Changed;
-
 		public MedianFilterSettings()
 		{
 			InitializeComponent();
-			_radiusInput.Minimum = MinRadius;
-			_radiusInput.Maximum = MaxRadius;
-			_radiusInput.Value = DefaultRadius;
-		}
-
-		public void Reset()
-		{
-			_radiusInput.Value = DefaultRadius;
+			_radiusInput.Minimum = MedianSettingsModel.MinRadius;
+			_radiusInput.Maximum = MedianSettingsModel.MaxRadius;
 		}
 
 		public IEnumerable<IImageFilter> CreateFilters()
@@ -30,30 +22,16 @@ namespace BatchImageEditor
 			yield return filter;
 		}
 
-		public int GetMinimumHeight()
-		{
-			return MinHeight;
-		}
-
-		public int GetMinimumWidth()
-		{
-			return MinWidth;
-		}
-
-		public override string ToString()
-		{
-			return "Median";
-		}
-
-		private const int MinRadius = 1;
-		private const int MaxRadius = 20;
-		private const int DefaultRadius = 1;
-		private const int MinWidth = 190;
-		private const int MinHeight = 40;
-
 		private void RadiusInput_ValueChanged(object sender, EventArgs e)
 		{
-			Changed?.Invoke(this, EventArgs.Empty);
+			DisplayedModel.Radius = (int)_radiusInput.Value;
+			OnDisplaySettingsChanged();
+		}
+
+		protected override void UpdateDisplay()
+		{
+			_radiusInput.Value = DisplayedModel.Radius;
+			OnDisplaySettingsChanged();
 		}
 	}
 }

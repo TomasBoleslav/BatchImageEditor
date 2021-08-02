@@ -31,7 +31,7 @@ namespace BatchImageEditor
 		{
 			this._previewGroup = new System.Windows.Forms.GroupBox();
 			this._imagePreview = new BatchImageEditor.ImagePreview();
-			this._addButton = new System.Windows.Forms.Button();
+			this._okButton = new System.Windows.Forms.Button();
 			this._resetButton = new System.Windows.Forms.Button();
 			this._settingsPanel = new System.Windows.Forms.Panel();
 			this._previewGroup.SuspendLayout();
@@ -60,16 +60,16 @@ namespace BatchImageEditor
 			this._imagePreview.Size = new System.Drawing.Size(498, 414);
 			this._imagePreview.TabIndex = 2;
 			// 
-			// _addButton
+			// _okButton
 			// 
-			this._addButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this._addButton.Location = new System.Drawing.Point(600, 423);
-			this._addButton.Name = "_addButton";
-			this._addButton.Size = new System.Drawing.Size(90, 35);
-			this._addButton.TabIndex = 3;
-			this._addButton.Text = "Add";
-			this._addButton.UseVisualStyleBackColor = true;
-			this._addButton.Click += new System.EventHandler(this.AddButton_Click);
+			this._okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this._okButton.Location = new System.Drawing.Point(600, 423);
+			this._okButton.Name = "_okButton";
+			this._okButton.Size = new System.Drawing.Size(90, 35);
+			this._okButton.TabIndex = 3;
+			this._okButton.Text = "Ok";
+			this._okButton.UseVisualStyleBackColor = true;
+			this._okButton.Click += new System.EventHandler(this.OkButton_Click);
 			// 
 			// _resetButton
 			// 
@@ -97,7 +97,7 @@ namespace BatchImageEditor
 			this.ClientSize = new System.Drawing.Size(798, 470);
 			this.Controls.Add(this._settingsPanel);
 			this.Controls.Add(this._resetButton);
-			this.Controls.Add(this._addButton);
+			this.Controls.Add(this._okButton);
 			this.Controls.Add(this._previewGroup);
 			this.Name = "FilterEditForm";
 			this.Text = "FilterEditForm";
@@ -109,7 +109,7 @@ namespace BatchImageEditor
 		#endregion
 		private System.Windows.Forms.GroupBox _previewGroup;
 		private ImagePreview _imagePreview;
-		private System.Windows.Forms.Button _addButton;
+		private System.Windows.Forms.Button _okButton;
 		private System.Windows.Forms.Button _resetButton;
 		private System.Windows.Forms.Panel _settingsPanel;
 	}

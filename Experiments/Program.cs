@@ -1,15 +1,38 @@
 ﻿using System;
 using ImageFilters;
 using System.Drawing;
+using System.IO;
 
 namespace Experiments
 {
+	interface I
+	{
+
+	}
+
+	class A : I
+	{
+
+	}
+
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			Rectangle r = new Rectangle(10, 10, 100, 100);
-			throw new ArgumentException("message", nameof(r.Width));
+			//I i = new A();
+			I i = null;
+			A a = i as A;
+			if (a == null)
+			{
+				Console.WriteLine("Is not instance");
+			}
+			else
+			{
+				Console.WriteLine("Is instance");
+			}
+
+			//Rectangle r = new Rectangle(10, 10, 100, 100);
+			//throw new ArgumentException("message", nameof(r.Width));
 			/*/
 			var directBitmap = DirectBitmap.FromFile(@"C:\Users\boles\Plocha\web-inspirace.jpg");
 			var filter = new RotatingFilter(45, Color.Green);

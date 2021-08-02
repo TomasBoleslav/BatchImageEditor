@@ -18,7 +18,7 @@ namespace BatchImageEditor
 		// That factory will contain a static instance of UserControl and pass it to IFilterSettings in constructor -> IFilterSettings will be "presenter", not UserControl
 		private void AddButton_Click(object sender, EventArgs e)
 		{
-			ContextMenuStrip = 
+			ContextMenuStrip = ;
 		}
 
 		private ContextMenuStrip CreateFilterMenu()
