@@ -12,7 +12,6 @@ namespace BatchImageEditor
 			InitializeComponent();
 			SetSizeLabel(0, 0);
 			ResetZoomLevel();
-			CenterControlHorizontally(_zoomPanel);
 		}
 		
 		public void SetNewImage(Bitmap original, Bitmap preview)
@@ -143,11 +142,6 @@ namespace BatchImageEditor
 			_currentZoomIndex = newIndex;
 			UpdateZoomLabel(ZoomLevels[newIndex]);
 			UpdateDisplayedImage(zoomChanged: true);
-		}
-
-		private void ImagePreview_Resize(object sender, EventArgs e)
-		{
-			CenterControlHorizontally(_zoomPanel);
 		}
 	}
 }

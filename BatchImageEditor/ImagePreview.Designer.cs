@@ -54,9 +54,9 @@ namespace BatchImageEditor
 			// 
 			// _sizeLabel
 			// 
-			this._sizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this._sizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this._sizeLabel.AutoSize = true;
-			this._sizeLabel.Location = new System.Drawing.Point(390, 10);
+			this._sizeLabel.Location = new System.Drawing.Point(3, 379);
 			this._sizeLabel.Name = "_sizeLabel";
 			this._sizeLabel.Size = new System.Drawing.Size(92, 20);
 			this._sizeLabel.TabIndex = 3;
@@ -104,11 +104,11 @@ namespace BatchImageEditor
 			// 
 			// _zoomPanel
 			// 
-			this._zoomPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this._zoomPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this._zoomPanel.Controls.Add(this._zoomOutButton);
 			this._zoomPanel.Controls.Add(this._zoomInButton);
 			this._zoomPanel.Controls.Add(this._zoomLabel);
-			this._zoomPanel.Location = new System.Drawing.Point(103, 372);
+			this._zoomPanel.Location = new System.Drawing.Point(212, 372);
 			this._zoomPanel.Name = "_zoomPanel";
 			this._zoomPanel.Size = new System.Drawing.Size(270, 35);
 			this._zoomPanel.TabIndex = 9;
@@ -123,7 +123,6 @@ namespace BatchImageEditor
 			this.Controls.Add(this._imageBox);
 			this.Name = "ImagePreview";
 			this.Size = new System.Drawing.Size(485, 410);
-			this.Resize += new System.EventHandler(this.ImagePreview_Resize);
 			((System.ComponentModel.ISupportInitialize)(this._imageBox)).EndInit();
 			this._zoomPanel.ResumeLayout(false);
 			this._zoomPanel.PerformLayout();
