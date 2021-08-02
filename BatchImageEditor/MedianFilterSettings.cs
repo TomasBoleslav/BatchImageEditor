@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using ImageFilters;
-using System.Windows.Forms;
 
 namespace BatchImageEditor
 {

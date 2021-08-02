@@ -5,7 +5,6 @@ using ImageFilters;
 
 namespace BatchImageEditor
 {
-	// TODO: problem, I need polymorphism -> nongeneric base class, but this is generic
 	public abstract class FilterSettings<TModel> : FilterSettingsBase
 		where TModel: class, IFilterSettingsModel<TModel>, new()
 	{

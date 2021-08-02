@@ -36,9 +36,9 @@ namespace BatchImageEditor
 			this._filterList = new System.Windows.Forms.CheckedListBox();
 			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.necoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.dalsiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mojeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.hahaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.dalsiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.contextMenuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -51,6 +51,7 @@ namespace BatchImageEditor
 			this._editButton.TabIndex = 4;
 			this._editButton.Text = "Edit";
 			this._editButton.UseVisualStyleBackColor = true;
+			this._editButton.Click += new System.EventHandler(this.EditButton_Click);
 			// 
 			// _removeButton
 			// 
@@ -61,6 +62,7 @@ namespace BatchImageEditor
 			this._removeButton.TabIndex = 3;
 			this._removeButton.Text = "Remove";
 			this._removeButton.UseVisualStyleBackColor = true;
+			this._removeButton.Click += new System.EventHandler(this.RemoveButton_Click);
 			// 
 			// _addButton
 			// 
@@ -91,7 +93,7 @@ namespace BatchImageEditor
             this.necoToolStripMenuItem,
             this.dalsiToolStripMenuItem});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(211, 80);
+			this.contextMenuStrip1.Size = new System.Drawing.Size(111, 52);
 			// 
 			// necoToolStripMenuItem
 			// 
@@ -99,26 +101,26 @@ namespace BatchImageEditor
             this.mojeToolStripMenuItem,
             this.hahaToolStripMenuItem});
 			this.necoToolStripMenuItem.Name = "necoToolStripMenuItem";
-			this.necoToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+			this.necoToolStripMenuItem.Size = new System.Drawing.Size(110, 24);
 			this.necoToolStripMenuItem.Text = "neco";
-			// 
-			// dalsiToolStripMenuItem
-			// 
-			this.dalsiToolStripMenuItem.Name = "dalsiToolStripMenuItem";
-			this.dalsiToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
-			this.dalsiToolStripMenuItem.Text = "dalsi";
 			// 
 			// mojeToolStripMenuItem
 			// 
 			this.mojeToolStripMenuItem.Name = "mojeToolStripMenuItem";
-			this.mojeToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+			this.mojeToolStripMenuItem.Size = new System.Drawing.Size(126, 26);
 			this.mojeToolStripMenuItem.Text = "moje";
 			// 
 			// hahaToolStripMenuItem
 			// 
 			this.hahaToolStripMenuItem.Name = "hahaToolStripMenuItem";
-			this.hahaToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+			this.hahaToolStripMenuItem.Size = new System.Drawing.Size(126, 26);
 			this.hahaToolStripMenuItem.Text = "haha";
+			// 
+			// dalsiToolStripMenuItem
+			// 
+			this.dalsiToolStripMenuItem.Name = "dalsiToolStripMenuItem";
+			this.dalsiToolStripMenuItem.Size = new System.Drawing.Size(110, 24);
+			this.dalsiToolStripMenuItem.Text = "dalsi";
 			// 
 			// FilterList
 			// 

@@ -30,7 +30,7 @@ namespace BatchImageEditor
 		private void InitializeComponent()
 		{
 			this._previewGroup = new System.Windows.Forms.GroupBox();
-			this._imagePreview = new BatchImageEditor.ImagePreview();
+			this._previewControl = new BatchImageEditor.ImagePreview();
 			this._okButton = new System.Windows.Forms.Button();
 			this._resetButton = new System.Windows.Forms.Button();
 			this._settingsPanel = new System.Windows.Forms.Panel();
@@ -42,7 +42,7 @@ namespace BatchImageEditor
 			this._previewGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this._previewGroup.Controls.Add(this._imagePreview);
+			this._previewGroup.Controls.Add(this._previewControl);
 			this._previewGroup.Location = new System.Drawing.Point(12, 12);
 			this._previewGroup.Name = "_previewGroup";
 			this._previewGroup.Size = new System.Drawing.Size(510, 446);
@@ -52,13 +52,13 @@ namespace BatchImageEditor
 			// 
 			// _imagePreview
 			// 
-			this._imagePreview.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this._previewControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this._imagePreview.Location = new System.Drawing.Point(6, 26);
-			this._imagePreview.Name = "_imagePreview";
-			this._imagePreview.Size = new System.Drawing.Size(498, 414);
-			this._imagePreview.TabIndex = 2;
+			this._previewControl.Location = new System.Drawing.Point(6, 26);
+			this._previewControl.Name = "_imagePreview";
+			this._previewControl.Size = new System.Drawing.Size(498, 414);
+			this._previewControl.TabIndex = 2;
 			// 
 			// _okButton
 			// 
@@ -108,7 +108,7 @@ namespace BatchImageEditor
 
 		#endregion
 		private System.Windows.Forms.GroupBox _previewGroup;
-		private ImagePreview _imagePreview;
+		private ImagePreview _previewControl;
 		private System.Windows.Forms.Button _okButton;
 		private System.Windows.Forms.Button _resetButton;
 		private System.Windows.Forms.Panel _settingsPanel;
