@@ -5,13 +5,14 @@ using System.Diagnostics;
 
 namespace BatchImageEditor
 {
-	public partial class ImagePreview : UserControl
+	public partial class SwitchablePreviewImageControl : UserControl
 	{
-		public ImagePreview()
+		public SwitchablePreviewImageControl()
 		{
 			InitializeComponent();
 			SetSizeLabel(0, 0);
 			ResetZoomLevel();
+			UpdatePreviewSwitchButton();
 		}
 		
 		public void SetNewImage(Bitmap original, Bitmap preview)
@@ -23,7 +24,7 @@ namespace BatchImageEditor
 			_previewImageZoomed?.Dispose();
 			_previewImageZoomed = null;
 			ResetZoomLevel();
-			UpdateDisplayedImage(zoomChanged: false);
+			UpdateDisplayedImage(zoomChanged: false);//TODO:true
 		}
 
 		public void UpdatePreview(Bitmap preview)
@@ -39,7 +40,7 @@ namespace BatchImageEditor
 
 		public Bitmap OriginalImage { get; private set; }
 
-		private static readonly int[] ZoomLevels = new int[] { 10, 25, 50, 75, 100, 125, 150, 175, 200, 300, 400, 500 };
+		private static readonly int[] ZoomLevels = new int[] { 10, 25, 50, 75, 100, 125, 150, 175, 200};
 		private int _currentZoomIndex;
 		private bool _previewShown = false;
 		private Bitmap _previewImageZoomed;
@@ -47,17 +48,21 @@ namespace BatchImageEditor
 
 		private void PreviewSwitchButton_Click(object sender, EventArgs e)
 		{
+			_previewShown = !_previewShown;
+			UpdatePreviewSwitchButton();
+			UpdateDisplayedImage(zoomChanged: false);
+		}
+
+		private void UpdatePreviewSwitchButton()
+		{
 			if (_previewShown)
 			{
-				_previewSwitchButton.Text = "Show preview";
-				_previewShown = false;
+				_previewSwitchButton.Text = "Show original";
 			}
 			else
 			{
-				_previewSwitchButton.Text = "Show original";
-				_previewShown = true;
+				_previewSwitchButton.Text = "Show preview";
 			}
-			UpdateDisplayedImage(zoomChanged: false);
 		}
 
 		private void ResetZoomLevel()

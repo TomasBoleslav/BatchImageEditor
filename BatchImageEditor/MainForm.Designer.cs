@@ -29,36 +29,49 @@ namespace BatchImageEditor
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.sceneTabs = new BatchImageEditor.SceneTabs();
-			this.loadScene = new BatchImageEditor.LoadScene();
+			this._sceneTabs = new BatchImageEditor.SceneTabs();
+			this._loadScene = new BatchImageEditor.LoadScene();
+			this._editScene = new BatchImageEditor.EditScene();
 			this.SuspendLayout();
 			// 
-			// sceneTabs
+			// _sceneTabs
 			// 
-			this.sceneTabs.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.sceneTabs.Dock = System.Windows.Forms.DockStyle.Top;
-			this.sceneTabs.Location = new System.Drawing.Point(0, 0);
-			this.sceneTabs.Name = "sceneTabs";
-			this.sceneTabs.Size = new System.Drawing.Size(904, 50);
-			this.sceneTabs.TabIndex = 0;
-			this.sceneTabs.LoadTabSelected += new System.EventHandler(this.SceneTabs_LoadTabSelected);
+			this._sceneTabs.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this._sceneTabs.Dock = System.Windows.Forms.DockStyle.Top;
+			this._sceneTabs.Location = new System.Drawing.Point(0, 0);
+			this._sceneTabs.Name = "_sceneTabs";
+			this._sceneTabs.Size = new System.Drawing.Size(904, 50);
+			this._sceneTabs.TabIndex = 0;
+			this._sceneTabs.LoadTabSelected += new System.EventHandler(this.SceneTabs_LoadTabSelected);
+			this._sceneTabs.EditTabSelected += new System.EventHandler(this.SceneTabs_EditTabSelected);
 			// 
-			// loadScene
+			// _loadScene
 			// 
-			this.loadScene.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.loadScene.Location = new System.Drawing.Point(0, 50);
-			this.loadScene.Name = "loadScene";
-			this.loadScene.Padding = new System.Windows.Forms.Padding(20);
-			this.loadScene.Size = new System.Drawing.Size(904, 546);
-			this.loadScene.TabIndex = 1;
+			this._loadScene.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._loadScene.Location = new System.Drawing.Point(0, 50);
+			this._loadScene.Name = "_loadScene";
+			this._loadScene.Padding = new System.Windows.Forms.Padding(20);
+			this._loadScene.Size = new System.Drawing.Size(904, 546);
+			this._loadScene.TabIndex = 1;
+			this._loadScene.FileSetChanged += new System.EventHandler(this.LoadScene_FileSetChanged);
+			// 
+			// _editScene
+			// 
+			this._editScene.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._editScene.Location = new System.Drawing.Point(0, 50);
+			this._editScene.Name = "_editScene";
+			this._editScene.Padding = new System.Windows.Forms.Padding(15);
+			this._editScene.Size = new System.Drawing.Size(904, 546);
+			this._editScene.TabIndex = 2;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(904, 596);
-			this.Controls.Add(this.loadScene);
-			this.Controls.Add(this.sceneTabs);
+			this.Controls.Add(this._loadScene);
+			this.Controls.Add(this._editScene);
+			this.Controls.Add(this._sceneTabs);
 			this.Name = "MainForm";
 			this.Text = "MainForm";
 			this.ResumeLayout(false);
@@ -67,7 +80,8 @@ namespace BatchImageEditor
 
 		#endregion
 
-		private SceneTabs sceneTabs;
-		private LoadScene loadScene;
+		private SceneTabs _sceneTabs;
+		private LoadScene _loadScene;
+		private EditScene _editScene;
 	}
 }

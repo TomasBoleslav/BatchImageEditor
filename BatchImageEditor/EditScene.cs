@@ -67,13 +67,16 @@ namespace BatchImageEditor
 				return;
 			}
 			IEnumerable<IImageFilter> filters = _filterListControl.CreateFilters();
+			filters = filters.Concat(new List<IImageFilter> { new ColorAdjustingFilter(new RgbColorAdjuster(255, 0, 0)) });// TODO: remove
 			_previewImage = _originalImage.Copy();
-			foreach (var filter in filters)
-			{
-				filter.Apply(ref _previewImage);
-			}
-			_previewControl.SetNewImage(_originalImage.Bitmap, _previewImage.Bitmap);
-			_filterListControl.InputBitmap = _previewImage;
+			/*ParallelHelper.FilterImageAsync(_previewImage, filters,
+				() => BeginInvoke((MethodInvoker)(() =>
+				{
+					_previewControl.SetNewImage(_originalImage.Bitmap, _previewImage.Bitmap);
+					_filterListControl.InputBitmap = _previewImage;
+				})));*/
+			//_previewControl.SetNewImage(_originalImage.Bitmap, _previewImage.Bitmap);
+			//_filterListControl.InputBitmap = _previewImage;
 		}
 	}
 }

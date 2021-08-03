@@ -53,6 +53,7 @@ namespace BatchImageEditor
 		{
 			var rootItem = new ToolStripMenuItem("Noise reduction");
 			var medianItem = new ToolStripMenuItem("Median");
+			rootItem.DropDownItems.Add(medianItem);
 			medianItem.Click += FilterMenuItem_Click;
 			var medianFilterFactory = new FilterSettingsFactory<MedianFilterSettings>();
 			_menuItemsToSettingsFactories.Add(medianItem, medianFilterFactory);

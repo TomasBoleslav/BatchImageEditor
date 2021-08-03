@@ -30,7 +30,7 @@ namespace BatchImageEditor
 		private void InitializeComponent()
 		{
 			this._previewGroup = new System.Windows.Forms.GroupBox();
-			this._previewControl = new BatchImageEditor.ImagePreview();
+			this._previewControl = new BatchImageEditor.SwitchablePreviewImageControl();
 			this._okButton = new System.Windows.Forms.Button();
 			this._resetButton = new System.Windows.Forms.Button();
 			this._settingsPanel = new System.Windows.Forms.Panel();
@@ -108,7 +108,7 @@ namespace BatchImageEditor
 
 		#endregion
 		private System.Windows.Forms.GroupBox _previewGroup;
-		private ImagePreview _previewControl;
+		private SwitchablePreviewImageControl _previewControl;
 		private System.Windows.Forms.Button _okButton;
 		private System.Windows.Forms.Button _resetButton;
 		private System.Windows.Forms.Panel _settingsPanel;

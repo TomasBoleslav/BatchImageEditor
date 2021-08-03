@@ -16,15 +16,22 @@ namespace BatchImageEditor
 			InitializeComponent();
 		}
 
-		public string[] GetAllFilenames()
+		public IReadOnlySet<string> GetFilenames()
 		{
-			return filenames.ToArray();
+			return _filenames;
+		}
+
+		public event EventHandler FileSetChanged;
+
+		protected virtual void OnFileSetChanged()
+		{
+			FileSetChanged?.Invoke(this, EventArgs.Empty);
 		}
 
 		private const string NotAvailable = "N/A";
 		private static readonly string[] SupportedExtensions = { ".jpg", ".jpeg", ".bmp", ".gif", ".png" };
 		
-		private readonly HashSet<string> filenames = new();
+		private readonly HashSet<string> _filenames = new();
 
 		private void LoadImageButton_Click(object sender, EventArgs e)
 		{
@@ -39,6 +46,7 @@ namespace BatchImageEditor
 				{
 					AddOrUpdateFile(filename);
 				}
+				OnFileSetChanged();
 			}
 		}
 
@@ -76,6 +84,7 @@ namespace BatchImageEditor
 			if (folderDialog.ShowDialog() == DialogResult.OK)
 			{
 				LoadFolder(folderDialog.SelectedPath);
+				OnFileSetChanged();
 			}
 		}
 
@@ -101,10 +110,10 @@ namespace BatchImageEditor
 		private void AddOrUpdateFile(string filename)
 		{
 			ListViewItem item = CreateImageListItem(filename);
-			if (!filenames.Contains(filename))
+			if (!_filenames.Contains(filename))
 			{
 				imageListView.Items.Add(item);
-				filenames.Add(filename);
+				_filenames.Add(filename);
 			}
 			else
 			{
@@ -116,7 +125,7 @@ namespace BatchImageEditor
 		private void RemoveFileItem(ListViewItem item)
 		{
 			string filename = GetFilenameFromItem(item);
-			filenames.Remove(filename);
+			_filenames.Remove(filename);
 			imageListView.Items.Remove(item);
 		}
 
@@ -132,6 +141,10 @@ namespace BatchImageEditor
 			foreach (var item in selectedItems)
 			{
 				RemoveFileItem(item);
+			}
+			if (selectedItems.Count > 0)
+			{
+				OnFileSetChanged();
 			}
 		}
 

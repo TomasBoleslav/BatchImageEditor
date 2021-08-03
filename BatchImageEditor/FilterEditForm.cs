@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 using ImageFilters;
 
 namespace BatchImageEditor
@@ -10,6 +11,7 @@ namespace BatchImageEditor
 		public FilterEditForm()
 		{
 			InitializeComponent();
+			_asyncImageFilter = new AsyncImageFilter();
 		}
 
 		public DialogResult OpenModally(DirectBitmap inputImage, FilterSettingsBase filterSettings)
@@ -39,6 +41,8 @@ namespace BatchImageEditor
 		private FilterSettingsBase _filterSettings;
 		private DirectBitmap _inputImage;
 		private DirectBitmap _previewImage;
+		private AsyncImageFilter _asyncImageFilter;
+		private Task<DirectBitmap> _currentFilterTask;
 
 		private void OkButton_Click(object sender, EventArgs e)
 		{
@@ -49,13 +53,25 @@ namespace BatchImageEditor
 		private void UpdatePreview()
 		{
 			IEnumerable<IImageFilter> filters = _filterSettings.CreateFiltersFromDisplayedSettings();
-			_previewImage?.Dispose();
-			_previewImage = _inputImage.Copy();
-			foreach (var filter in filters)
+			_currentFilterTask = _asyncImageFilter.ApplyAsync(_inputImage, filters);
+			_currentFilterTask.ContinueWith(task => Invoke((MethodInvoker)(() =>
+				{
+					if (task == _currentFilterTask)
+					{
+						_previewImage?.Dispose();
+						_previewImage = task.Result;
+						_previewControl.UpdatePreview(_previewImage.Bitmap);
+					}
+					else
+					{
+						task.Result.Dispose();
+					}
+				})));
+			/*foreach (var filter in filters)
 			{
 				filter.Apply(ref _previewImage);
-			}
-			_previewControl.UpdatePreview(_previewImage.Bitmap);
+			}*/
+			//_previewControl.UpdatePreview(_previewImage.Bitmap);
 		}
 
 		private void FilterSettings_DisplayedSettingsChanged(object sender, EventArgs e)

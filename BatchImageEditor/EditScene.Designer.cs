@@ -32,7 +32,7 @@ namespace BatchImageEditor
 			this._filterListControl = new BatchImageEditor.FilterList();
 			this._filtersGroup = new System.Windows.Forms.GroupBox();
 			this._previewGroup = new System.Windows.Forms.GroupBox();
-			this._previewControl = new BatchImageEditor.ImagePreview();
+			this._previewControl = new BatchImageEditor.SwitchablePreviewImageControl();
 			this._fileSelectionControl = new BatchImageEditor.FileSelection();
 			this._filtersGroup.SuspendLayout();
 			this._previewGroup.SuspendLayout();
@@ -50,6 +50,8 @@ namespace BatchImageEditor
 			// 
 			// _filtersGroup
 			// 
+			this._filtersGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this._filtersGroup.Controls.Add(this._filterListControl);
 			this._filtersGroup.Location = new System.Drawing.Point(18, 18);
 			this._filtersGroup.Name = "_filtersGroup";
@@ -111,7 +113,7 @@ namespace BatchImageEditor
 		private FilterList _filterListControl;
 		private System.Windows.Forms.GroupBox _filtersGroup;
 		private System.Windows.Forms.GroupBox _previewGroup;
-		private ImagePreview _previewControl;
+		private SwitchablePreviewImageControl _previewControl;
 		private FileSelection _fileSelectionControl;
 	}
 }

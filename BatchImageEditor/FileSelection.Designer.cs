@@ -43,7 +43,7 @@ namespace BatchImageEditor
 			this._selectionBox.Sorted = true;
 			this._selectionBox.TabIndex = 0;
 			this._selectionBox.Text = "Select file";
-			this._selectionBox.SelectedValueChanged += new System.EventHandler(this.SelectionBox_SelectedValueChanged);
+			this._selectionBox.SelectionChangeCommitted += new System.EventHandler(this.SelectionBox_SelectionChangeCommitted);
 			// 
 			// FileSelection
 			// 

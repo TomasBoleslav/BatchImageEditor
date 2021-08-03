@@ -48,7 +48,7 @@ namespace BatchImageEditor
 			// 
 			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(604, 195);
+			this.label2.Location = new System.Drawing.Point(614, 205);
 			this.label2.Margin = new System.Windows.Forms.Padding(6);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(63, 20);
@@ -60,7 +60,7 @@ namespace BatchImageEditor
 			this.loadedPreviewBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.loadedPreviewBox.BackColor = System.Drawing.SystemColors.Window;
 			this.loadedPreviewBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.loadedPreviewBox.Location = new System.Drawing.Point(604, 227);
+			this.loadedPreviewBox.Location = new System.Drawing.Point(614, 237);
 			this.loadedPreviewBox.Margin = new System.Windows.Forms.Padding(6);
 			this.loadedPreviewBox.Name = "loadedPreviewBox";
 			this.loadedPreviewBox.Size = new System.Drawing.Size(260, 250);
@@ -83,7 +83,7 @@ namespace BatchImageEditor
 			this.imageListView.Location = new System.Drawing.Point(15, 32);
 			this.imageListView.Margin = new System.Windows.Forms.Padding(6);
 			this.imageListView.Name = "imageListView";
-			this.imageListView.Size = new System.Drawing.Size(577, 442);
+			this.imageListView.Size = new System.Drawing.Size(587, 452);
 			this.imageListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
 			this.imageListView.TabIndex = 10;
 			this.imageListView.UseCompatibleStateImageBehavior = false;
@@ -113,7 +113,7 @@ namespace BatchImageEditor
 			// removeButton
 			// 
 			this.removeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.removeButton.Location = new System.Drawing.Point(604, 126);
+			this.removeButton.Location = new System.Drawing.Point(614, 126);
 			this.removeButton.Margin = new System.Windows.Forms.Padding(6);
 			this.removeButton.Name = "removeButton";
 			this.removeButton.Size = new System.Drawing.Size(110, 35);
@@ -125,7 +125,7 @@ namespace BatchImageEditor
 			// loadFolderButton
 			// 
 			this.loadFolderButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.loadFolderButton.Location = new System.Drawing.Point(604, 79);
+			this.loadFolderButton.Location = new System.Drawing.Point(614, 79);
 			this.loadFolderButton.Margin = new System.Windows.Forms.Padding(6);
 			this.loadFolderButton.Name = "loadFolderButton";
 			this.loadFolderButton.Size = new System.Drawing.Size(110, 35);
@@ -137,7 +137,7 @@ namespace BatchImageEditor
 			// loadImageButton
 			// 
 			this.loadImageButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.loadImageButton.Location = new System.Drawing.Point(604, 32);
+			this.loadImageButton.Location = new System.Drawing.Point(614, 32);
 			this.loadImageButton.Margin = new System.Windows.Forms.Padding(6);
 			this.loadImageButton.Name = "loadImageButton";
 			this.loadImageButton.Size = new System.Drawing.Size(110, 35);
@@ -157,10 +157,10 @@ namespace BatchImageEditor
 			this.groupBox1.Controls.Add(this.removeButton);
 			this.groupBox1.Controls.Add(this.loadFolderButton);
 			this.groupBox1.Controls.Add(this.loadImageButton);
-			this.groupBox1.Location = new System.Drawing.Point(23, 23);
+			this.groupBox1.Location = new System.Drawing.Point(18, 18);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Padding = new System.Windows.Forms.Padding(6);
-			this.groupBox1.Size = new System.Drawing.Size(876, 489);
+			this.groupBox1.Size = new System.Drawing.Size(886, 499);
 			this.groupBox1.TabIndex = 14;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Images";
@@ -171,7 +171,7 @@ namespace BatchImageEditor
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.groupBox1);
 			this.Name = "LoadScene";
-			this.Padding = new System.Windows.Forms.Padding(20);
+			this.Padding = new System.Windows.Forms.Padding(15);
 			this.Size = new System.Drawing.Size(922, 535);
 			((System.ComponentModel.ISupportInitialize)(this.loadedPreviewBox)).EndInit();
 			this.groupBox1.ResumeLayout(false);

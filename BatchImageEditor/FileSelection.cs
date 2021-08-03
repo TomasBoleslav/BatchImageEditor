@@ -43,9 +43,9 @@ namespace BatchImageEditor
 			}
 		}
 
-		private void SelectionBox_SelectedValueChanged(object sender, EventArgs e)
+		private void SelectionBox_SelectionChangeCommitted(object sender, EventArgs e)
 		{
-			SelectedFilename = _selectionBox.SelectedValue as string;
+			SelectedFilename = _selectionBox.SelectedItem as string;
 			SelectionChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}

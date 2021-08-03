@@ -1,7 +1,7 @@
 ﻿
 namespace BatchImageEditor
 {
-	partial class ImagePreview
+	partial class SwitchablePreviewImageControl
 	{
 		/// <summary> 
 		/// Required designer variable.
