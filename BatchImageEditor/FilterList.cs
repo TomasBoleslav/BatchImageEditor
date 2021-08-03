@@ -17,7 +17,17 @@ namespace BatchImageEditor
 			_filterMenu = CreateFilterMenu();
 		}
 
-		public DirectBitmap InputBitmap { get; set; }
+		public DirectBitmap InputImage
+		{
+			get
+			{
+				return _filterEditForm.InputImage;
+			}
+			set
+			{
+				_filterEditForm.InputImage = value;
+			}
+		}
 
 		public event EventHandler ListChanged;
 
@@ -66,11 +76,10 @@ namespace BatchImageEditor
 			IFactory<FilterSettingsBase> factory;
 			_menuItemsToSettingsFactories.TryGetValue(menuItem, out factory);
 			FilterSettingsBase filterSettings = factory.CreateInstance();
-			DialogResult result = _filterEditForm.OpenModally(InputBitmap, filterSettings);
+			DialogResult result = _filterEditForm.OpenModally(filterSettings);
 			if (result == DialogResult.OK)
 			{
-				_filterList.Items.Add(filterSettings, isChecked: true);
-				OnListChanged();
+				_filterList.Items.Add(filterSettings, isChecked: true);	// triggers ItemCheck event
 			}
 			else
 			{
@@ -94,9 +103,7 @@ namespace BatchImageEditor
 			{
 				return;
 			}
-			List<int> selectedIndices = _filterList.SelectedIndices.Cast<int>().ToList();
-			selectedIndices.Reverse();
-			selectedIndices.ForEach(index => _filterList.Items.RemoveAt(index));
+			_filterList.Items.RemoveAt(_filterList.SelectedIndex);
 			OnListChanged();
 		}
 
@@ -107,7 +114,7 @@ namespace BatchImageEditor
 				return;
 			}
 			var filterSettings = (FilterSettingsBase)_filterList.SelectedItem;
-			DialogResult result = _filterEditForm.OpenModally(InputBitmap, filterSettings);
+			DialogResult result = _filterEditForm.OpenModally(filterSettings);
 			if (result == DialogResult.OK)
 			{
 				OnListChanged();
@@ -116,6 +123,7 @@ namespace BatchImageEditor
 
 		private void FilterList_ItemCheck(object sender, ItemCheckEventArgs e)
 		{
+			// Execute later when the check state will be changed
 			this.BeginInvoke((MethodInvoker)(
 				() => OnListChanged()
 				));

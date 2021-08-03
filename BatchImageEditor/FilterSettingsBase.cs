@@ -13,7 +13,7 @@ namespace BatchImageEditor
 
 		public abstract void ResetDisplayedSettings();
 
-		public abstract void SaveAndHide();
+		public abstract void SaveDisplayedSettings();
 
 		public abstract IEnumerable<IImageFilter> CreateFiltersFromSavedSettings();
 

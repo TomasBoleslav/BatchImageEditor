@@ -33,7 +33,7 @@ namespace BatchImageEditor
 			this._previewControl = new BatchImageEditor.SwitchablePreviewImageControl();
 			this._okButton = new System.Windows.Forms.Button();
 			this._resetButton = new System.Windows.Forms.Button();
-			this._settingsPanel = new System.Windows.Forms.Panel();
+			this._settingsGroup = new System.Windows.Forms.GroupBox();
 			this._previewGroup.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -56,6 +56,8 @@ namespace BatchImageEditor
 			this._previewControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._previewControl.Location = new System.Drawing.Point(10, 30);
 			this._previewControl.Name = "_previewControl";
+			this._previewControl.OriginalImage = null;
+			this._previewControl.PreviewImage = null;
 			this._previewControl.Size = new System.Drawing.Size(490, 406);
 			this._previewControl.TabIndex = 2;
 			// 
@@ -79,23 +81,26 @@ namespace BatchImageEditor
 			this._resetButton.TabIndex = 4;
 			this._resetButton.Text = "Reset";
 			this._resetButton.UseVisualStyleBackColor = true;
+			this._resetButton.Click += new System.EventHandler(this.ResetButton_Click);
 			// 
-			// _settingsPanel
+			// _settingsGroup
 			// 
-			this._settingsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this._settingsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this._settingsPanel.Location = new System.Drawing.Point(528, 12);
-			this._settingsPanel.Name = "_settingsPanel";
-			this._settingsPanel.Padding = new System.Windows.Forms.Padding(10);
-			this._settingsPanel.Size = new System.Drawing.Size(258, 405);
-			this._settingsPanel.TabIndex = 5;
+			this._settingsGroup.Location = new System.Drawing.Point(528, 12);
+			this._settingsGroup.Name = "_settingsGroup";
+			this._settingsGroup.Padding = new System.Windows.Forms.Padding(10);
+			this._settingsGroup.Size = new System.Drawing.Size(258, 405);
+			this._settingsGroup.TabIndex = 0;
+			this._settingsGroup.TabStop = false;
+			this._settingsGroup.Text = "Settings";
 			// 
 			// FilterEditForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(798, 470);
-			this.Controls.Add(this._settingsPanel);
+			this.Controls.Add(this._settingsGroup);
 			this.Controls.Add(this._resetButton);
 			this.Controls.Add(this._okButton);
 			this.Controls.Add(this._previewGroup);
@@ -111,6 +116,6 @@ namespace BatchImageEditor
 		private SwitchablePreviewImageControl _previewControl;
 		private System.Windows.Forms.Button _okButton;
 		private System.Windows.Forms.Button _resetButton;
-		private System.Windows.Forms.Panel _settingsPanel;
+		private System.Windows.Forms.GroupBox _settingsGroup;
 	}
 }

@@ -41,7 +41,7 @@ namespace BatchImageEditor
 			// _filterListControl
 			// 
 			this._filterListControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._filterListControl.InputBitmap = null;
+			this._filterListControl.InputImage = null;
 			this._filterListControl.Location = new System.Drawing.Point(10, 30);
 			this._filterListControl.Name = "_filterListControl";
 			this._filterListControl.Size = new System.Drawing.Size(335, 500);

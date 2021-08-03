@@ -10,9 +10,10 @@ namespace BatchImageEditor
 		{
 			InitializeComponent();
 			_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+			SetSizeLabel(0, 0);
 		}
 
-		public DirectBitmap PreviewImage
+		public DirectBitmap Image
 		{
 			get
 			{

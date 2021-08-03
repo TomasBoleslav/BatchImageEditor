@@ -10,6 +10,7 @@ namespace BatchImageEditor
 	{
 		public override void DisplaySettings()
 		{
+			DisposeModel(ref _displayedModel);
 			if (_savedModel == null)
 			{
 				_displayedModel = new TModel();
@@ -18,24 +19,20 @@ namespace BatchImageEditor
 			{
 				_displayedModel = _savedModel.Copy();
 			}
-			UpdateDisplay();
-			this.BringToFront();
-			this.Show();
+			UpdateDisplayedSettings();
 		}
 
 		public override void ResetDisplayedSettings()
 		{
-			DisposeModel(ref _displayedModel);
-			UpdateDisplay();
+			_displayedModel.Reset();
+			UpdateDisplayedSettings();
 		}
 
-		public override void SaveAndHide()
+		public override void SaveDisplayedSettings()
 		{
 			DisposeModel(ref _savedModel);
 			_savedModel = _displayedModel;
 			_displayedModel = null;
-			this.Hide();
-			this.SendToBack();
 		}
 
 		public override IEnumerable<IImageFilter> CreateFiltersFromSavedSettings()
@@ -57,7 +54,7 @@ namespace BatchImageEditor
 
 		protected TModel DisplayedModel => _displayedModel;
 
-		protected abstract void UpdateDisplay();
+		protected abstract void UpdateDisplayedSettings();
 
 		private TModel _savedModel;
 		private TModel _displayedModel;

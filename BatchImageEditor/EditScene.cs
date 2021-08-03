@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using ImageFilters;
 
@@ -25,50 +23,49 @@ namespace BatchImageEditor
 			return _filterListControl.CreateFilters();
 		}
 
-		private DirectBitmap _originalImage;
-		private DirectBitmap _previewImage;
-
 		private void FileSelectionControl_SelectionChanged(object sender, EventArgs e)
 		{
-			_originalImage?.Dispose();
-			_originalImage = null;
+			_previewControl.OriginalImage?.Dispose();
+			_previewControl.OriginalImage = null;
+			_previewControl.PreviewImage?.Dispose();
+			_previewControl.PreviewImage = null;
 			string selectedFilename = _fileSelectionControl.SelectedFilename;
 			if (selectedFilename == null)
 			{
-				_previewControl.SetNewImage(null, null);
+				return;
 			}
-			else
+			try
 			{
-				try
-				{
-					_originalImage = DirectBitmap.FromFile(selectedFilename);
-				}
-				catch (IOException)
-				{
-					_previewControl.SetNewImage(null, null);
-					return;
-				}
-				UpdatePreview();
+				_previewControl.OriginalImage = DirectBitmap.FromFile(selectedFilename);
 			}
+			catch (IOException)
+			{
+				return;
+			}
+			_previewControl.PreviewImage = CreatePreviewImage(_previewControl.OriginalImage);
+			_filterListControl.InputImage = _previewControl.PreviewImage;
 		}
 
 		private void FilterListControl_ListChanged(object sender, EventArgs e)
 		{
-			UpdatePreview();
+			if (_previewControl.OriginalImage != null)
+			{
+				_previewControl.PreviewImage?.Dispose();
+				_previewControl.PreviewImage = CreatePreviewImage(_previewControl.OriginalImage);
+				_filterListControl.InputImage = _previewControl.PreviewImage;
+			}
 		}
 
-		private void UpdatePreview()
+		private DirectBitmap CreatePreviewImage(DirectBitmap original)
 		{
-			_previewImage?.Dispose();
-			_previewImage = null;
-			if (_originalImage == null)
-			{
-				_filterListControl.InputBitmap = null;
-				return;
-			}
 			IEnumerable<IImageFilter> filters = _filterListControl.CreateFilters();
-			filters = filters.Concat(new List<IImageFilter> { new ColorAdjustingFilter(new RgbColorAdjuster(255, 0, 0)) });// TODO: remove
-			_previewImage = _originalImage.Copy();
+			//filters = filters.Concat(new List<IImageFilter> { new ColorAdjustingFilter(new RgbColorAdjuster(255, 0, 0)) });// TODO: remove
+			DirectBitmap previewImage = original.Copy();
+			foreach (var filter in filters)
+			{
+				filter.Apply(ref previewImage);
+			}
+			return previewImage;
 			/*ParallelHelper.FilterImageAsync(_previewImage, filters,
 				() => BeginInvoke((MethodInvoker)(() =>
 				{

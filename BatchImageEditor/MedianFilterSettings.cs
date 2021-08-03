@@ -27,7 +27,7 @@ namespace BatchImageEditor
 			OnDisplaySettingsChanged();
 		}
 
-		protected override void UpdateDisplay()
+		protected override void UpdateDisplayedSettings()
 		{
 			_radiusInput.Value = DisplayedModel.Radius;
 			OnDisplaySettingsChanged();

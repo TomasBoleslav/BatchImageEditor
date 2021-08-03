@@ -14,44 +14,65 @@ namespace BatchImageEditor
 			_asyncImageFilter = new AsyncImageFilter();
 		}
 
-		public DialogResult OpenModally(DirectBitmap inputImage, FilterSettingsBase filterSettings)
+		public DirectBitmap InputImage
 		{
-			_inputImage?.Dispose();		// TODO: better dispose on close
-			_previewImage?.Dispose();
-			if (inputImage != null)
+			get
 			{
-				_inputImage = inputImage.Copy();
-				_previewControl.SetNewImage(_inputImage.Bitmap, null);
+				return _previewControl.OriginalImage;
 			}
-			else
+			set
 			{
-				_previewControl.SetNewImage(null, null);
+				_previewControl.OriginalImage = value;
+				_previewControl.PreviewImage?.Dispose();
+				_previewControl.PreviewImage = null;
 			}
-			if (!_settingsPanel.Controls.Contains(filterSettings))
+		}
+
+		public DialogResult OpenModally(FilterSettingsBase filterSettings)
+		{
+			if (!_settingsGroup.Controls.Contains(filterSettings))
 			{
-				_settingsPanel.Controls.Add(filterSettings);
+				_settingsGroup.Controls.Add(filterSettings);
 				filterSettings.Dock = DockStyle.Fill;
 				filterSettings.DisplayedSettingsChanged += FilterSettings_DisplayedSettingsChanged;
 			}
 			_filterSettings = filterSettings;
 			_filterSettings.DisplaySettings();
+			_filterSettings.Show();
+			_filterSettings.BringToFront();
 			return this.ShowDialog();
 		}
 
 		private FilterSettingsBase _filterSettings;
-		private DirectBitmap _inputImage;
-		private DirectBitmap _previewImage;
 		private AsyncImageFilter _asyncImageFilter;
 		private Task<DirectBitmap> _currentFilterTask;
 
 		private void OkButton_Click(object sender, EventArgs e)
 		{
-			_filterSettings.SaveAndHide();
+			_filterSettings.SaveDisplayedSettings();
+			_filterSettings.Hide();
 			this.DialogResult = DialogResult.OK;
+		}
+
+		private void ResetButton_Click(object sender, EventArgs e)
+		{
+			_filterSettings.ResetDisplayedSettings();
 		}
 
 		private void UpdatePreview()
 		{
+			// NOTE: will be called on DisplaySettings, no need to call it explicitly in OpenModally
+			_previewControl.PreviewImage?.Dispose();
+			if (InputImage != null)
+			{
+				_previewControl.PreviewImage = CreatePreviewImage(InputImage);
+			}
+			else
+			{
+				_previewControl.PreviewImage = null;
+			}
+
+			/*
 			IEnumerable<IImageFilter> filters = _filterSettings.CreateFiltersFromDisplayedSettings();
 			_currentFilterTask = _asyncImageFilter.ApplyAsync(_inputImage, filters);
 			_currentFilterTask.ContinueWith(task => Invoke((MethodInvoker)(() =>
@@ -66,7 +87,7 @@ namespace BatchImageEditor
 					{
 						task.Result.Dispose();
 					}
-				})));
+				})));*/
 			/*foreach (var filter in filters)
 			{
 				filter.Apply(ref _previewImage);
@@ -74,9 +95,21 @@ namespace BatchImageEditor
 			//_previewControl.UpdatePreview(_previewImage.Bitmap);
 		}
 
+		private DirectBitmap CreatePreviewImage(DirectBitmap original)
+		{
+			IEnumerable<IImageFilter> filters = _filterSettings.CreateFiltersFromDisplayedSettings();
+			DirectBitmap previewImage = original.Copy();
+			foreach (var filter in filters)
+			{
+				filter.Apply(ref previewImage);
+			}
+			return previewImage;
+		}
+
 		private void FilterSettings_DisplayedSettingsChanged(object sender, EventArgs e)
 		{
 			UpdatePreview();
 		}
+
 	}
 }

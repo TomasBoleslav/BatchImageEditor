@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
-using System.Diagnostics;
+using ImageFilters;
 
 namespace BatchImageEditor
 {
@@ -10,52 +9,70 @@ namespace BatchImageEditor
 		public SwitchablePreviewImageControl()
 		{
 			InitializeComponent();
-			SetSizeLabel(0, 0);
-			ResetZoomLevel();
-			UpdatePreviewSwitchButton();
+			_isPreviewShown = true;
+			UpdatePreviewSwitchButton(_isPreviewShown);
 		}
-		
-		public void SetNewImage(Bitmap original, Bitmap preview)
+
+		public DirectBitmap PreviewImage
 		{
-			OriginalImage = original;
-			_originalImageZoomed?.Dispose();
-			_originalImageZoomed = null;
-			PreviewImage = preview;
-			_previewImageZoomed?.Dispose();
-			_previewImageZoomed = null;
-			ResetZoomLevel();
-			UpdateDisplayedImage(zoomChanged: false);//TODO:true
+			get
+			{
+				return _previewImage;
+			}
+			set
+			{
+				if (_isPreviewShown)
+				{
+					_previewImageControl.Image = value;
+				}
+				_previewImage = value;
+			}
 		}
 
-		public void UpdatePreview(Bitmap preview)
+		public DirectBitmap OriginalImage
 		{
-			PreviewImage = preview;
-			_previewImageZoomed?.Dispose();
-			_previewImageZoomed = null;
-			UpdateDisplayedImage(zoomChanged: false);
+			get
+			{
+				return _originalImage;
+			}
+			set
+			{
+				if (!_isPreviewShown)
+				{
+					_previewImageControl.Image = value;
+				}
+				_originalImage = value;
+			}
 		}
 
-		// TODO: maybe DirectBitmap?
-		public Bitmap PreviewImage { get; private set; }
+		public void DisposeOriginalImage()
+		{
+			DirectBitmap oldImage = OriginalImage;
+			OriginalImage = null;
+			oldImage?.Dispose();
+		}
 
-		public Bitmap OriginalImage { get; private set; }
+		public void DisposePreviewImage()
+		{
+			DirectBitmap oldImage = PreviewImage;
+			PreviewImage = null;
+			oldImage?.Dispose();
+		}
 
-		private static readonly int[] ZoomLevels = new int[] { 10, 25, 50, 75, 100, 125, 150, 175, 200};
-		private int _currentZoomIndex;
-		private bool _previewShown = false;
-		private Bitmap _previewImageZoomed;
-		private Bitmap _originalImageZoomed;
+		private bool _isPreviewShown;
+		private DirectBitmap _previewImage;
+		private DirectBitmap _originalImage;
 
 		private void PreviewSwitchButton_Click(object sender, EventArgs e)
 		{
-			_previewShown = !_previewShown;
-			UpdatePreviewSwitchButton();
-			UpdateDisplayedImage(zoomChanged: false);
+			_isPreviewShown = !_isPreviewShown;
+			UpdatePreviewSwitchButton(_isPreviewShown);
+			UpdateDisplayedImage(_isPreviewShown);
 		}
 
-		private void UpdatePreviewSwitchButton()
+		private void UpdatePreviewSwitchButton(bool isPreviewShown)
 		{
-			if (_previewShown)
+			if (isPreviewShown)
 			{
 				_previewSwitchButton.Text = "Show original";
 			}
@@ -65,88 +82,16 @@ namespace BatchImageEditor
 			}
 		}
 
-		private void ResetZoomLevel()
+		private void UpdateDisplayedImage(bool isPreviewShown)
 		{
-			_currentZoomIndex = Array.FindIndex(ZoomLevels, level => level == 100);
-			Debug.Assert(_currentZoomIndex >= 0, "There must be the value 100 among zoom levels.");
-			UpdateZoomLabel(ZoomLevels[_currentZoomIndex]);
-		}
-
-		private void UpdateZoomLabel(int zoomValue)
-		{
-			_zoomLabel.Text = $"{zoomValue}%";
-			CenterControlHorizontally(_zoomLabel);
-		}
-
-		private void UpdateDisplayedImage(bool zoomChanged)
-		{
-			if (_previewShown)
+			if (isPreviewShown)
 			{
-				DisplayImage(PreviewImage, zoomChanged, ref _previewImageZoomed);
+				_previewImageControl.Image = PreviewImage;
 			}
 			else
 			{
-				DisplayImage(OriginalImage, zoomChanged, ref _originalImageZoomed);
+				_previewImageControl.Image = OriginalImage;
 			}
-		}
-
-		private void DisplayImage(Bitmap image, bool zoomChanged, ref Bitmap zoomedImage)
-		{
-			if (image == null)
-			{
-				_imageBox.Image = null;
-				SetSizeLabel(0, 0);
-				return;
-			}
-			if (zoomChanged || zoomedImage == null)
-			{
-				zoomedImage = ZoomImage(image);
-			}
-			_imageBox.Image = zoomedImage;
-			SetSizeLabel(image.Width, image.Height);
-		}
-
-		public void SetSizeLabel(int width, int height)
-		{
-			_sizeLabel.Text = $"{width} x {height} px";
-		}
-
-		private static void CenterControlHorizontally(Control control)
-		{
-			control.Location = new Point
-			{
-				X = (control.Parent.Width - control.Width) / 2,
-				Y = control.Location.Y
-			};
-		}
-
-		private Bitmap ZoomImage(Bitmap bitmap)
-		{
-			float factor = ZoomLevels[_currentZoomIndex] / 100.0f;
-			return bitmap.Resize(factor);
-		}
-
-		private void ZoomInButton_Click(object sender, EventArgs e)
-		{
-			ChangeZoomIndex(1);
-		}
-
-		private void ZoomOutButton_Click(object sender, EventArgs e)
-		{
-			ChangeZoomIndex(-1);
-		}
-
-		private void ChangeZoomIndex(int indexChange)
-		{
-			int newIndex = _currentZoomIndex + indexChange;
-			newIndex = Math.Clamp(newIndex, 0, ZoomLevels.Length - 1);
-			if (newIndex == _currentZoomIndex)
-			{
-				return;
-			}
-			_currentZoomIndex = newIndex;
-			UpdateZoomLabel(ZoomLevels[newIndex]);
-			UpdateDisplayedImage(zoomChanged: true);
 		}
 	}
 }

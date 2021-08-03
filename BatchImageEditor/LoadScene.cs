@@ -66,12 +66,12 @@ namespace BatchImageEditor
 
 		private void ImageListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
 		{
-			if (e.IsSelected && imageListView.SelectedItems.Count == 1)
+			if (e.IsSelected && _imageListView.SelectedItems.Count == 1)
 			{
 				string filename = GetFilenameFromItem(e.Item);
 				ShowLoadedImagePreview(filename);
 			}
-			else if (imageListView.SelectedItems.Count == 0)
+			else if (_imageListView.SelectedItems.Count == 0)
 			{
 				loadedPreviewBox.Image?.Dispose();
 				loadedPreviewBox.Image = null;
@@ -112,13 +112,13 @@ namespace BatchImageEditor
 			ListViewItem item = CreateImageListItem(filename);
 			if (!_filenames.Contains(filename))
 			{
-				imageListView.Items.Add(item);
+				_imageListView.Items.Add(item);
 				_filenames.Add(filename);
 			}
 			else
 			{
 				ListViewItem oldItem = GetItemByFilename(filename);
-				imageListView.Items[oldItem.Index] = item;
+				_imageListView.Items[oldItem.Index] = item;
 			}
 		}
 
@@ -126,7 +126,7 @@ namespace BatchImageEditor
 		{
 			string filename = GetFilenameFromItem(item);
 			_filenames.Remove(filename);
-			imageListView.Items.Remove(item);
+			_imageListView.Items.Remove(item);
 		}
 
 		private string GetFilenameFromItem(ListViewItem item)
@@ -137,7 +137,7 @@ namespace BatchImageEditor
 		private void RemoveSelectedItems()
 		{
 			// Must be copied, because the list of selected items changes on removal
-			var selectedItems = imageListView.SelectedItems.Cast<ListViewItem>().ToList();
+			var selectedItems = _imageListView.SelectedItems.Cast<ListViewItem>().ToList();
 			foreach (var item in selectedItems)
 			{
 				RemoveFileItem(item);
@@ -150,7 +150,7 @@ namespace BatchImageEditor
 
 		private ListViewItem CreateImageListItem(string filename)
 		{
-			string[] columns = new string[imageListView.Columns.Count];
+			string[] columns = new string[_imageListView.Columns.Count];
 			columns[nameHeader.Index] = NotAvailable;
 			columns[dateHeader.Index] = NotAvailable;
 			columns[sizeHeader.Index] = NotAvailable;
@@ -174,7 +174,7 @@ namespace BatchImageEditor
 
 		private ListViewItem GetItemByFilename(string filename)
 		{
-			return imageListView.Items.Cast<ListViewItem>()
+			return _imageListView.Items.Cast<ListViewItem>()
 				.Where(item => GetFilenameFromItem(item) == filename)
 				.First();
 		}
