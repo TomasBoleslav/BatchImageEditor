@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ThrowHelpers;
 
 namespace BatchImageEditor
 {
@@ -8,11 +9,14 @@ namespace BatchImageEditor
 	{
 		public ControlUpdater(Control control)
 		{
+			ArgChecker.NotNull(control, nameof(control));
 			_control = control;
 		}
 
 		public void UpdateAsync(Func<T> asyncAcquireFunc, Action<T> syncUpdateAction)
 		{
+			ArgChecker.NotNull(asyncAcquireFunc, nameof(asyncAcquireFunc));
+			ArgChecker.NotNull(syncUpdateAction, nameof(syncUpdateAction));
 			if (_control.InvokeRequired)
 			{
 				_control.BeginInvoke((MethodInvoker)(
