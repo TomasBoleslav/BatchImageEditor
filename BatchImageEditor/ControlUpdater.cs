@@ -18,6 +18,7 @@ namespace BatchImageEditor
 		{
 			ArgChecker.NotNull(asyncAcquireFunc, nameof(asyncAcquireFunc));
 			ArgChecker.NotNull(syncUpdateAction, nameof(syncUpdateAction));
+			// Execute all synchronous actions in UI thread of the control to prevent data races
 			if (_control.InvokeRequired)
 			{
 				_control.BeginInvoke((MethodInvoker)(
@@ -31,39 +32,49 @@ namespace BatchImageEditor
 		}
 
 		private readonly Control _control;
+		private Task _currentUpdateTask;
 		private Func<TComputedValue> _pendingAsyncAcquireFunc;
 		private Action<TComputedValue> _pendingSyncUpdateAction;
 
 		private void SetPendingOrUpdateAsync(Func<TComputedValue> asyncAcquireFunc, Action<TComputedValue> syncUpdateAction)
 		{
-			// These delegates are always null!!!
-			if (_pendingAsyncAcquireFunc != null)
+			if (UpdateTaskIsRunning())
 			{
 				_pendingAsyncAcquireFunc = asyncAcquireFunc;
 				_pendingSyncUpdateAction = syncUpdateAction;
 			}
 			else
 			{
-				RunUpdateAsync(asyncAcquireFunc, syncUpdateAction);
+				_currentUpdateTask = RunUpdateAsync(asyncAcquireFunc, syncUpdateAction);
 			}
 		}
 
-		private void RunUpdateAsync(Func<TComputedValue> asyncAcquireFunc, Action<TComputedValue> syncUpdateAction)
+		private bool UpdateTaskIsRunning()
 		{
-			Task.Run(() =>
+			return _currentUpdateTask != null && !_currentUpdateTask.IsCompleted;
+		}
+
+		private bool ShouldExecutePendingTasks()
+		{
+			return _pendingAsyncAcquireFunc != null;
+		}
+
+		private Task RunUpdateAsync(Func<TComputedValue> asyncAcquireFunc, Action<TComputedValue> syncUpdateAction)
+		{
+			return Task.Run(() =>
 			{
 				TComputedValue acquiredInstance = asyncAcquireFunc();
 				_control.BeginInvoke((MethodInvoker)(
 					() =>
 					{
 						syncUpdateAction(acquiredInstance);
-						if (_pendingAsyncAcquireFunc != null)
+						if (ShouldExecutePendingTasks())
 						{
 							Func<TComputedValue> nextAsyncAcquireFunc = _pendingAsyncAcquireFunc;
 							Action<TComputedValue> nextSyncUpdateAction = _pendingSyncUpdateAction;
 							_pendingAsyncAcquireFunc = null;
 							_pendingSyncUpdateAction = null;
-							RunUpdateAsync(nextAsyncAcquireFunc, nextSyncUpdateAction);
+							_currentUpdateTask = RunUpdateAsync(nextAsyncAcquireFunc, nextSyncUpdateAction);
 						}
 					}));
 			});
