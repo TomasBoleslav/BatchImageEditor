@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.Threading;
 using ImageFilters;
 
 namespace BatchImageEditor
@@ -45,6 +47,7 @@ namespace BatchImageEditor
 			}
 		}
 
+		// TODO: remove
 		public void DisposeOriginalImage()
 		{
 			DirectBitmap oldImage = OriginalImage;
@@ -52,6 +55,7 @@ namespace BatchImageEditor
 			oldImage?.Dispose();
 		}
 
+		// TODO: remove
 		public void DisposePreviewImage()
 		{
 			DirectBitmap oldImage = PreviewImage;
@@ -59,9 +63,43 @@ namespace BatchImageEditor
 			oldImage?.Dispose();
 		}
 
+		// NOTE: disposing of old preview image should be done in acquireImageFunc
+		public void UpdatePreviewAsync(Func<DirectBitmap> acquireImageFunc)
+		{
+			if (_currentUpdateTask.IsCompleted)
+			{
+				RunUpdatePreviewAsync(acquireImageFunc);
+			}
+			else
+			{
+				_acquireImageFunc = acquireImageFunc;
+			}
+		}
+
+		private void RunUpdatePreviewAsync(Func<DirectBitmap> acquireImageFunc)
+		{
+			_currentUpdateTask = Task.Run(() =>
+			{
+				DirectBitmap previewImage = acquireImageFunc();
+				BeginInvoke((MethodInvoker)(
+					() =>
+					{
+						PreviewImage = previewImage;
+						if (_acquireImageFunc != null)
+						{
+							Func<DirectBitmap> nextAcquireImageFunc = _acquireImageFunc;
+							_acquireImageFunc = null;
+							RunUpdatePreviewAsync(_acquireImageFunc);
+						}
+					}));
+			});
+		}
+
 		private bool _isPreviewShown;
 		private DirectBitmap _previewImage;
 		private DirectBitmap _originalImage;
+		private Task _currentUpdateTask;
+		private Func<DirectBitmap> _acquireImageFunc;
 
 		private void PreviewSwitchButton_Click(object sender, EventArgs e)
 		{

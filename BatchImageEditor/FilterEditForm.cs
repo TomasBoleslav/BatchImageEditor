@@ -11,7 +11,7 @@ namespace BatchImageEditor
 		public FilterEditForm()
 		{
 			InitializeComponent();
-			_asyncImageFilter = new AsyncImageFilter();
+			_asyncImageFilter = new PreviewUpdater();
 		}
 
 		public DirectBitmap InputImage
@@ -44,7 +44,7 @@ namespace BatchImageEditor
 		}
 
 		private FilterSettingsBase _filterSettings;
-		private AsyncImageFilter _asyncImageFilter;
+		private ControlUpdater _asyncImageFilter;
 		private Task<DirectBitmap> _currentFilterTask;
 
 		private void OkButton_Click(object sender, EventArgs e)
@@ -75,6 +75,7 @@ namespace BatchImageEditor
 			/*
 			IEnumerable<IImageFilter> filters = _filterSettings.CreateFiltersFromDisplayedSettings();
 			_currentFilterTask = _asyncImageFilter.ApplyAsync(_inputImage, filters);
+			_currentFilterTask.ContinueWith(task => task.Result, TaskContinuationOptions.OnlyOnRanToCompletion);
 			_currentFilterTask.ContinueWith(task => Invoke((MethodInvoker)(() =>
 				{
 					if (task == _currentFilterTask)
