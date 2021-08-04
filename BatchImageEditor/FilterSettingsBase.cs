@@ -7,7 +7,7 @@ namespace BatchImageEditor
 {
 	public abstract class FilterSettingsBase : UserControl
 	{
-		public event EventHandler DisplayedSettingsChanged;
+		public event EventHandler DisplayedSettingsUpdated;
 
 		public abstract void DisplaySettings();
 
@@ -19,9 +19,9 @@ namespace BatchImageEditor
 
 		public abstract IEnumerable<IImageFilter> CreateFiltersFromDisplayedSettings();
 
-		protected virtual void OnDisplaySettingsChanged()
+		protected virtual void OnDisplaySettingsUpdated()
 		{
-			DisplayedSettingsChanged?.Invoke(this, EventArgs.Empty);
+			DisplayedSettingsUpdated?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

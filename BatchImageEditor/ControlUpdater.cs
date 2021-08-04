@@ -5,7 +5,7 @@ using ThrowHelpers;
 
 namespace BatchImageEditor
 {
-	public class ControlUpdater<T>
+	public class ControlUpdater<TComputedValue>
 	{
 		public ControlUpdater(Control control)
 		{
@@ -13,7 +13,8 @@ namespace BatchImageEditor
 			_control = control;
 		}
 
-		public void UpdateAsync(Func<T> asyncAcquireFunc, Action<T> syncUpdateAction)
+		// TODO: better name: AppendAsyncUpdate or similar
+		public void UpdateAsync(Func<TComputedValue> asyncAcquireFunc, Action<TComputedValue> syncUpdateAction)
 		{
 			ArgChecker.NotNull(asyncAcquireFunc, nameof(asyncAcquireFunc));
 			ArgChecker.NotNull(syncUpdateAction, nameof(syncUpdateAction));
@@ -30,11 +31,12 @@ namespace BatchImageEditor
 		}
 
 		private readonly Control _control;
-		private Func<T> _pendingAsyncAcquireFunc;
-		private Action<T> _pendingSyncUpdateAction;
+		private Func<TComputedValue> _pendingAsyncAcquireFunc;
+		private Action<TComputedValue> _pendingSyncUpdateAction;
 
-		private void SetPendingOrUpdateAsync(Func<T> asyncAcquireFunc, Action<T> syncUpdateAction)
+		private void SetPendingOrUpdateAsync(Func<TComputedValue> asyncAcquireFunc, Action<TComputedValue> syncUpdateAction)
 		{
+			// These delegates are always null!!!
 			if (_pendingAsyncAcquireFunc != null)
 			{
 				_pendingAsyncAcquireFunc = asyncAcquireFunc;
@@ -46,19 +48,19 @@ namespace BatchImageEditor
 			}
 		}
 
-		private void RunUpdateAsync(Func<T> asyncAcquireFunc, Action<T> syncUpdateAction)
+		private void RunUpdateAsync(Func<TComputedValue> asyncAcquireFunc, Action<TComputedValue> syncUpdateAction)
 		{
 			Task.Run(() =>
 			{
-				T acquiredInstance = asyncAcquireFunc();
+				TComputedValue acquiredInstance = asyncAcquireFunc();
 				_control.BeginInvoke((MethodInvoker)(
 					() =>
 					{
 						syncUpdateAction(acquiredInstance);
 						if (_pendingAsyncAcquireFunc != null)
 						{
-							Func<T> nextAsyncAcquireFunc = _pendingAsyncAcquireFunc;
-							Action<T> nextSyncUpdateAction = _pendingSyncUpdateAction;
+							Func<TComputedValue> nextAsyncAcquireFunc = _pendingAsyncAcquireFunc;
+							Action<TComputedValue> nextSyncUpdateAction = _pendingSyncUpdateAction;
 							_pendingAsyncAcquireFunc = null;
 							_pendingSyncUpdateAction = null;
 							RunUpdateAsync(nextAsyncAcquireFunc, nextSyncUpdateAction);

@@ -24,13 +24,13 @@ namespace BatchImageEditor
 		private void RadiusInput_ValueChanged(object sender, EventArgs e)
 		{
 			DisplayedModel.Radius = (int)_radiusInput.Value;
-			OnDisplaySettingsChanged();
+			OnDisplaySettingsUpdated();
 		}
 
 		protected override void UpdateDisplayedSettings()
 		{
 			_radiusInput.Value = DisplayedModel.Radius;
-			OnDisplaySettingsChanged();
+			OnDisplaySettingsUpdated();
 		}
 	}
 }
