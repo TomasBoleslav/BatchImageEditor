@@ -33,7 +33,7 @@ namespace BatchImageEditor
 			this._editButton = new System.Windows.Forms.Button();
 			this._removeButton = new System.Windows.Forms.Button();
 			this._addButton = new System.Windows.Forms.Button();
-			this._filterList = new System.Windows.Forms.CheckedListBox();
+			this._filterListBox = new System.Windows.Forms.CheckedListBox();
 			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.necoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mojeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,15 +77,15 @@ namespace BatchImageEditor
 			// 
 			// _filterList
 			// 
-			this._filterList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this._filterListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this._filterList.FormattingEnabled = true;
-			this._filterList.Location = new System.Drawing.Point(3, 3);
-			this._filterList.Name = "_filterList";
-			this._filterList.Size = new System.Drawing.Size(248, 488);
-			this._filterList.TabIndex = 5;
-			this._filterList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.FilterList_ItemCheck);
+			this._filterListBox.FormattingEnabled = true;
+			this._filterListBox.Location = new System.Drawing.Point(3, 3);
+			this._filterListBox.Name = "_filterList";
+			this._filterListBox.Size = new System.Drawing.Size(248, 488);
+			this._filterListBox.TabIndex = 5;
+			this._filterListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.FilterList_ItemCheck);
 			// 
 			// contextMenuStrip1
 			// 
@@ -127,7 +127,7 @@ namespace BatchImageEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this._filterList);
+			this.Controls.Add(this._filterListBox);
 			this.Controls.Add(this._addButton);
 			this.Controls.Add(this._removeButton);
 			this.Controls.Add(this._editButton);
@@ -143,7 +143,7 @@ namespace BatchImageEditor
 		private System.Windows.Forms.Button _editButton;
 		private System.Windows.Forms.Button _removeButton;
 		private System.Windows.Forms.Button _addButton;
-		private System.Windows.Forms.CheckedListBox _filterList;
+		private System.Windows.Forms.CheckedListBox _filterListBox;
 		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem necoToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mojeToolStripMenuItem;

@@ -23,32 +23,11 @@ namespace BatchImageEditor
 			}
 			set
 			{
-				// TODO: UpdateAsync fails on BeginInvoke if the control was not yet fully created
 				_previewControl.OriginalImage = value;
 				if (_formDisplayed)
 				{
 					UpdatePreview(value);
 				}
-				// TODO: update preview image if the form is opened
-				/*if (_previewControl.PreviewImage != null)
-				{
-					_previewUpdater.UpdateAsync(() => null,
-						_ =>
-						{
-							_previewControl.PreviewImage.Dispose();
-							_previewControl.PreviewImage = null;
-						});
-				}
-				_previewUpdater.UpdateAsync(() => null,
-					_ =>
-					{
-						_previewControl.PreviewImage.Dispose();
-						_previewControl.PreviewImage = null;
-					});
-				if (this.isc)
-				{
-
-				}*/
 			}
 		}
 
@@ -101,15 +80,6 @@ namespace BatchImageEditor
 					_previewControl.PreviewImage?.Dispose();
 					_previewControl.PreviewImage = image;
 				});
-			/*_previewControl.PreviewImage?.Dispose();
-			if (InputImage != null)
-			{
-				_previewControl.PreviewImage = CreatePreviewImage(InputImage);
-			}
-			else
-			{
-				_previewControl.PreviewImage = null;
-			}*/
 		}
 
 		private DirectBitmap CreatePreviewImage(DirectBitmap original)

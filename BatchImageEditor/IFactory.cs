@@ -1,7 +1,8 @@
-﻿
+﻿using System.Collections.Generic;
+
 namespace BatchImageEditor
 {
-	public interface IFactory<T>
+	public interface IFactory<out T>
 	{
 		T CreateInstance();
 	}

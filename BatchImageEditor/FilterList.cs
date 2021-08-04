@@ -13,8 +13,9 @@ namespace BatchImageEditor
 		{
 			InitializeComponent();
 			_filterEditForm = new FilterEditForm();
-			_menuItemsToSettingsFactories = new Dictionary<ToolStripItem, IFactory<FilterSettingsBase>>();
+			_settingsFactories = CreateSettingsFactories();
 			_filterMenu = CreateFilterMenu();
+			_filterSettingsList = new List<FilterSettingsBase>();
 		}
 
 		public DirectBitmap InputImage
@@ -33,14 +34,14 @@ namespace BatchImageEditor
 
 		public IEnumerable<IImageFilter> CreateFilters()
 		{
-			var checkedSettings = _filterList.CheckedItems.Cast<FilterSettingsBase>();
-			foreach (var settings in checkedSettings)
+			var filters = new List<IImageFilter>();
+			IEnumerable<int> checkedIndices = _filterListBox.CheckedIndices.Cast<int>();
+			foreach (int index in checkedIndices)
 			{
-				foreach (IImageFilter filter in settings.CreateFiltersFromSavedSettings())
-				{
-					yield return filter;
-				}
+				FilterSettingsBase checkedFilterSettings = _filterSettingsList[index];
+				filters.AddRange(checkedFilterSettings.CreateFiltersFromSavedSettings());
 			}
+			return filters;
 		}
 
 		protected virtual void OnListChanged()
@@ -50,7 +51,15 @@ namespace BatchImageEditor
 
 		private readonly FilterEditForm _filterEditForm;
 		private readonly ContextMenuStrip _filterMenu;
-		private readonly Dictionary<ToolStripItem, IFactory<FilterSettingsBase>> _menuItemsToSettingsFactories;
+		private readonly FilterSettingsFactoryStorage _settingsFactories;
+		private readonly List<FilterSettingsBase> _filterSettingsList;
+		
+		private static FilterSettingsFactoryStorage CreateSettingsFactories()
+		{
+			var settingsFactories = new FilterSettingsFactoryStorage();
+			settingsFactories.Add(new Instantiator<MedianFilterSettings>());
+			return settingsFactories;
+		}
 
 		private ContextMenuStrip CreateFilterMenu()
 		{
@@ -62,24 +71,28 @@ namespace BatchImageEditor
 		private ToolStripMenuItem CreateNoiseReductionMenuItems()
 		{
 			var rootItem = new ToolStripMenuItem("Noise reduction");
-			var medianItem = new ToolStripMenuItem("Median");
-			rootItem.DropDownItems.Add(medianItem);
-			medianItem.Click += FilterMenuItem_Click;
-			var medianFilterFactory = new FilterSettingsFactory<MedianFilterSettings>();
-			_menuItemsToSettingsFactories.Add(medianItem, medianFilterFactory);
+			rootItem.DropDownItems.Add(CreateMenuItemForSettings<MedianFilterSettings>());
 			return rootItem;
+		}
+
+		private ToolStripMenuItem CreateMenuItemForSettings<T>() where T : FilterSettingsBase
+		{
+			string settingsName = FilterSettingsNames.GetName(typeof(T));
+			var menuItem = new ToolStripMenuItem(settingsName);
+			menuItem.Click += FilterMenuItem_Click;
+			return menuItem;
 		}
 
 		private void FilterMenuItem_Click(object sender, EventArgs e)
 		{
-			var menuItem = (ToolStripItem)sender;
-			IFactory<FilterSettingsBase> factory;
-			_menuItemsToSettingsFactories.TryGetValue(menuItem, out factory);
-			FilterSettingsBase filterSettings = factory.CreateInstance();
+			string settingsName = ((ToolStripMenuItem)sender).Text;
+			IFactory<FilterSettingsBase> settingsFactory = _settingsFactories.GetFactory(settingsName);
+			FilterSettingsBase filterSettings = settingsFactory.CreateInstance();
 			DialogResult result = _filterEditForm.OpenModally(filterSettings);
 			if (result == DialogResult.OK)
 			{
-				_filterList.Items.Add(filterSettings, isChecked: true);	// triggers ItemCheck event
+				_filterListBox.Items.Add(settingsName, isChecked: true);  // triggers ItemCheck event
+				_filterSettingsList.Add(filterSettings);
 			}
 			else
 			{
@@ -99,22 +112,25 @@ namespace BatchImageEditor
 
 		private void RemoveButton_Click(object sender, EventArgs e)
 		{
-			if (_filterList.SelectedIndex == -1)
+			int selectedIndex = _filterListBox.SelectedIndex;
+			if (selectedIndex == -1)
 			{
 				return;
 			}
-			_filterList.Items.RemoveAt(_filterList.SelectedIndex);
+			_filterListBox.Items.RemoveAt(selectedIndex);
+			_filterSettingsList.RemoveAt(selectedIndex);
 			OnListChanged();
 		}
 
 		private void EditButton_Click(object sender, EventArgs e)
 		{
-			if (_filterList.SelectedItem == null)
+			int selectedIndex = _filterListBox.SelectedIndex;
+			if (selectedIndex == -1)
 			{
 				return;
 			}
-			var filterSettings = (FilterSettingsBase)_filterList.SelectedItem;
-			DialogResult result = _filterEditForm.OpenModally(filterSettings);
+			FilterSettingsBase selectedSettings = _filterSettingsList[selectedIndex];
+			DialogResult result = _filterEditForm.OpenModally(selectedSettings);
 			if (result == DialogResult.OK)
 			{
 				OnListChanged();
