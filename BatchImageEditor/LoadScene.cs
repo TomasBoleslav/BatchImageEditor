@@ -42,10 +42,12 @@ namespace BatchImageEditor
 			dialog.Multiselect = true;
 			if (dialog.ShowDialog() == DialogResult.OK)
 			{
+				_imageListView.BeginUpdate();
 				foreach (string filename in dialog.FileNames)
 				{
 					AddOrUpdateFile(filename);
 				}
+				_imageListView.EndUpdate();
 				OnFileSetChanged();
 			}
 		}
@@ -92,6 +94,7 @@ namespace BatchImageEditor
 		{
 			var extensions = SupportedExtensions.ToHashSet();
 			var filenames = Directory.EnumerateFiles(folder, "*", SearchOption.AllDirectories);
+			_imageListView.BeginUpdate();
 			foreach (string filename in filenames)
 			{
 				string extension = Path.GetExtension(filename).ToLowerInvariant();
@@ -100,6 +103,7 @@ namespace BatchImageEditor
 					AddOrUpdateFile(filename);
 				}
 			}
+			_imageListView.EndUpdate();
 		}
 
 		private void RemoveButton_Click(object sender, EventArgs e)
@@ -138,12 +142,14 @@ namespace BatchImageEditor
 		{
 			// Must be copied, because the list of selected items changes on removal
 			var selectedItems = _imageListView.SelectedItems.Cast<ListViewItem>().ToList();
-			foreach (var item in selectedItems)
-			{
-				RemoveFileItem(item);
-			}
 			if (selectedItems.Count > 0)
 			{
+				_imageListView.BeginUpdate();
+				foreach (var item in selectedItems)
+				{
+					RemoveFileItem(item);
+				}
+				_imageListView.EndUpdate();
 				OnFileSetChanged();
 			}
 		}
