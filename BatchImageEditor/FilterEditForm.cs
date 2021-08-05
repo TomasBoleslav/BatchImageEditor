@@ -39,10 +39,10 @@ namespace BatchImageEditor
 				filterSettings.Dock = DockStyle.Fill;
 				filterSettings.DisplayedSettingsUpdated += FilterSettings_DisplayedSettingsUpdated;
 			}
-			filterSettings.DisplaySettings();
-			filterSettings.Show();
-			filterSettings.BringToFront();
 			_currentFilterSettings = filterSettings;
+			_currentFilterSettings.DisplaySettings();
+			_currentFilterSettings.Show();
+			_currentFilterSettings.BringToFront();
 			_formDisplayed = true;
 			return this.ShowDialog();
 		}

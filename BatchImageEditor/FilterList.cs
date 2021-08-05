@@ -148,26 +148,26 @@ namespace BatchImageEditor
 
 		private void UpButton_Click(object sender, EventArgs e)
 		{
-			int selectedIndex = _filterListBox.SelectedIndex;
-			TrySwapSettings(selectedIndex, selectedIndex - 1);
+			MoveSelectedSettings(-1);
 		}
 
 		private void DownButton_Click(object sender, EventArgs e)
 		{
-			int selectedIndex = _filterListBox.SelectedIndex;
-			TrySwapSettings(selectedIndex, selectedIndex + 1);
+			MoveSelectedSettings(1);
 		}
 
-		private void TrySwapSettings(int index1, int index2)
+		private void MoveSelectedSettings(int direction)
 		{
+			int selectedIndex = _filterListBox.SelectedIndex;
+			int targetIndex = _filterListBox.SelectedIndex + direction;
 			int lastIndex = _filterListBox.Items.Count - 1;
-			if (index1 < 0 || lastIndex < index1 ||
-				index2 < 0 || lastIndex < index2)
+			if (targetIndex < 0 || lastIndex < targetIndex)
 			{
 				return;
 			}
-			SwapListItems(_filterListBox.Items, index1, index2);
-			SwapListItems(_filterSettingsList, index1, index2);
+			SwapListItems(_filterListBox.Items, selectedIndex, targetIndex);
+			SwapListItems(_filterSettingsList, selectedIndex, targetIndex);
+			_filterListBox.SelectedIndex = targetIndex;
 			OnListChanged();
 		}
 
