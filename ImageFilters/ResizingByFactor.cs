@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -6,7 +7,7 @@ namespace ImageFilters
 	{
 		public ResizingByFactor(float factor)
 		{
-			Ensure.Positive(factor, nameof(factor));
+			ArgChecker.Positive(factor, nameof(factor));
 			_factor = factor;
 		}
 

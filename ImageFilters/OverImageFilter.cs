@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -15,7 +16,7 @@ namespace ImageFilters
 
 		public void Apply(ref DirectBitmap inputBitmap)
 		{
-			Ensure.NotNull(inputBitmap, nameof(inputBitmap));
+			ArgChecker.NotNull(inputBitmap, nameof(inputBitmap));
 			Point destination = ComputeDestinationOfImageToDraw(inputBitmap);
 			using var graphics = Graphics.FromImage(inputBitmap.Bitmap);
 			graphics.DrawImage(_bitmapOver.Bitmap, destination);

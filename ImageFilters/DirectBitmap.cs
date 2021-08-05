@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -25,8 +26,8 @@ namespace ImageFilters
 
         public DirectBitmap(int width, int height, PixelFormat pixelFormat)
         {
-            Ensure.Positive(width, nameof(width));
-            Ensure.Positive(height, nameof(height));
+            ArgChecker.Positive(width, nameof(width));
+            ArgChecker.Positive(height, nameof(height));
 			if (!SupportedFormats.Contains(pixelFormat))
 			{
                 throw new ArgumentException("The given pixel format is not supported.");
@@ -42,7 +43,7 @@ namespace ImageFilters
         
         public static DirectBitmap FromBitmap(Bitmap bitmap)
         {
-            Ensure.NotNull(bitmap, nameof(bitmap));
+            ArgChecker.NotNull(bitmap, nameof(bitmap));
 			if (SupportedFormats.Contains(bitmap.PixelFormat))
 			{
                 return FromBitmapByCopyingData(bitmap);
@@ -54,7 +55,7 @@ namespace ImageFilters
         // IOException
         public static DirectBitmap FromFile(string filename)
         {
-            Ensure.NotNull(filename, nameof(filename));
+            ArgChecker.NotNull(filename, nameof(filename));
             Bitmap loadedBitmap;
             DirectBitmap directBitmap;
             try

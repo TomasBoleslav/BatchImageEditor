@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -9,8 +10,8 @@ namespace ImageFilters
 	
 		public ContrastBrightnessAdjuster(int contrastChange, int brightnessChange)
 		{
-			Ensure.InRange(contrastChange, nameof(contrastChange), MinChange, MaxChange);
-			Ensure.InRange(brightnessChange, nameof(brightnessChange), MinChange, MaxChange);
+			ArgChecker.InRange(contrastChange, nameof(contrastChange), MinChange, MaxChange);
+			ArgChecker.InRange(brightnessChange, nameof(brightnessChange), MinChange, MaxChange);
 			_contrastFactor = ComputeContrastFactor(contrastChange);
 			_brightnessChange = brightnessChange;
 		}

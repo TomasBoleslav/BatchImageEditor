@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -6,13 +7,13 @@ namespace ImageFilters
 	{
 		public ColorAdjustingFilter(IColorAdjuster colorAdjuster)
 		{
-			Ensure.NotNull(colorAdjuster, nameof(colorAdjuster));
+			ArgChecker.NotNull(colorAdjuster, nameof(colorAdjuster));
 			_colorAdjuster = colorAdjuster;
 		}
 
 		public void Apply(ref DirectBitmap inputBitmap)
 		{
-			Ensure.NotNull(inputBitmap, nameof(inputBitmap));
+			ArgChecker.NotNull(inputBitmap, nameof(inputBitmap));
 			AdjustColors(inputBitmap);
 		}
 

@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -15,7 +16,7 @@ namespace ImageFilters
 
 		public void Apply(ref DirectBitmap inputBitmap)
 		{
-			Ensure.NotNull(inputBitmap, nameof(inputBitmap));
+			ArgChecker.NotNull(inputBitmap, nameof(inputBitmap));
 			DirectBitmap output = RotateImage(inputBitmap);
 			inputBitmap.Dispose();
 			inputBitmap = output;

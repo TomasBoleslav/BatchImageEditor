@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -6,8 +7,8 @@ namespace ImageFilters
 	{
 		public FixedResizing(int width, int height)
 		{
-			Ensure.Positive(width, nameof(width));
-			Ensure.Positive(height, nameof(height));
+			ArgChecker.Positive(width, nameof(width));
+			ArgChecker.Positive(height, nameof(height));
 			_fixedNewSize = new Size(width, height);
 		}
 

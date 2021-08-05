@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using ImageFilters;
+using ThrowHelpers;
 
 namespace BatchImageEditor
 {
 	public class MedianSettingsModel : IFilterSettingsModel<MedianSettingsModel>
 	{
 		public const int MinRadius = 1;
-		public const int MaxRadius = 20;
+		public const int MaxRadius = 5;
 
 		public MedianSettingsModel()
 		{
@@ -21,7 +22,7 @@ namespace BatchImageEditor
 			}
 			set
 			{
-				Ensure.InRange(value, nameof(value), MinRadius, MaxRadius);
+				ThrowHelpers.ArgChecker.InRange(value, nameof(value), MinRadius, MaxRadius);
 				_radius = value;
 			}
 		}

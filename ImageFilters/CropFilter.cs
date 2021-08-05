@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -12,7 +13,7 @@ namespace ImageFilters
 
 		public void Apply(ref DirectBitmap inputBitmap)
 		{
-			Ensure.NotNull(inputBitmap, nameof(inputBitmap));
+			ArgChecker.NotNull(inputBitmap, nameof(inputBitmap));
 			DirectBitmap output = Crop(inputBitmap);
 			inputBitmap.Dispose();
 			inputBitmap = output;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -31,8 +32,8 @@ namespace ImageFilters
 			{
 				throw new ArgumentException("Percentages of a crop area must belong to the inclusive range of 0 and 1.");
 			}
-			Ensure.Positive(percentageCropArea.Width, nameof(percentageCropArea.Width));
-			Ensure.Positive(percentageCropArea.Height, nameof(percentageCropArea.Height));
+			ArgChecker.Positive(percentageCropArea.Width, nameof(percentageCropArea.Width));
+			ArgChecker.Positive(percentageCropArea.Height, nameof(percentageCropArea.Height));
 		}
 
 		private static bool IsPercentage(float value)

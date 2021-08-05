@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -7,8 +8,8 @@ namespace ImageFilters
 	{
 		public void Apply(ref DirectBitmap input)
 		{
-			Ensure.NotNull(input, nameof(input));
-			Ensure.NotNull(_kernel, nameof(_kernel));
+			ArgChecker.NotNull(input, nameof(input));
+			ArgChecker.NotNull(_kernel, nameof(_kernel));
 			var result = new DirectBitmap(input.Width, input.Height, input.PixelFormat);
 			ApplyKernel(input, result);
 			input.Dispose();
@@ -56,7 +57,7 @@ namespace ImageFilters
 
 		private static void VerifyKernelCorectness(float[][] kernel)
 		{
-			Ensure.NotNull(kernel, nameof(kernel));
+			ArgChecker.NotNull(kernel, nameof(kernel));
 			if (kernel.Length == 0)
 			{
 				throw new ArgumentException("Kernel matrix cannot be empty.");

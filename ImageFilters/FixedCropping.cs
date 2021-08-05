@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -6,8 +7,8 @@ namespace ImageFilters
 	{
 		public FixedCropping(Rectangle fixedCropArea)
 		{
-			Ensure.Positive(fixedCropArea.Width, nameof(fixedCropArea.Width));
-			Ensure.Positive(fixedCropArea.Height, nameof(fixedCropArea.Height));
+			ArgChecker.Positive(fixedCropArea.Width, nameof(fixedCropArea.Width));
+			ArgChecker.Positive(fixedCropArea.Height, nameof(fixedCropArea.Height));
 			_fixedCropArea = fixedCropArea;
 		}
 
