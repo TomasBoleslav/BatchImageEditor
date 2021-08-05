@@ -39,6 +39,8 @@ namespace BatchImageEditor
 			this.mojeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.hahaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.dalsiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this._upButton = new System.Windows.Forms.Button();
+			this._downButton = new System.Windows.Forms.Button();
 			this.contextMenuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -75,14 +77,14 @@ namespace BatchImageEditor
 			this._addButton.UseVisualStyleBackColor = true;
 			this._addButton.Click += new System.EventHandler(this.AddButton_Click);
 			// 
-			// _filterList
+			// _filterListBox
 			// 
 			this._filterListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this._filterListBox.FormattingEnabled = true;
 			this._filterListBox.Location = new System.Drawing.Point(3, 3);
-			this._filterListBox.Name = "_filterList";
+			this._filterListBox.Name = "_filterListBox";
 			this._filterListBox.Size = new System.Drawing.Size(248, 488);
 			this._filterListBox.TabIndex = 5;
 			this._filterListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.FilterList_ItemCheck);
@@ -123,10 +125,34 @@ namespace BatchImageEditor
 			this.dalsiToolStripMenuItem.Size = new System.Drawing.Size(110, 24);
 			this.dalsiToolStripMenuItem.Text = "dalsi";
 			// 
+			// _upButton
+			// 
+			this._upButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this._upButton.Location = new System.Drawing.Point(257, 164);
+			this._upButton.Name = "_upButton";
+			this._upButton.Size = new System.Drawing.Size(40, 40);
+			this._upButton.TabIndex = 6;
+			this._upButton.Text = "▲";
+			this._upButton.UseVisualStyleBackColor = true;
+			this._upButton.Click += new System.EventHandler(this.UpButton_Click);
+			// 
+			// _downButton
+			// 
+			this._downButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this._downButton.Location = new System.Drawing.Point(257, 210);
+			this._downButton.Name = "_downButton";
+			this._downButton.Size = new System.Drawing.Size(40, 40);
+			this._downButton.TabIndex = 7;
+			this._downButton.Text = "▼";
+			this._downButton.UseVisualStyleBackColor = true;
+			this._downButton.Click += new System.EventHandler(this.DownButton_Click);
+			// 
 			// FilterList
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this._downButton);
+			this.Controls.Add(this._upButton);
 			this.Controls.Add(this._filterListBox);
 			this.Controls.Add(this._addButton);
 			this.Controls.Add(this._removeButton);
@@ -149,5 +175,7 @@ namespace BatchImageEditor
 		private System.Windows.Forms.ToolStripMenuItem mojeToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem hahaToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem dalsiToolStripMenuItem;
+		private System.Windows.Forms.Button _upButton;
+		private System.Windows.Forms.Button _downButton;
 	}
 }

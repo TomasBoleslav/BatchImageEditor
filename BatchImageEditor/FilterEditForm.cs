@@ -11,7 +11,7 @@ namespace BatchImageEditor
 		public FilterEditForm()
 		{
 			InitializeComponent();
-			_previewUpdater = new ControlUpdater<DirectBitmap>(_previewControl);
+			_previewUpdater = new UIUpdater<DirectBitmap>(this);
 			_formDisplayed = false;
 		}
 
@@ -47,7 +47,7 @@ namespace BatchImageEditor
 			return this.ShowDialog();
 		}
 
-		private readonly ControlUpdater<DirectBitmap> _previewUpdater;
+		private readonly UIUpdater<DirectBitmap> _previewUpdater;
 		private FilterSettingsBase _currentFilterSettings;
 		private bool _formDisplayed;
 
@@ -66,6 +66,7 @@ namespace BatchImageEditor
 		private void UpdatePreview(DirectBitmap inputImage)
 		{
 			// NOTE: will be called on DisplaySettings, no need to call it explicitly in OpenModally
+			IEnumerable<IImageFilter> filters = _currentFilterSettings.CreateFiltersFromDisplayedSettings();
 			_previewUpdater.UpdateAsync(
 				() =>
 				{
@@ -73,7 +74,7 @@ namespace BatchImageEditor
 					{
 						return null;
 					}
-					return CreatePreviewImage(inputImage);
+					return CreatePreviewImage(inputImage, filters);
 				},
 				image =>
 				{
@@ -82,9 +83,8 @@ namespace BatchImageEditor
 				});
 		}
 
-		private DirectBitmap CreatePreviewImage(DirectBitmap original)
+		private static DirectBitmap CreatePreviewImage(DirectBitmap original, IEnumerable<IImageFilter> filters)
 		{
-			IEnumerable<IImageFilter> filters = _currentFilterSettings.CreateFiltersFromDisplayedSettings();
 			DirectBitmap previewImage = original.Copy();
 			foreach (var filter in filters)
 			{
@@ -98,7 +98,7 @@ namespace BatchImageEditor
 			UpdatePreview(InputImage);
 		}
 
-		private void FilterEditForm_FormClosed(object sender, FormClosedEventArgs e)
+		private void FilterEditForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			_formDisplayed = false;
 		}

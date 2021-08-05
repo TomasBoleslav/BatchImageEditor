@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Collections;
 using System.Windows.Forms;
 using System.Linq;
 using ImageFilters;
@@ -144,5 +145,38 @@ namespace BatchImageEditor
 				() => OnListChanged()
 				));
 		}
+
+		private void UpButton_Click(object sender, EventArgs e)
+		{
+			int selectedIndex = _filterListBox.SelectedIndex;
+			TrySwapSettings(selectedIndex, selectedIndex - 1);
+		}
+
+		private void DownButton_Click(object sender, EventArgs e)
+		{
+			int selectedIndex = _filterListBox.SelectedIndex;
+			TrySwapSettings(selectedIndex, selectedIndex + 1);
+		}
+
+		private void TrySwapSettings(int index1, int index2)
+		{
+			int lastIndex = _filterListBox.Items.Count - 1;
+			if (index1 < 0 || lastIndex < index1 ||
+				index2 < 0 || lastIndex < index2)
+			{
+				return;
+			}
+			SwapListItems(_filterListBox.Items, index1, index2);
+			SwapListItems(_filterSettingsList, index1, index2);
+			OnListChanged();
+		}
+
+		private static void SwapListItems(IList list, int index1, int index2)
+		{
+			object temp = list[index1];
+			list[index1] = list[index2];
+			list[index2] = temp;
+		}
+
 	}
 }

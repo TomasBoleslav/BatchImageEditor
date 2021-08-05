@@ -11,7 +11,7 @@ namespace BatchImageEditor
 		public EditScene()
 		{
 			InitializeComponent();
-			_previewUpdater = new ControlUpdater<DirectBitmap>(_previewControl);
+			_previewUpdater = new UIUpdater<DirectBitmap>(_previewControl);
 		}
 
 		public void SetFilenames(IReadOnlySet<string> filenames)
@@ -24,7 +24,7 @@ namespace BatchImageEditor
 			return _filterListControl.CreateFilters();
 		}
 
-		private readonly ControlUpdater<DirectBitmap> _previewUpdater;
+		private readonly UIUpdater<DirectBitmap> _previewUpdater;
 
 		private void FileSelectionControl_SelectionChanged(object sender, EventArgs e)
 		{

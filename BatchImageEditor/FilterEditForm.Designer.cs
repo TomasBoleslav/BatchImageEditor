@@ -106,7 +106,7 @@ namespace BatchImageEditor
 			this.Controls.Add(this._previewGroup);
 			this.Name = "FilterEditForm";
 			this.Text = "FilterEditForm";
-			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FilterEditForm_FormClosed);
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FilterEditForm_FormClosing);
 			this._previewGroup.ResumeLayout(false);
 			this.ResumeLayout(false);
 
