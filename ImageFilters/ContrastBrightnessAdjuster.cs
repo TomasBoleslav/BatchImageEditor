@@ -10,8 +10,8 @@ namespace ImageFilters
 	
 		public ContrastBrightnessAdjuster(int contrastChange, int brightnessChange)
 		{
-			ArgChecker.InRange(contrastChange, nameof(contrastChange), MinChange, MaxChange);
-			ArgChecker.InRange(brightnessChange, nameof(brightnessChange), MinChange, MaxChange);
+			ArgChecker.InRangeInclusive(contrastChange, nameof(contrastChange), MinChange, MaxChange);
+			ArgChecker.InRangeInclusive(brightnessChange, nameof(brightnessChange), MinChange, MaxChange);
 			_contrastFactor = ComputeContrastFactor(contrastChange);
 			_brightnessChange = brightnessChange;
 		}

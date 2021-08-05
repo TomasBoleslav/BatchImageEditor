@@ -22,7 +22,7 @@ namespace BatchImageEditor
 			}
 			set
 			{
-				ThrowHelpers.ArgChecker.InRange(value, nameof(value), MinRadius, MaxRadius);
+				ThrowHelpers.ArgChecker.InRangeInclusive(value, nameof(value), MinRadius, MaxRadius);
 				_radius = value;
 			}
 		}

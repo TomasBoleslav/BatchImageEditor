@@ -90,12 +90,23 @@ namespace ThrowHelpers
 		}
 
 		// The same for ThrowIfLessThan, ThrowIfGreaterThan, use T.ToString()
-		public static void InRange<T>(IComparable<T> value, string name, T lowerBound, T upperBound)
+		public static void InRangeInclusive<T>(IComparable<T> value, string name, T lowerBound, T upperBound)
 		{
 			if (value.LessThan(lowerBound) || value.GreaterThan(upperBound))
 			{
 				throw new ArgumentException(
 					$"Value of {name} must be in the inclusive range from {lowerBound} to {upperBound}.",
+					name
+					);
+			}
+		}
+
+		public static void InRangeExclusive<T>(IComparable<T> value, string name, T lowerBound, T upperBound)
+		{
+			if (value.LessThanOrEqualTo(lowerBound) || value.GreaterThanOrEqualTo(upperBound))
+			{
+				throw new ArgumentException(
+					$"Value of {name} must be in the exclusive range from {lowerBound} to {upperBound}.",
 					name
 					);
 			}
