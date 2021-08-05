@@ -13,23 +13,12 @@ namespace BatchImageEditor
 		public FilterList()
 		{
 			InitializeComponent();
-			_filterEditForm = new FilterEditForm();
 			_settingsFactories = CreateSettingsFactories();
 			_filterMenu = CreateFilterMenu();
 			_filterSettingsList = new List<FilterSettingsBase>();
 		}
 
-		public DirectBitmap InputImage
-		{
-			get
-			{
-				return _filterEditForm.InputImage;
-			}
-			set
-			{
-				_filterEditForm.InputImage = value;
-			}
-		}
+		public DirectBitmap InputImage { get; set; }
 
 		public event EventHandler ListChanged;
 
@@ -50,7 +39,6 @@ namespace BatchImageEditor
 			ListChanged?.Invoke(this, EventArgs.Empty);
 		}
 
-		private readonly FilterEditForm _filterEditForm;
 		private readonly ContextMenuStrip _filterMenu;
 		private readonly FilterSettingsFactoryStorage _settingsFactories;
 		private readonly List<FilterSettingsBase> _filterSettingsList;
@@ -89,15 +77,20 @@ namespace BatchImageEditor
 			string settingsName = ((ToolStripMenuItem)sender).Text;
 			IFactory<FilterSettingsBase> settingsFactory = _settingsFactories.GetFactory(settingsName);
 			FilterSettingsBase filterSettings = settingsFactory.CreateInstance();
-			DialogResult result = _filterEditForm.OpenModally(filterSettings);
-			if (result == DialogResult.OK)
+			using (var settingsEditDialog = new FilterSettingsEditDialog())
 			{
-				_filterListBox.Items.Add(settingsName, isChecked: true);  // triggers ItemCheck event
-				_filterSettingsList.Add(filterSettings);
-			}
-			else
-			{
-				filterSettings.Dispose();
+				settingsEditDialog.InputImage = InputImage;
+				settingsEditDialog.FilterSettings = filterSettings;
+				DialogResult result = settingsEditDialog.ShowDialog();
+				if (result == DialogResult.OK)
+				{
+					_filterListBox.Items.Add(settingsName, isChecked: true);  // triggers ItemCheck event
+					_filterSettingsList.Add(filterSettings);
+				}
+				else
+				{
+					filterSettings.Dispose();
+				}
 			}
 		}
 
@@ -131,10 +124,15 @@ namespace BatchImageEditor
 				return;
 			}
 			FilterSettingsBase selectedSettings = _filterSettingsList[selectedIndex];
-			DialogResult result = _filterEditForm.OpenModally(selectedSettings);
-			if (result == DialogResult.OK)
+			using (var settingsEditDialog = new FilterSettingsEditDialog())
 			{
-				OnListChanged();
+				settingsEditDialog.InputImage = InputImage;
+				settingsEditDialog.FilterSettings = selectedSettings;
+				DialogResult result = settingsEditDialog.ShowDialog();
+				if (result == DialogResult.OK)
+				{
+					OnListChanged();
+				}
 			}
 		}
 
@@ -159,6 +157,10 @@ namespace BatchImageEditor
 		private void MoveSelectedSettings(int direction)
 		{
 			int selectedIndex = _filterListBox.SelectedIndex;
+			if (selectedIndex == -1)
+			{
+				return;
+			}
 			int targetIndex = _filterListBox.SelectedIndex + direction;
 			int lastIndex = _filterListBox.Items.Count - 1;
 			if (targetIndex < 0 || lastIndex < targetIndex)

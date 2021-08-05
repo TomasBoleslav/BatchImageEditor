@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 using ImageFilters;
 
 namespace BatchImageEditor
@@ -11,7 +12,7 @@ namespace BatchImageEditor
 		public EditScene()
 		{
 			InitializeComponent();
-			_previewUpdater = new UIUpdater<DirectBitmap>(_previewControl);
+			_previewUpdater = new UIUpdater();
 		}
 
 		public void SetFilenames(IReadOnlySet<string> filenames)
@@ -24,18 +25,20 @@ namespace BatchImageEditor
 			return _filterListControl.CreateFilters();
 		}
 
-		private readonly UIUpdater<DirectBitmap> _previewUpdater;
+		private readonly UIUpdater _previewUpdater;
 
 		private void FileSelectionControl_SelectionChanged(object sender, EventArgs e)
 		{
 			_previewControl.OriginalImage?.Dispose();
 			_previewControl.OriginalImage = null;
-			_previewUpdater.UpdateAsync(() => null,
-				_ =>
+			_filterListControl.InputImage = null;
+			_previewUpdater.Update(
+				() =>
 				{
+					// Run this in Update, there can be old updates still pending
 					_previewControl.PreviewImage?.Dispose();
 					_previewControl.PreviewImage = null;
-					_filterListControl.InputImage = null;
+					return Task.CompletedTask;
 				});
 			string selectedFilename = _fileSelectionControl.SelectedFilename;
 			if (selectedFilename == null)
@@ -44,45 +47,59 @@ namespace BatchImageEditor
 			}
 			try
 			{
-				_previewControl.OriginalImage = DirectBitmap.FromFile(selectedFilename);
+				DirectBitmap loadedImage = DirectBitmap.FromFile(selectedFilename);
+				_previewControl.OriginalImage = loadedImage;
+				_filterListControl.InputImage = loadedImage;
 			}
 			catch (IOException)
 			{
 				return;
 			}
-			_previewUpdater.UpdateAsync(
-				() => CreatePreviewImage(_previewControl.OriginalImage),
-				image =>
-				{
-					_previewControl.PreviewImage = image;
-					_filterListControl.InputImage = image;
-				});
+			UpdatePreview();
 		}
 
 		private void FilterListControl_ListChanged(object sender, EventArgs e)
 		{
-			if (_previewControl.OriginalImage != null)
-			{
-				_previewUpdater.UpdateAsync(
-					() => CreatePreviewImage(_previewControl.OriginalImage),
-					image =>
-					{
-						_previewControl.PreviewImage?.Dispose();
-						_previewControl.PreviewImage = image;
-						_filterListControl.InputImage = image;
-					});
-			}
+			UpdatePreview();
 		}
 
-		private DirectBitmap CreatePreviewImage(DirectBitmap original)
+		private void UpdatePreview()
 		{
-			IEnumerable<IImageFilter> filters = _filterListControl.CreateFilters();
-			DirectBitmap previewImage = original.Copy();
+			_previewUpdater.Update(() =>
+			{
+				if (_previewControl.OriginalImage == null)
+				{
+					return Task.CompletedTask;
+				}
+				// Create filters and copy bitmap synchronously - they are accessible from outside, potential race condition
+				IEnumerable<IImageFilter> filters = _filterListControl.CreateFilters();
+				DirectBitmap inputImageCopy = _previewControl.OriginalImage.Copy();
+				return Task.Run(
+					() =>
+					{
+						ApplyFilters(ref inputImageCopy, filters);
+						return inputImageCopy;
+					}).ContinueWith(
+					task =>
+					{
+						DirectBitmap previewImage = task.Result;
+						if (this.IsDisposed)
+						{
+							previewImage?.Dispose();
+							return;
+						}
+						_previewControl.PreviewImage?.Dispose();
+						_previewControl.PreviewImage = previewImage;
+					}, TaskScheduler.FromCurrentSynchronizationContext());
+			});
+		}
+
+		private static void ApplyFilters(ref DirectBitmap image, IEnumerable<IImageFilter> filters)
+		{
 			foreach (var filter in filters)
 			{
-				filter.Apply(ref previewImage);
+				filter.Apply(ref image);
 			}
-			return previewImage;
 		}
 	}
 }
