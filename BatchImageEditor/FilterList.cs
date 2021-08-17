@@ -52,6 +52,7 @@ namespace BatchImageEditor
 			settingsFactories.Add(new Instantiator<FlipFilterSettings>());
 			settingsFactories.Add(new Instantiator<ContrastBrightnessFilterSettings>());
 			settingsFactories.Add(new Instantiator<RotationFilterSettings>());
+			settingsFactories.Add(new Instantiator<ColorChannelsFilterSettings>());
 			return settingsFactories;
 		}
 
@@ -86,6 +87,7 @@ namespace BatchImageEditor
 		{
 			var rootItem = new ToolStripMenuItem("Adjust Colors");
 			rootItem.DropDownItems.Add(CreateSettingsMenuItem<ContrastBrightnessFilterSettings>());
+			rootItem.DropDownItems.Add(CreateSettingsMenuItem<ColorChannelsFilterSettings>());
 			return rootItem;
 		}
 

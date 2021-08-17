@@ -22,6 +22,7 @@ namespace BatchImageEditor
 			{ typeof(FlipFilterSettings), "Flip" },
 			{ typeof(ContrastBrightnessFilterSettings), "Contrast And Brightness" },
 			{ typeof(RotationFilterSettings), "Rotate" },
+			{ typeof(ColorChannelsFilterSettings), "Channels" },
 		};
 	}
 }
