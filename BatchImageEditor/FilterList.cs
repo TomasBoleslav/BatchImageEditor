@@ -50,6 +50,8 @@ namespace BatchImageEditor
 			settingsFactories.Add(new Instantiator<ResizingFilterSettings>());
 			settingsFactories.Add(new Instantiator<ImageOverlayFilterSettings>());
 			settingsFactories.Add(new Instantiator<FlipFilterSettings>());
+			settingsFactories.Add(new Instantiator<ContrastBrightnessFilterSettings>());
+			settingsFactories.Add(new Instantiator<RotationFilterSettings>());
 			return settingsFactories;
 		}
 
@@ -58,6 +60,7 @@ namespace BatchImageEditor
 			var menu = new ContextMenuStrip();
 			menu.Items.Add(CreateTransformationMenuItems());
 			menu.Items.Add(CreateNoiseReductionMenuItems());
+			menu.Items.Add(CreateColorAdjustmentMenuItems());
 			menu.Items.Add(CreateSettingsMenuItem<ImageOverlayFilterSettings>());
 			return menu;
 		}
@@ -72,9 +75,17 @@ namespace BatchImageEditor
 		// resizing, rotation, flip
 		private ToolStripMenuItem CreateTransformationMenuItems()
 		{
-			var rootItem = new ToolStripMenuItem("Transformation");
+			var rootItem = new ToolStripMenuItem("Transform");
 			rootItem.DropDownItems.Add(CreateSettingsMenuItem<ResizingFilterSettings>());
 			rootItem.DropDownItems.Add(CreateSettingsMenuItem<FlipFilterSettings>());
+			rootItem.DropDownItems.Add(CreateSettingsMenuItem<RotationFilterSettings>());
+			return rootItem;
+		}
+
+		private ToolStripMenuItem CreateColorAdjustmentMenuItems()
+		{
+			var rootItem = new ToolStripMenuItem("Adjust Colors");
+			rootItem.DropDownItems.Add(CreateSettingsMenuItem<ContrastBrightnessFilterSettings>());
 			return rootItem;
 		}
 

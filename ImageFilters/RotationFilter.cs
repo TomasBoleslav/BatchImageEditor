@@ -6,9 +6,9 @@ using ThrowHelpers;
 
 namespace ImageFilters
 {
-	public sealed class RotatingFilter : IImageFilter
+	public sealed class RotationFilter : IImageFilter
 	{
-		public RotatingFilter(float angleDeg, Color backgroundColor)
+		public RotationFilter(float angleDeg, Color backgroundColor)
 		{
 			_angleDeg = angleDeg;
 			_backgroundColor = backgroundColor;

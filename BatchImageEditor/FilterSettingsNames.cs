@@ -20,6 +20,8 @@ namespace BatchImageEditor
 			{ typeof(ResizingFilterSettings), "Resize" },
 			{ typeof(ImageOverlayFilterSettings), "Image Overlay" },
 			{ typeof(FlipFilterSettings), "Flip" },
+			{ typeof(ContrastBrightnessFilterSettings), "Contrast And Brightness" },
+			{ typeof(RotationFilterSettings), "Rotate" },
 		};
 	}
 }
