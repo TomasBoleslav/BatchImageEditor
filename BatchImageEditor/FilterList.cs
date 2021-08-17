@@ -49,6 +49,7 @@ namespace BatchImageEditor
 			settingsFactories.Add(new Instantiator<MedianFilterSettings>());
 			settingsFactories.Add(new Instantiator<ResizingFilterSettings>());
 			settingsFactories.Add(new Instantiator<ImageOverlayFilterSettings>());
+			settingsFactories.Add(new Instantiator<FlipFilterSettings>());
 			return settingsFactories;
 		}
 
@@ -57,14 +58,14 @@ namespace BatchImageEditor
 			var menu = new ContextMenuStrip();
 			menu.Items.Add(CreateTransformationMenuItems());
 			menu.Items.Add(CreateNoiseReductionMenuItems());
-			menu.Items.Add(CreateMenuItemForSettings<ImageOverlayFilterSettings>());
+			menu.Items.Add(CreateSettingsMenuItem<ImageOverlayFilterSettings>());
 			return menu;
 		}
 
 		private ToolStripMenuItem CreateNoiseReductionMenuItems()
 		{
 			var rootItem = new ToolStripMenuItem("Noise reduction");
-			rootItem.DropDownItems.Add(CreateMenuItemForSettings<MedianFilterSettings>());
+			rootItem.DropDownItems.Add(CreateSettingsMenuItem<MedianFilterSettings>());
 			return rootItem;
 		}
 
@@ -72,11 +73,12 @@ namespace BatchImageEditor
 		private ToolStripMenuItem CreateTransformationMenuItems()
 		{
 			var rootItem = new ToolStripMenuItem("Transformation");
-			rootItem.DropDownItems.Add(CreateMenuItemForSettings<ResizingFilterSettings>());
+			rootItem.DropDownItems.Add(CreateSettingsMenuItem<ResizingFilterSettings>());
+			rootItem.DropDownItems.Add(CreateSettingsMenuItem<FlipFilterSettings>());
 			return rootItem;
 		}
 
-		private ToolStripMenuItem CreateMenuItemForSettings<T>() where T : FilterSettingsBase
+		private ToolStripMenuItem CreateSettingsMenuItem<T>() where T : FilterSettingsBase
 		{
 			string settingsName = FilterSettingsNames.GetName(typeof(T));
 			var menuItem = new ToolStripMenuItem(settingsName);

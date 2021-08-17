@@ -19,6 +19,7 @@ namespace BatchImageEditor
 			{ typeof(MedianFilterSettings), "Median" },
 			{ typeof(ResizingFilterSettings), "Resize" },
 			{ typeof(ImageOverlayFilterSettings), "Image Overlay" },
+			{ typeof(FlipFilterSettings), "Flip" },
 		};
 	}
 }

@@ -11,7 +11,7 @@ namespace BatchImageEditor
 		public ImageOverlayFilterSettings()
 		{
 			InitializeComponent();
-			_imagePlacementBoxManager = new EnumComboBoxManager<ImagePlacement>(_placementComboBox, ImagePositionToText);
+			_imagePlacementBoxManager = new EnumComboBoxManager<ImagePlacement>(_placementComboBox, ImagePlacementToText);
 			_imagePlacementBoxManager.SelectedValueChanged += ImagePlacementBox_SelectedValueChanged;
 			InitializeDeltaInputField(_dXInput);
 			InitializeDeltaInputField(_dYInput);
@@ -38,7 +38,7 @@ namespace BatchImageEditor
 			base.Dispose(disposing);
 		}
 
-		private static readonly Dictionary<ImagePlacement, string> ImagePositionToText = new()
+		private static readonly Dictionary<ImagePlacement, string> ImagePlacementToText = new()
 		{
 			{ ImagePlacement.TopLeft, "Top Left" },
 			{ ImagePlacement.TopRight, "Top Right" },
