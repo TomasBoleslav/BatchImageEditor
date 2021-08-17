@@ -31,7 +31,7 @@ namespace BatchImageEditor
 		private const float PercentageIncrement = 0.1f;
 		private readonly EnumComboBoxManager<ResizingType> _resizingTypeBoxManager;
 
-		private bool _inputFieldEventsEnabled = true;
+		private bool _inputFieldsEnabled = true;
 
 		private static readonly Dictionary<ResizingType, string> ResizingTypesToText = new()
 		{
@@ -50,18 +50,18 @@ namespace BatchImageEditor
 
 		private void UpdateSizeForResizingByFactor()
 		{
-			_inputFieldEventsEnabled = false;
+			_inputFieldsEnabled = false;
 			ChangeInputFieldToPercents(_widthInput, DisplayedModel.WidthPercentage);
 			ChangeInputFieldToPercents(_heightInput, DisplayedModel.HeightPercentage);
-			_inputFieldEventsEnabled = true;
+			_inputFieldsEnabled = true;
 		}
 
 		private void UpdateSizeForFixedResizing()
 		{
-			_inputFieldEventsEnabled = false;
+			_inputFieldsEnabled = false;
 			ChangeInputFieldToPixels(_widthInput, DisplayedModel.FixedWidth);
 			ChangeInputFieldToPixels(_heightInput, DisplayedModel.FixedHeight);
-			_inputFieldEventsEnabled = true;
+			_inputFieldsEnabled = true;
 		}
 
 		private static void ChangeInputFieldToPercents(NumericUpDown inputField, float value)
@@ -84,7 +84,7 @@ namespace BatchImageEditor
 
 		private void WidthInput_ValueChanged(object sender, EventArgs e)
 		{
-			if (!_inputFieldEventsEnabled)
+			if (!_inputFieldsEnabled)
 			{
 				return;
 			}
@@ -102,7 +102,7 @@ namespace BatchImageEditor
 
 		private void HeightInput_ValueChanged(object sender, EventArgs e)
 		{
-			if (!_inputFieldEventsEnabled)
+			if (!_inputFieldsEnabled)
 			{
 				return;
 			}
