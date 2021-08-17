@@ -89,6 +89,17 @@ namespace ThrowHelpers
 			}
 		}
 
+		public static void GreaterThanOrEqualTo<T>(IComparable<T> value, string name, T other)
+		{
+			if (!value.GreaterThanOrEqualTo(other))
+			{
+				throw new ArgumentException(
+					$"Value of {name} must be greater than or equal to {other}.",
+					name
+					);
+			}
+		}
+
 		// The same for ThrowIfLessThan, ThrowIfGreaterThan, use T.ToString()
 		public static void InRangeInclusive<T>(IComparable<T> value, string name, T lowerBound, T upperBound)
 		{

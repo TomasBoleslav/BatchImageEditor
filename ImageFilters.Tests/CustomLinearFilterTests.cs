@@ -1,7 +1,5 @@
 ﻿using Xunit;
-using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 
 namespace ImageFilters.Tests
 {
@@ -10,7 +8,7 @@ namespace ImageFilters.Tests
 		[Fact]
 		public void Apply_AssignsNewBitmapToParameter()
 		{
-			var directBitmap = new DirectBitmap(5, 5, PixelFormat.Format24bppRgb);
+			var directBitmap = new DirectBitmap(5, 5);
 			var oldDirectBitmap = directBitmap;
 			float[][] kernel = MathHelper.CreateMatrixOfOnes(1, 1);
 			var filter = new CustomLinearFilter(kernel);
@@ -23,7 +21,7 @@ namespace ImageFilters.Tests
 		[Fact]
 		public void Apply_DisposesOldBitmap()
 		{
-			var directBitmap = new DirectBitmap(5, 5, PixelFormat.Format24bppRgb);
+			var directBitmap = new DirectBitmap(5, 5);
 			var oldDirectBitmap = directBitmap;
 			float[][] kernel = MathHelper.CreateMatrixOfOnes(1, 1);
 			var filter = new CustomLinearFilter(kernel);
@@ -34,21 +32,19 @@ namespace ImageFilters.Tests
 		}
 
 		[Theory]
-		[InlineData(1, 1, 1, PixelFormat.Format24bppRgb, 1, 2, 3)]
-		[InlineData(1, 1, 3, PixelFormat.Format24bppRgb, 1, 2, 3)]
-		[InlineData(5, 5, 1, PixelFormat.Format24bppRgb, 1, 2, 3)]
-		[InlineData(5, 5, 3, PixelFormat.Format24bppRgb, 1, 2, 3)]
-		[InlineData(5, 5, 15, PixelFormat.Format24bppRgb, 1, 2, 3)]
-		[InlineData(5, 5, 3, PixelFormat.Format32bppRgb, 1, 2, 3)]
-		[InlineData(5, 5, 3, PixelFormat.Format32bppArgb, 1, 2, 3)]
-		public void Apply_KernelOfOnes_ResultIsSumOfNeighborColors(int width, int height, int kernelSize, PixelFormat pixelFormat, byte r, byte g, byte b, byte a = 255)
+		[InlineData(1, 1, 1, 10, 20, 30)]
+		[InlineData(1, 1, 3, 10, 20, 30)]
+		[InlineData(5, 5, 1, 10, 20, 30)]
+		[InlineData(5, 5, 3, 10, 20, 30, 40)]
+		[InlineData(5, 5, 15, 10, 20, 30, 40)]
+		public void Apply_KernelOfOnes_ResultIsSumOfNeighborColors(int width, int height, int kernelSize, byte r, byte g, byte b, byte a = 255)
 		{
 			Color clearColor = Color.FromArgb(a, r, g, b);
-			var directBitmap = new DirectBitmap(width, height, pixelFormat);
-			ClearBitmap(directBitmap, clearColor);
+			var directBitmap = new DirectBitmap(width, height);
+			DirectBitmapHelper.Clear(directBitmap, clearColor);
 			float[][] kernel = MathHelper.CreateMatrixOfOnes(kernelSize, kernelSize);
 			var filter = new CustomLinearFilter(kernel);
-			Color expectedColor = clearColor.Multiply(kernelSize * kernelSize);
+			Color expectedColor = clearColor.Multiply(kernelSize * kernelSize).WithAlpha(a);
 
 			filter.Apply(ref directBitmap);
 
@@ -58,17 +54,6 @@ namespace ImageFilters.Tests
 				{
 					Color actualColor = directBitmap.GetPixel(x, y);
 					Assert.Equal(expectedColor, actualColor);
-				}
-			}
-		}
-
-		private static void ClearBitmap(DirectBitmap bitmap, Color color)
-		{
-			for (int x = 0; x < bitmap.Width; x++)
-			{
-				for (int y = 0; y < bitmap.Height; y++)
-				{
-					bitmap.SetPixel(x, y, color);
 				}
 			}
 		}

@@ -5,8 +5,6 @@ namespace BatchImageEditor
 {
 	public interface IFilterSettingsModel<TModel>
 	{
-		void Reset();
-
 		TModel Copy();
 
 		IEnumerable<IImageFilter> CreateFilters();

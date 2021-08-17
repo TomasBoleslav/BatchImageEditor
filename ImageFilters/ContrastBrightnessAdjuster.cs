@@ -18,10 +18,11 @@ namespace ImageFilters
 
 		public Color Adjust(Color color)
 		{
-			return Utils.CreateColorByClamping(
-				AdjustChannel(color.R),
-				AdjustChannel(color.G),
-				AdjustChannel(color.B)
+			return Color.FromArgb(
+				color.A,
+				Utils.ClampColorChannel(AdjustChannel(color.R)),
+				Utils.ClampColorChannel(AdjustChannel(color.G)),
+				Utils.ClampColorChannel(AdjustChannel(color.B))
 				);
 		}
 

@@ -5,23 +5,24 @@ namespace ImageFilters
 {
 	public sealed class ResizingByFactor : IResizingAlgorithm
 	{
-		public ResizingByFactor(float factorWidth, float factorHeight)
+		public ResizingByFactor(float widthFactor, float heightFactor)
 		{
-			ArgChecker.Positive(factorWidth, nameof(factorWidth));
-			_factorWidth = factorWidth;
-			_factorHeight = factorHeight;
+			ArgChecker.Positive(widthFactor, nameof(widthFactor));
+			ArgChecker.Positive(heightFactor, nameof(heightFactor));
+			_widthFactor = widthFactor;
+			_heightFactor = heightFactor;
 		}
 
 		public Size ComputeNewSize(Size oldSize)
 		{
 			return new Size
 			{
-				Width = (int)(oldSize.Width * _factorWidth),
-				Height = (int)(oldSize.Height * _factorHeight)
+				Width = (int)(oldSize.Width * _widthFactor),
+				Height = (int)(oldSize.Height * _heightFactor)
 			};
 		}
 
-		private readonly float _factorWidth;
-		private readonly float _factorHeight;
+		private readonly float _widthFactor;
+		private readonly float _heightFactor;
 	}
 }

@@ -29,80 +29,111 @@ namespace BatchImageEditor
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
-			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-			this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+			this._resizingTypeBox = new System.Windows.Forms.ComboBox();
+			this._typeLabel = new System.Windows.Forms.Label();
+			this._widthLabel = new System.Windows.Forms.Label();
+			this._heightLabel = new System.Windows.Forms.Label();
+			this._widthInput = new System.Windows.Forms.NumericUpDown();
+			this._heightInput = new System.Windows.Forms.NumericUpDown();
+			((System.ComponentModel.ISupportInitialize)(this._widthInput)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this._heightInput)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// comboBox1
+			// _resizingTypeBox
 			// 
-			this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Location = new System.Drawing.Point(76, 3);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(151, 28);
-			this.comboBox1.TabIndex = 0;
+			this._resizingTypeBox.FormattingEnabled = true;
+			this._resizingTypeBox.Location = new System.Drawing.Point(77, 3);
+			this._resizingTypeBox.Name = "_resizingTypeBox";
+			this._resizingTypeBox.Size = new System.Drawing.Size(150, 28);
+			this._resizingTypeBox.TabIndex = 0;
 			// 
-			// label1
+			// _typeLabel
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(3, 6);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(43, 20);
-			this.label1.TabIndex = 1;
-			this.label1.Text = "Type:";
+			this._typeLabel.AutoSize = true;
+			this._typeLabel.Location = new System.Drawing.Point(3, 6);
+			this._typeLabel.Name = "_typeLabel";
+			this._typeLabel.Size = new System.Drawing.Size(43, 20);
+			this._typeLabel.TabIndex = 1;
+			this._typeLabel.Text = "Type:";
 			// 
-			// label2
+			// _widthLabel
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(3, 39);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(52, 20);
-			this.label2.TabIndex = 2;
-			this.label2.Text = "Width:";
+			this._widthLabel.AutoSize = true;
+			this._widthLabel.Location = new System.Drawing.Point(3, 39);
+			this._widthLabel.Name = "_widthLabel";
+			this._widthLabel.Size = new System.Drawing.Size(52, 20);
+			this._widthLabel.TabIndex = 2;
+			this._widthLabel.Text = "Width:";
 			// 
-			// label3
+			// _heightLabel
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(3, 72);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(57, 20);
-			this.label3.TabIndex = 3;
-			this.label3.Text = "Height:";
+			this._heightLabel.AutoSize = true;
+			this._heightLabel.Location = new System.Drawing.Point(3, 72);
+			this._heightLabel.Name = "_heightLabel";
+			this._heightLabel.Size = new System.Drawing.Size(57, 20);
+			this._heightLabel.TabIndex = 3;
+			this._heightLabel.Text = "Height:";
 			// 
-			// numericUpDown1
+			// _widthInput
 			// 
-			this.numericUpDown1.Location = new System.Drawing.Point(76, 37);
-			this.numericUpDown1.Name = "numericUpDown1";
-			this.numericUpDown1.Size = new System.Drawing.Size(100, 27);
-			this.numericUpDown1.TabIndex = 4;
+			this._widthInput.Location = new System.Drawing.Point(77, 37);
+			this._widthInput.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+			this._widthInput.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this._widthInput.Name = "_widthInput";
+			this._widthInput.Size = new System.Drawing.Size(100, 27);
+			this._widthInput.TabIndex = 4;
+			this._widthInput.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+			this._widthInput.ValueChanged += new System.EventHandler(this.WidthInput_ValueChanged);
 			// 
-			// numericUpDown2
+			// _heightInput
 			// 
-			this.numericUpDown2.Location = new System.Drawing.Point(76, 70);
-			this.numericUpDown2.Name = "numericUpDown2";
-			this.numericUpDown2.Size = new System.Drawing.Size(100, 27);
-			this.numericUpDown2.TabIndex = 5;
+			this._heightInput.Location = new System.Drawing.Point(77, 70);
+			this._heightInput.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+			this._heightInput.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this._heightInput.Name = "_heightInput";
+			this._heightInput.Size = new System.Drawing.Size(100, 27);
+			this._heightInput.TabIndex = 5;
+			this._heightInput.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+			this._heightInput.ValueChanged += new System.EventHandler(this.HeightInput_ValueChanged);
 			// 
 			// ResizingFilterSettings
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.numericUpDown2);
-			this.Controls.Add(this.numericUpDown1);
-			this.Controls.Add(this.label3);
-			this.Controls.Add(this.label2);
-			this.Controls.Add(this.label1);
-			this.Controls.Add(this.comboBox1);
+			this.Controls.Add(this._heightInput);
+			this.Controls.Add(this._widthInput);
+			this.Controls.Add(this._heightLabel);
+			this.Controls.Add(this._widthLabel);
+			this.Controls.Add(this._typeLabel);
+			this.Controls.Add(this._resizingTypeBox);
 			this.Name = "ResizingFilterSettings";
 			this.Size = new System.Drawing.Size(230, 123);
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this._widthInput)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this._heightInput)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -110,11 +141,11 @@ namespace BatchImageEditor
 
 		#endregion
 
-		private System.Windows.Forms.ComboBox comboBox1;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.NumericUpDown numericUpDown1;
-		private System.Windows.Forms.NumericUpDown numericUpDown2;
+		private System.Windows.Forms.ComboBox _resizingTypeBox;
+		private System.Windows.Forms.Label _typeLabel;
+		private System.Windows.Forms.Label _widthLabel;
+		private System.Windows.Forms.Label _heightLabel;
+		private System.Windows.Forms.NumericUpDown _widthInput;
+		private System.Windows.Forms.NumericUpDown _heightInput;
 	}
 }

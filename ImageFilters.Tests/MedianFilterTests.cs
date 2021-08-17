@@ -1,7 +1,5 @@
 ﻿using Xunit;
-using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 
 namespace ImageFilters.Tests
 {
@@ -10,7 +8,7 @@ namespace ImageFilters.Tests
 		[Fact]
 		public void Apply_AssignsNewBitmapToParameter()
 		{
-			var directBitmap = new DirectBitmap(5, 5, PixelFormat.Format24bppRgb);
+			var directBitmap = new DirectBitmap(5, 5);
 			var oldDirectBitmap = directBitmap;
 			var filter = new MedianFilter(1);
 
@@ -22,7 +20,7 @@ namespace ImageFilters.Tests
 		[Fact]
 		public void Apply_DisposesOldBitmap()
 		{
-			var directBitmap = new DirectBitmap(5, 5, PixelFormat.Format24bppRgb);
+			var directBitmap = new DirectBitmap(5, 5);
 			var oldDirectBitmap = directBitmap;
 			var filter = new MedianFilter(1);
 
@@ -32,17 +30,16 @@ namespace ImageFilters.Tests
 		}
 
 		[Theory]
-		[InlineData(1, 1, PixelFormat.Format24bppRgb, 1, 2, 3)]
-		[InlineData(5, 1, PixelFormat.Format24bppRgb, 1, 2, 3)]
-		[InlineData(5, 10, PixelFormat.Format24bppRgb, 1, 2, 3)]
-		[InlineData(5, 1, PixelFormat.Format32bppRgb, 1, 2, 3)]
-		[InlineData(5, 1, PixelFormat.Format32bppArgb, 1, 2, 3)]
+		[InlineData(1, 1, 10, 20, 30)]
+		[InlineData(5, 1, 10, 20, 30)]
+		[InlineData(5, 10, 10, 20, 30)]
+		[InlineData(5, 1, 10, 20, 30, 40)]
 		public void Apply_BitmapWithOneColor_ResultHasSameColor(
-			int bitmapSize, int radius, PixelFormat pixelFormat, byte r, byte g, byte b, byte a = 255)
+			int bitmapSize, int radius, byte r, byte g, byte b, byte a = 255)
 		{
 			Color clearColor = Color.FromArgb(a, r, g, b);
-			var directBitmap = new DirectBitmap(bitmapSize, bitmapSize, pixelFormat);
-			BitmapHelper.Clear(directBitmap, clearColor);
+			var directBitmap = new DirectBitmap(bitmapSize, bitmapSize);
+			DirectBitmapHelper.Clear(directBitmap, clearColor);
 			var filter = new MedianFilter(radius);
 			Color expectedColor = clearColor;
 
@@ -59,16 +56,14 @@ namespace ImageFilters.Tests
 		}
 
 		[Theory]
-		[InlineData(3, 1, 1, PixelFormat.Format24bppRgb)]
-		[InlineData(5, 2, 2, PixelFormat.Format24bppRgb)]
-		[InlineData(5, 2, 3, PixelFormat.Format24bppRgb)]
-		[InlineData(5, 2, 2, PixelFormat.Format32bppRgb)]
-		[InlineData(5, 2, 2, PixelFormat.Format32bppArgb)]
+		[InlineData(3, 1, 1)]
+		[InlineData(5, 2, 2)]
+		[InlineData(5, 2, 3)]
 		public void Apply_InnerPixelAndIncreasingColors_ResultHasSameColor(
-			int bitmapSize, int x, int y, PixelFormat pixelFormat)
+			int bitmapSize, int x, int y)
 		{
 			int radius = 1;
-			var directBitmap = CreateBitmapWithIncreasingColor(bitmapSize, bitmapSize, pixelFormat);
+			var directBitmap = CreateBitmapWithIncreasingColor(bitmapSize, bitmapSize);
 			var oldBitmap = directBitmap.Copy();
 			var filter = new MedianFilter(radius);
 
@@ -78,12 +73,10 @@ namespace ImageFilters.Tests
 		}
 
 		[Theory]
-		[InlineData(3, 1, 1, PixelFormat.Format24bppRgb)]
-		[InlineData(5, 2, 2, PixelFormat.Format24bppRgb)]
-		[InlineData(5, 2, 2, PixelFormat.Format32bppRgb)]
-		[InlineData(5, 2, 2, PixelFormat.Format32bppArgb)]
+		[InlineData(3, 1, 1)]
+		[InlineData(5, 2, 2)]
 		public void Apply_InnerPixelAndMoreColors_ResultIsMedianOfNeighbors(
-			int bitmapSize, int x, int y, PixelFormat pixelFormat)
+			int bitmapSize, int x, int y)
 		{
 			int radius = 1;
 			Color[][] colors =
@@ -93,7 +86,7 @@ namespace ImageFilters.Tests
 				new[] { 4.ToColor(), 2.ToColor(), 1.ToColor() },
 			};
 			Color expectedColor = 5.ToColor();
-			var directBitmap = new DirectBitmap(bitmapSize, bitmapSize, pixelFormat);
+			var directBitmap = new DirectBitmap(bitmapSize, bitmapSize);
 			SetColorsAroundInnerPoint(directBitmap, colors, x, y);
 			var filter = new MedianFilter(radius);
 
@@ -102,15 +95,12 @@ namespace ImageFilters.Tests
 			Assert.Equal(expectedColor, directBitmap.GetPixel(x, y));
 		}
 
-		[Theory]
-		[InlineData(PixelFormat.Format24bppRgb)]
-		[InlineData(PixelFormat.Format32bppRgb)]
-		[InlineData(PixelFormat.Format32bppArgb)]
-		public void Apply_EdgePixelAndMoreColors_ResultIsMedianOfNeighbors(PixelFormat pixelFormat)
+		[Fact]
+		public void Apply_EdgePixelAndMoreColors_ResultIsMedianOfNeighbors()
 		{
 			int bitmapSize = 3;
 			int radius = 1;
-			var directBitmap = new DirectBitmap(bitmapSize, bitmapSize, pixelFormat);
+			var directBitmap = new DirectBitmap(bitmapSize, bitmapSize);
 			directBitmap.SetPixel(0, 0, 1.ToColor());
 			directBitmap.SetPixel(1, 0, 1.ToColor());
 			directBitmap.SetPixel(0, 1, 2.ToColor());
@@ -125,9 +115,9 @@ namespace ImageFilters.Tests
 
 		private static readonly Color StartColor = Color.FromArgb(1, 2, 3);
 
-		private static DirectBitmap CreateBitmapWithIncreasingColor(int width, int height, PixelFormat pixelFormat)
+		private static DirectBitmap CreateBitmapWithIncreasingColor(int width, int height)
 		{
-			var directBitmap = new DirectBitmap(width, height, pixelFormat);
+			var directBitmap = new DirectBitmap(width, height);
 			int colorIndex = 0;
 			for (int y = 0; y < height; y++)
 			{

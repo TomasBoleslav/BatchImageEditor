@@ -6,9 +6,10 @@ namespace ImageFilters
 	// TODO: bad name
 	public sealed class OverImageFilter : IImageFilter
 	{
-		public OverImageFilter(DirectBitmap bitmapToDrawOver, ImagePosition position, int dx, int dy)
+		public OverImageFilter(DirectBitmap imageToDrawOver, ImagePosition position, int dx, int dy)
 		{
-			_bitmapOver = bitmapToDrawOver;
+			ArgChecker.NotNull(imageToDrawOver, nameof(imageToDrawOver));
+			_imageOver = imageToDrawOver;
 			_position = position;
 			_dx = dx;
 			_dy = dy;
@@ -19,10 +20,10 @@ namespace ImageFilters
 			ArgChecker.NotNull(inputBitmap, nameof(inputBitmap));
 			Point destination = ComputeDestinationOfImageToDraw(inputBitmap);
 			using var graphics = Graphics.FromImage(inputBitmap.Bitmap);
-			graphics.DrawImage(_bitmapOver.Bitmap, destination);
+			graphics.DrawImage(_imageOver.Bitmap, destination);
 		}
 
-		private readonly DirectBitmap _bitmapOver;
+		private readonly DirectBitmap _imageOver;
 		private readonly ImagePosition _position;
 		private readonly int _dx;
 		private readonly int _dy;
@@ -38,23 +39,23 @@ namespace ImageFilters
 				},
 				ImagePosition.TopRight => new Point
 				{
-					X = inputBitmap.Width - _bitmapOver.Width - _dx,
+					X = inputBitmap.Width - _imageOver.Width - _dx,
 					Y = _dy
 				},
 				ImagePosition.BottomLeft => new Point
 				{
 					X = _dx,
-					Y = inputBitmap.Height - _bitmapOver.Height - _dy
+					Y = inputBitmap.Height - _imageOver.Height - _dy
 				},
 				ImagePosition.BottomRight => new Point
 				{
-					X = inputBitmap.Width - _bitmapOver.Width - _dx,
-					Y = inputBitmap.Height - _bitmapOver.Height - _dy
+					X = inputBitmap.Width - _imageOver.Width - _dx,
+					Y = inputBitmap.Height - _imageOver.Height - _dy
 				},
 				ImagePosition.Middle => new Point
 				{
-					X = (inputBitmap.Width - _bitmapOver.Width) / 2 + _dx,
-					Y = (inputBitmap.Height - _bitmapOver.Height) / 2 + _dy
+					X = (inputBitmap.Width - _imageOver.Width) / 2 + _dx,
+					Y = (inputBitmap.Height - _imageOver.Height) / 2 + _dy
 				},
 				_ => Point.Empty,
 			};

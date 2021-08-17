@@ -1,52 +1,32 @@
 ﻿using BenchmarkDotNet.Attributes;
-using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace ImageFilters.Benchmarks
 {
 	[HtmlExporter]
-	public class LinearVsSeparableFilterBenchmarks
+	public class LinearFilterVsSeparableFilter
 	{
-		private static readonly PixelFormat pixelFormat = PixelFormat.Format24bppRgb;
+		private const PixelFormat PixelFormat = System.Drawing.Imaging.PixelFormat.Format24bppRgb;
 
 		[Params(3, 5, 9)]
 		public int KernelSize { get; set; }
 
-		[Benchmark]
-		public void LinearFilter_100x100()
-		{
-			ApplyLinearFilter(100, 100);
-		}
-		
-		[Benchmark]
-		public void LinearFilter_1000x1000()
-		{
-			ApplyLinearFilter(1000, 1000);
-		}
+		[Params(100, 1000)]
+		public int ImageSize { get; set; }
 
 		[Benchmark]
-		public void SeparableFilter_100x100()
+		public void LinearFilter()
 		{
-			ApplySeparableFilter(100, 100);
-		}
-
-		[Benchmark]
-		public void SeparableFilter_1000x1000()
-		{
-			ApplySeparableFilter(1000, 1000);
-		}
-
-		private void ApplyLinearFilter(int width, int height)
-		{
-			var directBitmap = new DirectBitmap(width, height, pixelFormat);
+			var directBitmap = new ImageFilters.DirectBitmap(ImageSize, ImageSize);
 			float[][] kernel = CreateMatrixOfOnes(KernelSize, KernelSize);
 			var filter = new CustomLinearFilter(kernel);
 			filter.Apply(ref directBitmap);
 		}
 
-		private void ApplySeparableFilter(int width, int height)
+		[Benchmark]
+		public void SeparableFilter()
 		{
-			var directBitmap = new DirectBitmap(width, height, pixelFormat);
+			var directBitmap = new ImageFilters.DirectBitmap(ImageSize, ImageSize);
 			float[] vector = CreateVectorOfOnes(KernelSize);
 			var filter = new CustomSeparableFilter(vector, vector);
 			filter.Apply(ref directBitmap);

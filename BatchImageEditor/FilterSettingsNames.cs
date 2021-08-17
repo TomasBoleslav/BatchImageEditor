@@ -16,7 +16,8 @@ namespace BatchImageEditor
 
 		private static readonly Dictionary<Type, string> settingTypesToNames = new()
 		{
-			{ typeof(MedianFilterSettings), "Median" }
+			{ typeof(MedianFilterSettings), "Median" },
+			{ typeof(ResizingFilterSettings), "Resize" }
 		};
 	}
 }

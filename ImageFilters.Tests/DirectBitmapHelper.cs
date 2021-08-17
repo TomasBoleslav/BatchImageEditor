@@ -2,7 +2,7 @@
 
 namespace ImageFilters.Tests
 {
-	internal static class BitmapHelper
+	internal static class DirectBitmapHelper
 	{
 		public static void Clear(DirectBitmap bitmap, Color color)
 		{

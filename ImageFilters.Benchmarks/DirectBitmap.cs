@@ -5,7 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using ThrowHelpers;
 
-namespace ImageFilters
+namespace ImageFilters.Benchmarks
 {
     public sealed class DirectBitmap : IDisposable
     {

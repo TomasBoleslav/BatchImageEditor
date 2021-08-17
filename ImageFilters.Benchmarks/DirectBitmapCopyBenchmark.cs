@@ -19,8 +19,8 @@ namespace ImageFilters.Benchmarks
 		[Benchmark]
 		public void DirectBitmapCopy()
 		{
-			DirectBitmap image = new DirectBitmap(Width, Height, PixelFormat.Format24bppRgb);
-			DirectBitmap copy = null;
+			ImageFilters.DirectBitmap image = new ImageFilters.DirectBitmap(Width, Height);
+			ImageFilters.DirectBitmap copy = null;
 			for (int i = 0; i < Count; i++)
 			{
 				copy?.Dispose();

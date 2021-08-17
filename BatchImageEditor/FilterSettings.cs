@@ -23,7 +23,8 @@ namespace BatchImageEditor
 
 		public override void ResetDisplayedSettings()
 		{
-			_displayedModel.Reset();
+			DisposeModel(ref _displayedModel);
+			_displayedModel = new TModel();
 			UpdateDisplayedSettings();
 		}
 
@@ -53,7 +54,15 @@ namespace BatchImageEditor
 
 		protected TModel DisplayedModel => _displayedModel;
 
-		protected abstract void UpdateDisplayedSettings();
+		protected void UpdateDisplayedSettings()
+		{
+			DisableUpdateEvents();
+			UpdateDisplayedSettingsWithDisabledEvents();
+			EnableUpdateEvents();
+			OnDisplayedSettingsUpdated();
+		}
+
+		protected abstract void UpdateDisplayedSettingsWithDisabledEvents();
 
 		private TModel _savedModel;
 		private TModel _displayedModel;

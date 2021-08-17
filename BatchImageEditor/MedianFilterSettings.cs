@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using ImageFilters;
 
 namespace BatchImageEditor
@@ -21,16 +22,15 @@ namespace BatchImageEditor
 			yield return filter;
 		}
 
+		protected override void UpdateDisplayedSettingsWithDisabledEvents()
+		{
+			_radiusInput.Value = DisplayedModel.Radius;
+		}
+
 		private void RadiusInput_ValueChanged(object sender, EventArgs e)
 		{
 			DisplayedModel.Radius = (int)_radiusInput.Value;
-			OnDisplaySettingsUpdated();
-		}
-
-		protected override void UpdateDisplayedSettings()
-		{
-			_radiusInput.Value = DisplayedModel.Radius;
-			OnDisplaySettingsUpdated();
+			OnDisplayedSettingsUpdated();
 		}
 	}
 }

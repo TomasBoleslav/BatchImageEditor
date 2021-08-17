@@ -19,9 +19,24 @@ namespace BatchImageEditor
 
 		public abstract IEnumerable<IImageFilter> CreateFiltersFromDisplayedSettings();
 
-		protected virtual void OnDisplaySettingsUpdated()
+		protected virtual void OnDisplayedSettingsUpdated()
 		{
-			DisplayedSettingsUpdated?.Invoke(this, EventArgs.Empty);
+			if (_updateEventsEnabled)
+			{
+				DisplayedSettingsUpdated?.Invoke(this, EventArgs.Empty);
+			}
 		}
+
+		protected void EnableUpdateEvents()
+		{
+			_updateEventsEnabled = true;
+		}
+
+		protected void DisableUpdateEvents()
+		{
+			_updateEventsEnabled = false;
+		}
+
+		private bool _updateEventsEnabled = false;
 	}
 }

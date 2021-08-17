@@ -6,19 +6,18 @@ namespace ImageFilters
 {
 	public abstract class LinearFilter : IImageFilter
 	{
-		public void Apply(ref DirectBitmap input)
+		public void Apply(ref DirectBitmap image)
 		{
-			ArgChecker.NotNull(input, nameof(input));
+			ArgChecker.NotNull(image, nameof(image));
 			ArgChecker.NotNull(_kernel, nameof(_kernel));
-			var result = new DirectBitmap(input.Width, input.Height, input.PixelFormat);
-			ApplyKernel(input, result);
-			input.Dispose();
-			input = result;
+			var outputImage = ApplyKernel(image);
+			image.Dispose();
+			image = outputImage;
 		}
 
 		protected void SetKernel(float[][] kernel)
 		{
-			VerifyKernelCorectness(kernel);
+			VerifyKernelCorrectness(kernel);
 			_kernel = kernel;
 			_kernelHeight = kernel.Length;
 			_kernelWidth = kernel[0].Length;
@@ -55,7 +54,7 @@ namespace ImageFilters
 		private int _radiusVertical;
 		private int _radiusHorizontal;
 
-		private static void VerifyKernelCorectness(float[][] kernel)
+		private static void VerifyKernelCorrectness(float[][] kernel)
 		{
 			ArgChecker.NotNull(kernel, nameof(kernel));
 			if (kernel.Length == 0)
@@ -90,13 +89,14 @@ namespace ImageFilters
 			}
 		}
 
-		private void ApplyKernel(DirectBitmap input, DirectBitmap output)
+		private DirectBitmap ApplyKernel(DirectBitmap inputImage)
 		{
-			int maxX = input.Width - 1;
-			int maxY = input.Height - 1;
-			for (int i = 0; i < input.Height; i++)
+			var outputImage = new DirectBitmap(inputImage.Width, inputImage.Height);
+			int maxX = inputImage.Width - 1;
+			int maxY = inputImage.Height - 1;
+			for (int i = 0; i < inputImage.Height; i++)
 			{
-				for (int j = 0; j < input.Width; j++)
+				for (int j = 0; j < inputImage.Width; j++)
 				{
 					float sumR = 0;
 					float sumB = 0;
@@ -110,17 +110,24 @@ namespace ImageFilters
 							int x = j + m - _radiusHorizontal;
 							y = Math.Clamp(y, 0, maxY);
 							x = Math.Clamp(x, 0, maxX);
-							Color inputColor = input.GetPixel(x, y);
+							Color inputColor = inputImage.GetPixel(x, y);
 							float kernelValue = _kernel[n][m];
 							sumR += inputColor.R * kernelValue;
 							sumG += inputColor.G * kernelValue;
 							sumB += inputColor.B * kernelValue;
 						}
 					}
-					Color outputColor = Utils.CreateColorByClamping(sumR, sumG, sumB);
-					output.SetPixel(j, i, outputColor);
+					Color oldColor = inputImage.GetPixel(j, i);
+					Color outputColor = Color.FromArgb(
+						oldColor.A,
+						Utils.ClampColorChannel(sumR),
+						Utils.ClampColorChannel(sumG),
+						Utils.ClampColorChannel(sumB)
+						);
+					outputImage.SetPixel(j, i, outputColor);
 				}
 			}
+			return outputImage;
 		}
 	}
 }

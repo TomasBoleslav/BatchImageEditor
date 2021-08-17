@@ -14,10 +14,11 @@ namespace ImageFilters
 
 		public Color Adjust(Color color)
 		{
-			return Utils.CreateColorByClamping(
-				color.R + _dR,
-				color.G + _dG,
-				color.B + _dB
+			return Color.FromArgb(
+				color.A,
+				Math.Clamp(color.R + _dR, 0, 255),
+				Math.Clamp(color.G + _dG, 0, 255),
+				Math.Clamp(color.B + _dB, 0, 255)
 				);
 		}
 

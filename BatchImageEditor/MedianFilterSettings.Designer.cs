@@ -36,7 +36,6 @@ namespace BatchImageEditor
 			// 
 			// _radiusInput
 			// 
-			this._radiusInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._radiusInput.Location = new System.Drawing.Point(77, 3);
 			this._radiusInput.Maximum = new decimal(new int[] {
             20,
@@ -49,7 +48,7 @@ namespace BatchImageEditor
             0,
             0});
 			this._radiusInput.Name = "_radiusInput";
-			this._radiusInput.Size = new System.Drawing.Size(107, 27);
+			this._radiusInput.Size = new System.Drawing.Size(100, 27);
 			this._radiusInput.TabIndex = 0;
 			this._radiusInput.Value = new decimal(new int[] {
             1,
@@ -74,7 +73,7 @@ namespace BatchImageEditor
 			this.Controls.Add(this._radiusLabel);
 			this.Controls.Add(this._radiusInput);
 			this.Name = "MedianFilterSettings";
-			this.Size = new System.Drawing.Size(187, 41);
+			this.Size = new System.Drawing.Size(230, 41);
 			((System.ComponentModel.ISupportInitialize)(this._radiusInput)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

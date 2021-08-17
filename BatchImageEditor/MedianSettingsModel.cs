@@ -11,7 +11,7 @@ namespace BatchImageEditor
 
 		public MedianSettingsModel()
 		{
-			Reset();
+			Radius = DefaultRadius;
 		}
 
 		public int Radius
@@ -22,14 +22,9 @@ namespace BatchImageEditor
 			}
 			set
 			{
-				ThrowHelpers.ArgChecker.InRangeInclusive(value, nameof(value), MinRadius, MaxRadius);
+				ArgChecker.InRangeInclusive(value, nameof(value), MinRadius, MaxRadius);
 				_radius = value;
 			}
-		}
-
-		public void Reset()
-		{
-			Radius = DefaultRadius;
 		}
 
 		public MedianSettingsModel Copy()

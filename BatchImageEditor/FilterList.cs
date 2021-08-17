@@ -47,12 +47,14 @@ namespace BatchImageEditor
 		{
 			var settingsFactories = new FilterSettingsFactoryStorage();
 			settingsFactories.Add(new Instantiator<MedianFilterSettings>());
+			settingsFactories.Add(new Instantiator<ResizingFilterSettings>());
 			return settingsFactories;
 		}
 
 		private ContextMenuStrip CreateFilterMenu()
 		{
 			var menu = new ContextMenuStrip();
+			menu.Items.Add(CreateTransformationMenuItems());
 			menu.Items.Add(CreateNoiseReductionMenuItems());
 			return menu;
 		}
@@ -61,6 +63,14 @@ namespace BatchImageEditor
 		{
 			var rootItem = new ToolStripMenuItem("Noise reduction");
 			rootItem.DropDownItems.Add(CreateMenuItemForSettings<MedianFilterSettings>());
+			return rootItem;
+		}
+
+		// resizing, rotation, flip
+		private ToolStripMenuItem CreateTransformationMenuItems()
+		{
+			var rootItem = new ToolStripMenuItem("Transformation");
+			rootItem.DropDownItems.Add(CreateMenuItemForSettings<ResizingFilterSettings>());
 			return rootItem;
 		}
 

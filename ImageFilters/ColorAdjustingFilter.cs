@@ -11,23 +11,23 @@ namespace ImageFilters
 			_colorAdjuster = colorAdjuster;
 		}
 
-		public void Apply(ref DirectBitmap inputBitmap)
+		public void Apply(ref DirectBitmap image)
 		{
-			ArgChecker.NotNull(inputBitmap, nameof(inputBitmap));
-			AdjustColors(inputBitmap);
+			ArgChecker.NotNull(image, nameof(image));
+			AdjustColors(image);
 		}
 
 		private readonly IColorAdjuster _colorAdjuster;
 
-		private void AdjustColors(DirectBitmap input)
+		private void AdjustColors(DirectBitmap image)
 		{
-			for (int y = 0; y < input.Height; y++)
+			for (int y = 0; y < image.Height; y++)
 			{
-				for (int x = 0; x < input.Width; x++)
+				for (int x = 0; x < image.Width; x++)
 				{
-					Color inputColor = input.GetPixel(x, y);
+					Color inputColor = image.GetPixel(x, y);
 					Color outputColor = _colorAdjuster.Adjust(inputColor);
-					input.SetPixel(x, y, outputColor);
+					image.SetPixel(x, y, outputColor);
 				}
 			}
 		}

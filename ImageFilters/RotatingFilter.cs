@@ -14,12 +14,12 @@ namespace ImageFilters
 			_backgroundColor = backgroundColor;
 		}
 
-		public void Apply(ref DirectBitmap inputBitmap)
+		public void Apply(ref DirectBitmap image)
 		{
-			ArgChecker.NotNull(inputBitmap, nameof(inputBitmap));
-			DirectBitmap output = RotateImage(inputBitmap);
-			inputBitmap.Dispose();
-			inputBitmap = output;
+			ArgChecker.NotNull(image, nameof(image));
+			DirectBitmap outputImage = RotateImage(image);
+			image.Dispose();
+			image = outputImage;
 		}
 		
 		private readonly float _angleDeg;
@@ -48,11 +48,11 @@ namespace ImageFilters
 			return shiftedBack;
 		}
 
-		private DirectBitmap RotateImage(DirectBitmap input)
+		private DirectBitmap RotateImage(DirectBitmap inputImage)
 		{
-			Size outputSize = ComputeResultSize(input.Bitmap.Size);
-			var output = new DirectBitmap(outputSize.Width, outputSize.Height, input.PixelFormat);
-			using (var graphics = Graphics.FromImage(output.Bitmap))
+			Size outputSize = ComputeResultSize(inputImage.Bitmap.Size);
+			var outputImage = new DirectBitmap(outputSize.Width, outputSize.Height);
+			using (var graphics = Graphics.FromImage(outputImage.Bitmap))
 			{
 				graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 				graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
@@ -61,12 +61,12 @@ namespace ImageFilters
 				{
 					graphics.Clear(_backgroundColor);
 				}
-				graphics.TranslateTransform(output.Width / 2f, output.Height / 2f);
+				graphics.TranslateTransform(outputImage.Width / 2f, outputImage.Height / 2f);
 				graphics.RotateTransform(_angleDeg);
-				graphics.TranslateTransform(-input.Width / 2f, -input.Height / 2f);
-				graphics.DrawImage(input.Bitmap, 0, 0);
+				graphics.TranslateTransform(-inputImage.Width / 2f, -inputImage.Height / 2f);
+				graphics.DrawImage(inputImage.Bitmap, 0, 0);
 			}
-			return output;
+			return outputImage;
 		}
 		
 		private Size ComputeResultSize(Size inputSize)
