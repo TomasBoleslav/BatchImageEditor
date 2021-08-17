@@ -1,7 +1,7 @@
 ﻿
 namespace ImageFilters
 {
-	public enum ImagePosition
+	public enum ImagePlacement
 	{
 		TopLeft,
 		TopRight,

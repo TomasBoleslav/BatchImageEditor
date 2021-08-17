@@ -29,7 +29,6 @@ namespace BatchImageEditor
 		}
 
 		private const string NotAvailable = "N/A";
-		private static readonly string[] SupportedExtensions = { ".jpg", ".jpeg", ".bmp", ".gif", ".png" };
 		
 		private readonly HashSet<string> _filenames = new();
 
@@ -37,8 +36,7 @@ namespace BatchImageEditor
 		{
 			using var dialog = new OpenFileDialog();
 			dialog.Title = "Select images";
-			var joinedExtensions = string.Join(';', SupportedExtensions.Select(ext => $"*{ext}"));
-			dialog.Filter = $"Image files ({joinedExtensions}) | {joinedExtensions}";
+			dialog.Filter = SupportedImages.GetDialogFilter();
 			dialog.Multiselect = true;
 			if (dialog.ShowDialog() == DialogResult.OK)
 			{
@@ -92,7 +90,7 @@ namespace BatchImageEditor
 
 		private void LoadFolder(string folder)
 		{
-			var extensions = SupportedExtensions.ToHashSet();
+			var extensions = SupportedImages.GetFileExtensions().ToHashSet();
 			var filenames = Directory.EnumerateFiles(folder, "*", SearchOption.AllDirectories);
 			_imageListView.BeginUpdate();
 			foreach (string filename in filenames)

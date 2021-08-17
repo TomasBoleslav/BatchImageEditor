@@ -64,7 +64,7 @@ namespace BatchImageEditor
 			_inputFieldEventsEnabled = true;
 		}
 
-		private void ChangeInputFieldToPercents(NumericUpDown inputField, float value)
+		private static void ChangeInputFieldToPercents(NumericUpDown inputField, float value)
 		{
 			inputField.Minimum = (decimal)ResizingSettingsModel.MinPercentage;
 			inputField.Maximum = (decimal)ResizingSettingsModel.MaxPercentage;
@@ -73,7 +73,7 @@ namespace BatchImageEditor
 			inputField.Value = (decimal)value;
 		}
 
-		private void ChangeInputFieldToPixels(NumericUpDown inputField, int value)
+		private static void ChangeInputFieldToPixels(NumericUpDown inputField, int value)
 		{
 			inputField.Minimum = ResizingSettingsModel.MinSideLength;
 			inputField.Maximum = ResizingSettingsModel.MaxSideLength;

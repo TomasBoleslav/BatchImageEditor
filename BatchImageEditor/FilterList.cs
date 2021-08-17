@@ -48,6 +48,7 @@ namespace BatchImageEditor
 			var settingsFactories = new FilterSettingsFactoryStorage();
 			settingsFactories.Add(new Instantiator<MedianFilterSettings>());
 			settingsFactories.Add(new Instantiator<ResizingFilterSettings>());
+			settingsFactories.Add(new Instantiator<ImageOverlayFilterSettings>());
 			return settingsFactories;
 		}
 
@@ -56,6 +57,7 @@ namespace BatchImageEditor
 			var menu = new ContextMenuStrip();
 			menu.Items.Add(CreateTransformationMenuItems());
 			menu.Items.Add(CreateNoiseReductionMenuItems());
+			menu.Items.Add(CreateMenuItemForSettings<ImageOverlayFilterSettings>());
 			return menu;
 		}
 

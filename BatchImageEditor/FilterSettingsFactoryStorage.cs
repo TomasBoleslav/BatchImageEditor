@@ -10,10 +10,9 @@ namespace BatchImageEditor
 	class FilterSettingsFactoryStorage
 	{
 		// TODO: maybe replace T with FilterSettingsBase thanks to covariance
-		//public void Add(IFactory<FilterSettingsBase> factory)
+		// public void Add(IFactory<FilterSettingsBase> factory)
 		public void Add<T>(IFactory<T> factory) where T : FilterSettingsBase
 		{
-			settingTypesToFactories.Add(typeof(T), factory);
 			string name = FilterSettingsNames.GetName(typeof(T));
 			settingNamesToFactories.Add(name, factory);
 		}
@@ -28,7 +27,6 @@ namespace BatchImageEditor
 			throw new ArgumentException("There is no factory with the given name.");
 		}
 
-		private readonly Dictionary<Type, IFactory<FilterSettingsBase>> settingTypesToFactories = new();	// TODO: remove?
 		private readonly Dictionary<string, IFactory<FilterSettingsBase>> settingNamesToFactories = new();
 	}
 }

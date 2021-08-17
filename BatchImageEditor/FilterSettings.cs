@@ -7,17 +7,15 @@ namespace BatchImageEditor
 	public abstract class FilterSettings<TModel> : FilterSettingsBase
 		where TModel: class, IFilterSettingsModel<TModel>, new()
 	{
+		public FilterSettings()
+		{
+			_savedModel = new TModel();
+		}
+
 		public override void DisplaySettings()
 		{
 			DisposeModel(ref _displayedModel);
-			if (_savedModel == null)
-			{
-				_displayedModel = new TModel();
-			}
-			else
-			{
-				_displayedModel = _savedModel.Copy();
-			}
+			_displayedModel = _savedModel.Copy();
 			UpdateDisplayedSettings();
 		}
 
