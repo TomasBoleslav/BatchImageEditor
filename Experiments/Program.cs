@@ -1,44 +1,74 @@
 ﻿using System;
-using ImageFilters;
+//using ImageFilters;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Experiments
 {
 	class Program
 	{
+		enum MyEnum
+		{
+			Value1 = 5,
+			Value2 = 10
+		}
+
+		public static Dictionary<string, int> GetNamesToValues<T>(IEnumerable<KeyValuePair<string, T>> namesToEnumValues) where T : Enum
+		{
+			Dictionary<string, int> namesToIntValues = new Dictionary<string, int>();
+			IEnumerable<int> values = Enum.GetValues(typeof(T)).Cast<int>();
+			//int x = (int)values[0];
+			var values2 = Enum.GetValues(typeof(T));
+			//int x2 = (int)values[0];
+			foreach (var value in values)
+			{
+
+			}
+			foreach ((string name, T enumValue) in namesToEnumValues)
+			{
+				if (!namesToIntValues.ContainsKey(name))
+				{
+					//namesToIntValues.Add(name, (int)enumValue);
+				}
+			}
+			return namesToIntValues;
+		}
+
+		abstract class A
+		{
+			public A() { Console.WriteLine("A"); }
+		}
+
+		class B : A
+		{
+			public B() { Console.WriteLine("B"); }
+		}
+
 		static void Main(string[] args)
 		{
-			Rectangle r = new Rectangle(10, 10, 100, 100);
-			throw new ArgumentException("message", nameof(r.Width));
-			/*/
-			var directBitmap = DirectBitmap.FromFile(@"C:\Users\boles\Plocha\web-inspirace.jpg");
-			var filter = new RotatingFilter(45, Color.Green);
-			filter.Apply(ref directBitmap);
-			directBitmap.Bitmap.Save(@"C:\Users\boles\Plocha\rotatedonlyhigh.jpg");
-			/**/
-			/*/
-			var input = new Bitmap(@"C:\Users\boles\Plocha\web-inspirace.jpg");
-			var output = new Bitmap(input.Height, input.Width, input.PixelFormat);
-			Rectangle srcRect = new Rectangle
+			new B();
+			/*Dictionary<string, MyEnum> d = new()
 			{
-				X = 0,
-				Y = 0,
-				Width = input.Width,
-				Height = input.Height
+				{ "value1", MyEnum.Value1 }
 			};
-			Rectangle destRect = new Rectangle
+			var d2 = GetNamesToValues(d);
+			foreach (var item in d2)
 			{
-				X = input.Width,
-				Y = input.Height,
-				Width = -input.Width,
-				Height = -input.Height
-			};
-			using (var graphics = Graphics.FromImage(output))
-			{
-				graphics.DrawImage(input, srcRect, destRect, GraphicsUnit.Pixel);
-			}
-			output.Save(@"C:\Users\boles\Plocha\flippedboth.jpg");
-			/**/
+				Console.WriteLine($"{item.Key}, {item.Value}");
+			}*/
+			/*
+			Bitmap bitmap = new Bitmap(10, 10, PixelFormat.Format32bppPArgb);
+			bitmap.SetPixel(0, 0, Color.FromArgb(100, 200, 0, 0));
+			Color color = bitmap.GetPixel(0, 0);
+			Console.WriteLine(color);
+
+			bitmap = new Bitmap(10, 10, PixelFormat.Format32bppArgb);
+			bitmap.SetPixel(0, 0, Color.FromArgb(100, 200, 0, 0));
+			color = bitmap.GetPixel(0, 0);
+			Console.WriteLine(color);*/
 		}
 
 		private static double GaussianBlurSum(int radius, double sigma)

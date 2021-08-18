@@ -10,7 +10,7 @@ namespace ImageFilters.Tests
 		[Fact]
 		public void Apply_AssignedBitmapIsInputBitmap()
 		{
-			var directBitmap = new DirectBitmap(5, 5, PixelFormat.Format24bppRgb);
+			var directBitmap = new DirectBitmap(5, 5);
 			var oldDirectBitmap = directBitmap;
 			float[] vector = MathHelper.CreateVectorOfOnes(1);
 			var filter = new CustomSeparableFilter(vector, vector);
@@ -23,7 +23,7 @@ namespace ImageFilters.Tests
 		[Fact]
 		public void Apply_DoesNotDisposeInputBitmap()
 		{
-			var directBitmap = new DirectBitmap(5, 5, PixelFormat.Format24bppRgb);
+			var directBitmap = new DirectBitmap(5, 5);
 			var oldDirectBitmap = directBitmap;
 			float[] vector = MathHelper.CreateVectorOfOnes(1);
 			var filter = new CustomSeparableFilter(vector, vector);
@@ -34,21 +34,19 @@ namespace ImageFilters.Tests
 		}
 
 		[Theory]
-		[InlineData(1, 1, 1, PixelFormat.Format24bppRgb, 1, 2, 3)]
-		[InlineData(1, 1, 3, PixelFormat.Format24bppRgb, 1, 2, 3)]
-		[InlineData(5, 5, 1, PixelFormat.Format24bppRgb, 1, 2, 3)]
-		[InlineData(5, 5, 3, PixelFormat.Format24bppRgb, 1, 2, 3)]
-		[InlineData(5, 5, 15, PixelFormat.Format24bppRgb, 1, 2, 3)]
-		[InlineData(5, 5, 3, PixelFormat.Format32bppRgb, 1, 2, 3)]
-		[InlineData(5, 5, 3, PixelFormat.Format32bppArgb, 1, 2, 3)]
-		public void Apply_KernelOfOnes_ResultIsSumOfNeighborColors(int width, int height, int vectorLength, PixelFormat pixelFormat, byte r, byte g, byte b, byte a = 255)
+		[InlineData(1, 1, 1, 10, 20, 30)]
+		[InlineData(1, 1, 3, 10, 20, 30)]
+		[InlineData(5, 5, 1, 10, 20, 30)]
+		[InlineData(5, 5, 3, 10, 20, 30, 40)]
+		[InlineData(5, 5, 15, 10, 20, 30, 40)]
+		public void Apply_KernelOfOnes_ResultIsSumOfNeighborColors(int width, int height, int vectorLength, byte r, byte g, byte b, byte a = 255)
 		{
 			Color clearColor = Color.FromArgb(a, r, g, b);
-			var directBitmap = new DirectBitmap(width, height, pixelFormat);
-			BitmapHelper.Clear(directBitmap, clearColor);
+			var directBitmap = new DirectBitmap(width, height);
+			DirectBitmapHelper.Clear(directBitmap, clearColor);
 			float[] vector = MathHelper.CreateVectorOfOnes(vectorLength);
 			var filter = new CustomSeparableFilter(vector, vector);
-			Color expectedColor = clearColor.Multiply(vectorLength * vectorLength);
+			Color expectedColor = clearColor.Multiply(vectorLength * vectorLength).WithAlpha(a);
 
 			filter.Apply(ref directBitmap);
 

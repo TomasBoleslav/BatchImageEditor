@@ -1,4 +1,5 @@
 ﻿using System;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -6,14 +7,8 @@ namespace ImageFilters
 	{
 		public GaussianBlurFilter(int radius, double sigma)
 		{
-			if (radius <= 0)
-			{
-				throw new ArgumentException("Radius must be a positive integer.");
-			}
-			if (sigma <= 0.0)
-			{
-				throw new ArgumentException("Sigma must be a positive value.");
-			}
+			ArgChecker.Positive(radius, nameof(radius));
+			ArgChecker.Positive(sigma, nameof(sigma));
 			float[] vector = CreateConvolutionVector(radius, sigma);
 			SetVectors(vector, vector);
 		}

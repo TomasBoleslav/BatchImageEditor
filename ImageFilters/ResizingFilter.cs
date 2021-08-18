@@ -1,37 +1,41 @@
 ﻿using System;
 using System.Drawing;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
 	public sealed class ResizingFilter : IImageFilter
 	{
-		public ResizingFilter(IResizingAlgorithm resizingAlgorithm)
+		public ResizingFilter(IResizingAlgorithm resizingAlgorithm, Size maxSize)
 		{
+			ArgChecker.Positive(maxSize.Width, nameof(maxSize.Width));
+			ArgChecker.Positive(maxSize.Height, nameof(maxSize.Height));
 			_resizingAlgorithm = resizingAlgorithm;
+			_maxSize = maxSize;
 		}
 
-		public void Apply(ref DirectBitmap inputBitmap)
+		public void Apply(ref DirectBitmap image)
 		{
-			Ensure.NotNull(inputBitmap, nameof(inputBitmap));
-			DirectBitmap output = Resize(inputBitmap);
-			inputBitmap.Dispose();
-			inputBitmap = output;
+			ArgChecker.NotNull(image, nameof(image));
+			DirectBitmap outputImage = Resize(image);
+			image.Dispose();
+			image = outputImage;
 		}
 
 		private readonly IResizingAlgorithm _resizingAlgorithm;
+		private readonly Size _maxSize;
 
-		private DirectBitmap Resize(DirectBitmap input)
+		private DirectBitmap Resize(DirectBitmap inputImage)
 		{
-			Size newSize = _resizingAlgorithm.ComputeNewSize(input.Bitmap.Size);
-			newSize.Width = Math.Max(newSize.Width, 1);
-			newSize.Height = Math.Max(newSize.Height, 1);
-			var output = new DirectBitmap(newSize.Width, newSize.Height, input.PixelFormat);
-			using (var graphics = Graphics.FromImage(output.Bitmap))
+			Size newSize = _resizingAlgorithm.ComputeNewSize(inputImage.Bitmap.Size);
+			newSize.Width = Math.Clamp(newSize.Width, 1, _maxSize.Width);
+			newSize.Height = Math.Clamp(newSize.Height, 1, _maxSize.Height);
+			var outputImage = new DirectBitmap(newSize.Width, newSize.Height);
+			using (var graphics = Graphics.FromImage(outputImage.Bitmap))
 			{
-				// TODO: high quality settings?
-				graphics.DrawImage(input.Bitmap, 0, 0, output.Width, output.Height);
+				graphics.DrawImage(inputImage.Bitmap, 0, 0, outputImage.Width, outputImage.Height);
 			}
-			return output;
+			return outputImage;
 		}
 	}
 }

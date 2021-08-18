@@ -11,7 +11,7 @@ namespace ImageFilters
 		/// In that case the old bitmap is properly disposed and the reference is set to the new bitmap.
 		/// Otherwise the reference remains the same and only the content of the bitmap is changed.
 		/// </remarks>
-		/// <param name="inputBitmap">A bitmap to which the filter will be applied.</param>
-		void Apply(ref DirectBitmap inputBitmap);
+		/// <param name="image">A bitmap to which the filter will be applied.</param>
+		void Apply(ref DirectBitmap image);
 	}
 }

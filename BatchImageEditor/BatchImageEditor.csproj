@@ -6,4 +6,9 @@
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ImageFilters\ImageFilters.csproj" />
+    <ProjectReference Include="..\ThrowHelpers\ThrowHelpers.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -7,9 +8,9 @@ namespace ImageFilters
 	{
 		public void Apply(ref DirectBitmap input)
 		{
-			Ensure.NotNull(HorizontalVector, nameof(HorizontalVector));
-			Ensure.NotNull(VerticalVector, nameof(VerticalVector));
-			using var intermediateResult = new DirectBitmap(input.Width, input.Height, input.PixelFormat);
+			ArgChecker.NotNull(HorizontalVector, nameof(HorizontalVector));
+			ArgChecker.NotNull(VerticalVector, nameof(VerticalVector));
+			using var intermediateResult = new DirectBitmap(input.Width, input.Height);
 			ApplyHorizontalVector(input, intermediateResult);
 			ApplyVerticalVector(intermediateResult, input);
 		}
@@ -21,8 +22,8 @@ namespace ImageFilters
 
 		protected void SetVectors(float[] horizontal, float[] vertical)
 		{
-			Ensure.NotNull(horizontal, nameof(horizontal));
-			Ensure.NotNull(vertical, nameof(vertical));
+			ArgChecker.NotNull(horizontal, nameof(horizontal));
+			ArgChecker.NotNull(vertical, nameof(vertical));
 			if (horizontal.Length != vertical.Length)
 			{
 				throw new ArgumentException("Vectors must have the same length.");
@@ -46,14 +47,14 @@ namespace ImageFilters
 			return normalizedVector;
 		}
 
-		private void ApplyHorizontalVector(DirectBitmap input, DirectBitmap output)
+		private void ApplyHorizontalVector(DirectBitmap inputImage, DirectBitmap outputImage)
 		{
 			float[] vector = HorizontalVector;
 			int vectorHalf = vector.Length / 2;
-			int maxY = output.Height - 1;
-			for (int i = 0; i < output.Height; i++)
+			int maxY = outputImage.Height - 1;
+			for (int i = 0; i < outputImage.Height; i++)
 			{
-				for (int j = 0; j < output.Width; j++)
+				for (int j = 0; j < outputImage.Width; j++)
 				{
 					float sumR = 0;
 					float sumB = 0;
@@ -62,26 +63,32 @@ namespace ImageFilters
 					{
 						int y = i + n - vectorHalf;
 						y = Math.Clamp(y, 0, maxY);
-						Color inputColor = input.GetPixel(j, y);
+						Color inputColor = inputImage.GetPixel(j, y);
 						float kernelValue = vector[n];
 						sumR += inputColor.R * kernelValue;
 						sumG += inputColor.G * kernelValue;
 						sumB += inputColor.B * kernelValue;
 					}
-					Color outputColor = Utils.ColorFromNonnegativeNumbers(sumR, sumG, sumB);
-					output.SetPixel(j, i, outputColor);
+					Color oldColor = inputImage.GetPixel(j, i);
+					Color outputColor = Color.FromArgb(
+						oldColor.A,
+						Utils.ClampColorChannel(sumR),
+						Utils.ClampColorChannel(sumG),
+						Utils.ClampColorChannel(sumB)
+						);
+					outputImage.SetPixel(j, i, outputColor);
 				}
 			}
 		}
 
-		private void ApplyVerticalVector(DirectBitmap input, DirectBitmap output)
+		private void ApplyVerticalVector(DirectBitmap inputImage, DirectBitmap outputImage)
 		{
 			float[] vector = VerticalVector;
 			int vectorHalf = vector.Length / 2;
-			int maxX = output.Width - 1;
-			for (int i = 0; i < output.Height; i++)
+			int maxX = outputImage.Width - 1;
+			for (int i = 0; i < outputImage.Height; i++)
 			{
-				for (int j = 0; j < output.Width; j++)
+				for (int j = 0; j < outputImage.Width; j++)
 				{
 					float sumR = 0;
 					float sumB = 0;
@@ -90,14 +97,20 @@ namespace ImageFilters
 					{
 						int x = j + n - vectorHalf;
 						x = Math.Clamp(x, 0, maxX);
-						Color inputColor = input.GetPixel(x, i);
+						Color inputColor = inputImage.GetPixel(x, i);
 						float kernelValue = vector[n];
 						sumR += inputColor.R * kernelValue;
 						sumG += inputColor.G * kernelValue;
 						sumB += inputColor.B * kernelValue;
 					}
-					Color outputColor = Utils.ColorFromNonnegativeNumbers(sumR, sumG, sumB);
-					output.SetPixel(j, i, outputColor);
+					Color oldColor = inputImage.GetPixel(j, i);
+					Color outputColor = Color.FromArgb(
+						oldColor.A,
+						Utils.ClampColorChannel(sumR),
+						Utils.ClampColorChannel(sumG),
+						Utils.ClampColorChannel(sumB)
+						);
+					outputImage.SetPixel(j, i, outputColor);
 				}
 			}
 		}

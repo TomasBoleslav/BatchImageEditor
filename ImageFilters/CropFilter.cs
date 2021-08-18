@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -10,28 +11,28 @@ namespace ImageFilters
 			_croppingAlgorithm = croppingAlgorithm;
 		}
 
-		public void Apply(ref DirectBitmap inputBitmap)
+		public void Apply(ref DirectBitmap image)
 		{
-			Ensure.NotNull(inputBitmap, nameof(inputBitmap));
-			DirectBitmap output = Crop(inputBitmap);
-			inputBitmap.Dispose();
-			inputBitmap = output;
+			ArgChecker.NotNull(image, nameof(image));
+			DirectBitmap croppedImage = Crop(image);
+			image.Dispose();
+			image = croppedImage;
 		}
 
 		private readonly ICroppingAlgorithm _croppingAlgorithm;
 
-		private DirectBitmap Crop(DirectBitmap input)
+		private DirectBitmap Crop(DirectBitmap inputImage)
 		{
-			Rectangle cropArea = _croppingAlgorithm.ComputeCropArea(input.Bitmap.Size);
+			Rectangle cropArea = _croppingAlgorithm.ComputeCropArea(inputImage.Bitmap.Size);
 			cropArea.Width = Math.Max(cropArea.Width, 1);
 			cropArea.Height = Math.Max(cropArea.Height, 1);
-			var output = new DirectBitmap(cropArea.Width, cropArea.Height, input.PixelFormat);
-			using (var graphics = Graphics.FromImage(output.Bitmap))
+			var outputImage = new DirectBitmap(cropArea.Width, cropArea.Height);
+			using (var graphics = Graphics.FromImage(outputImage.Bitmap))
 			{
-				var destRect = new Rectangle(0, 0, output.Width, output.Height);
-				graphics.DrawImage(input.Bitmap, destRect, cropArea, GraphicsUnit.Pixel);
+				var destRect = new Rectangle(0, 0, outputImage.Width, outputImage.Height);
+				graphics.DrawImage(inputImage.Bitmap, destRect, cropArea, GraphicsUnit.Pixel);
 			}
-			return output;
+			return outputImage;
 		}
 	}
 }

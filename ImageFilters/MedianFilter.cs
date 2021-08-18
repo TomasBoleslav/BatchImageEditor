@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -14,18 +15,19 @@ namespace ImageFilters
 			_radius = radius;
 		}
 
-		public void Apply(ref DirectBitmap input)
+		public void Apply(ref DirectBitmap image)
 		{
-			var output = new DirectBitmap(input.Width, input.Height, input.PixelFormat);
-			ApplyMean(input, output);
-			input.Dispose();
-			input = output;
+			ArgChecker.NotNull(image, nameof(image));
+			var outputImage = ApplyMedian(image);
+			image.Dispose();
+			image = outputImage;
 		}
 
 		private readonly int _radius;
 
-		private void ApplyMean(DirectBitmap input, DirectBitmap output)
+		private DirectBitmap ApplyMedian(DirectBitmap inputImage)
 		{
+			var outputImage = new DirectBitmap(inputImage.Width, inputImage.Height);
 			int diameter = 2 * _radius + 1;
 			int numColorsInWindow = diameter * diameter;
 			byte[] valuesR = new byte[numColorsInWindow];
@@ -33,11 +35,11 @@ namespace ImageFilters
 			byte[] valuesB = new byte[numColorsInWindow];
 			int middle = numColorsInWindow / 2;
 
-			int maxX = input.Width - 1;
-			int maxY = input.Height - 1;
-			for (int i = 0; i < input.Height; i++)
+			int maxX = inputImage.Width - 1;
+			int maxY = inputImage.Height - 1;
+			for (int i = 0; i < inputImage.Height; i++)
 			{
-				for (int j = 0; j < input.Width; j++)
+				for (int j = 0; j < inputImage.Width; j++)
 				{
 					int valuesIndex = 0;
 					for (int n = 0; n < diameter; n++)
@@ -49,7 +51,7 @@ namespace ImageFilters
 							int x = j + m - _radius;
 							y = Math.Clamp(y, 0, maxY);
 							x = Math.Clamp(x, 0, maxX);
-							Color inputColor = input.GetPixel(x, y);
+							Color inputColor = inputImage.GetPixel(x, y);
 							valuesR[valuesIndex] = inputColor.R;
 							valuesG[valuesIndex] = inputColor.G;
 							valuesB[valuesIndex] = inputColor.B;
@@ -59,14 +61,17 @@ namespace ImageFilters
 					Array.Sort(valuesR);
 					Array.Sort(valuesG);
 					Array.Sort(valuesB);
+					Color oldColor = inputImage.GetPixel(j, i);
 					Color outputColor = Color.FromArgb(
+						oldColor.A,
 						valuesR[middle],
 						valuesG[middle],
 						valuesB[middle]
 						);
-					output.SetPixel(j, i, outputColor);
+					outputImage.SetPixel(j, i, outputColor);
 				}
 			}
+			return outputImage;
 		}
 	}
 }

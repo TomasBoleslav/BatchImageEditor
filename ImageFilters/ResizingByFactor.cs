@@ -1,24 +1,28 @@
 ﻿using System.Drawing;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
 	public sealed class ResizingByFactor : IResizingAlgorithm
 	{
-		public ResizingByFactor(float factor)
+		public ResizingByFactor(float widthFactor, float heightFactor)
 		{
-			Ensure.Positive(factor, nameof(factor));
-			_factor = factor;
+			ArgChecker.Positive(widthFactor, nameof(widthFactor));
+			ArgChecker.Positive(heightFactor, nameof(heightFactor));
+			_widthFactor = widthFactor;
+			_heightFactor = heightFactor;
 		}
 
 		public Size ComputeNewSize(Size oldSize)
 		{
 			return new Size
 			{
-				Width = (int)(oldSize.Width * _factor),
-				Height = (int)(oldSize.Height * _factor)
+				Width = (int)(oldSize.Width * _widthFactor),
+				Height = (int)(oldSize.Height * _heightFactor)
 			};
 		}
 
-		private readonly float _factor;
+		private readonly float _widthFactor;
+		private readonly float _heightFactor;
 	}
 }

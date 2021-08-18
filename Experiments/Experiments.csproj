@@ -9,8 +9,4 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ImageFilters\ImageFilters.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using ThrowHelpers;
 
 namespace ImageFilters
 {
@@ -14,28 +15,28 @@ namespace ImageFilters
 			_flipType = flipType;
 		}
 
-		public void Apply(ref DirectBitmap inputBitmap)
+		public void Apply(ref DirectBitmap image)
 		{
-			Ensure.NotNull(inputBitmap, nameof(inputBitmap));
-			DirectBitmap outputBitmap = Flip(inputBitmap);
-			inputBitmap.Dispose();
-			inputBitmap = outputBitmap;
+			ArgChecker.NotNull(image, nameof(image));
+			DirectBitmap flippedImage = Flip(image);
+			image.Dispose();
+			image = flippedImage;
 		}
 
 		private readonly FlipType _flipType;
 
-		private DirectBitmap Flip(DirectBitmap input)
+		private DirectBitmap Flip(DirectBitmap inputImage)
 		{
-			Rectangle destRect = ComputeDestRect(input.Bitmap.Size);
+			Rectangle destRect = ComputeDestRect(inputImage.Bitmap.Size);
 			int outputWidth = Math.Abs(destRect.Width);
 			int outputHeight = Math.Abs(destRect.Height);
-			var output = new DirectBitmap(outputWidth, outputHeight, input.PixelFormat);
-			using (var graphics = Graphics.FromImage(output.Bitmap))
+			var outputImage = new DirectBitmap(outputWidth, outputHeight);
+			using (var graphics = Graphics.FromImage(outputImage.Bitmap))
 			{
-				Rectangle srcRect = new Rectangle(0, 0, input.Width, input.Height);
-				graphics.DrawImage(input.Bitmap, srcRect, destRect, GraphicsUnit.Pixel);
+				Rectangle srcRect = new Rectangle(0, 0, inputImage.Width, inputImage.Height);
+				graphics.DrawImage(inputImage.Bitmap, srcRect, destRect, GraphicsUnit.Pixel);
 			}
-			return output;
+			return outputImage;
 		}
 
 		private Rectangle ComputeDestRect(Size inputSize)

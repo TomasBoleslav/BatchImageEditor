@@ -29,5 +29,10 @@ namespace ImageFilters.Tests
 		{
 			return Color.FromArgb(value, value, value);
 		}
+
+		public static Color WithAlpha(this Color color, int alpha)
+		{
+			return Color.FromArgb(alpha, color);
+		}
 	}
 }
