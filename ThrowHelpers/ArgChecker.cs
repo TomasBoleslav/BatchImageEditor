@@ -34,6 +34,17 @@ namespace ThrowHelpers
 			}
 		}
 
+		public static void Positive(double value, string name)
+		{
+			if (value <= 0f)
+			{
+				throw new ArgumentException(
+					$"Value of {name} must be positive.",
+					name
+					);
+			}
+		}
+
 		public static void Nonnegative(float value, string name)
 		{
 			if (value < 0f)

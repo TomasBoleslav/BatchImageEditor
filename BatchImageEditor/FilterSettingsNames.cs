@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ImageFilters;
 
 namespace BatchImageEditor
 {
@@ -24,6 +25,8 @@ namespace BatchImageEditor
 			{ typeof(RotationFilterSettings), "Rotate" },
 			{ typeof(ColorChannelsFilterSettings), "Channels" },
 			{ typeof(CropFilterSettings), "Crop" },
+			{ typeof(GaussianBlurFilterSettings), "Gaussian Blur" },
+			{ typeof(EmptyFilterSettings<HighPassFilter>), "High Pass" },
 		};
 	}
 }

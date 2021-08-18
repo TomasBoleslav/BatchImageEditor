@@ -54,15 +54,19 @@ namespace BatchImageEditor
 			settingsFactories.Add(new Instantiator<RotationFilterSettings>());
 			settingsFactories.Add(new Instantiator<ColorChannelsFilterSettings>());
 			settingsFactories.Add(new Instantiator<CropFilterSettings>());
+			settingsFactories.Add(new Instantiator<GaussianBlurFilterSettings>());
+			settingsFactories.Add(new Instantiator<EmptyFilterSettings<HighPassFilter>>());
 			return settingsFactories;
 		}
 
 		private ContextMenuStrip CreateFilterMenu()
 		{
 			var menu = new ContextMenuStrip();
-			menu.Items.Add(CreateTransformationMenuItems());
+			menu.Items.Add(CreateTransformMenuItems());
 			menu.Items.Add(CreateNoiseReductionMenuItems());
 			menu.Items.Add(CreateColorAdjustmentMenuItems());
+			menu.Items.Add(CreateBlurMenuItems());
+			menu.Items.Add(CreateSharpenMenuItems());
 			menu.Items.Add(CreateSettingsMenuItem<ImageOverlayFilterSettings>());
 			return menu;
 		}
@@ -74,7 +78,7 @@ namespace BatchImageEditor
 			return rootItem;
 		}
 
-		private ToolStripMenuItem CreateTransformationMenuItems()
+		private ToolStripMenuItem CreateTransformMenuItems()
 		{
 			var rootItem = new ToolStripMenuItem("Transform");
 			rootItem.DropDownItems.Add(CreateSettingsMenuItem<ResizingFilterSettings>());
@@ -89,6 +93,20 @@ namespace BatchImageEditor
 			var rootItem = new ToolStripMenuItem("Adjust Colors");
 			rootItem.DropDownItems.Add(CreateSettingsMenuItem<ContrastBrightnessFilterSettings>());
 			rootItem.DropDownItems.Add(CreateSettingsMenuItem<ColorChannelsFilterSettings>());
+			return rootItem;
+		}
+
+		private ToolStripMenuItem CreateBlurMenuItems()
+		{
+			var rootItem = new ToolStripMenuItem("Blur");
+			rootItem.DropDownItems.Add(CreateSettingsMenuItem<GaussianBlurFilterSettings>());
+			return rootItem;
+		}
+
+		private ToolStripMenuItem CreateSharpenMenuItems()
+		{
+			var rootItem = new ToolStripMenuItem("Sharpen");
+			rootItem.DropDownItems.Add(CreateSettingsMenuItem<EmptyFilterSettings<HighPassFilter>>());
 			return rootItem;
 		}
 
