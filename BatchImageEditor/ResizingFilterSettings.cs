@@ -15,16 +15,18 @@ namespace BatchImageEditor
 		
 		protected override void UpdateDisplayedSettingsWithDisabledEvents()
 		{
+			_inputFieldsEnabled = false;
 			_resizingTypeBoxManager.SelectedValue = DisplayedModel.ResizingType;
 			switch (DisplayedModel.ResizingType)
 			{
-				case ResizingType.Fixed:
-					UpdateSizeForFixedResizing();
+				case ResizingType.FixedInPixels:
+					UpdateInputFieldsInPixels();
 					break;
-				case ResizingType.Percentage:
-					UpdateSizeForResizingByFactor();
+				case ResizingType.Percents:
+					UpdateInputFieldsInPercents();
 					break;
 			}
+			_inputFieldsEnabled = true;
 		}
 
 		private const int PercentageDecimalPlaces = 2;
@@ -35,34 +37,9 @@ namespace BatchImageEditor
 
 		private static readonly Dictionary<ResizingType, string> ResizingTypesToText = new()
 		{
-			{ ResizingType.Percentage, "In percents" },
-			{ ResizingType.Fixed, "In pixels" }
+			{ ResizingType.Percents, "In percents" },
+			{ ResizingType.FixedInPixels, "In pixels" }
 		};
-
-		private void ResizingTypeBox_SelectedValueChanged(object sender, EventArgs e)
-		{
-			DisplayedModel.ResizingType = _resizingTypeBoxManager.SelectedValue;
-			DisableUpdateEvents();
-			UpdateDisplayedSettingsWithDisabledEvents();
-			EnableUpdateEvents();
-			OnDisplayedSettingsUpdated();
-		}
-
-		private void UpdateSizeForResizingByFactor()
-		{
-			_inputFieldsEnabled = false;
-			ChangeInputFieldToPercents(_widthInput, DisplayedModel.WidthPercentage);
-			ChangeInputFieldToPercents(_heightInput, DisplayedModel.HeightPercentage);
-			_inputFieldsEnabled = true;
-		}
-
-		private void UpdateSizeForFixedResizing()
-		{
-			_inputFieldsEnabled = false;
-			ChangeInputFieldToPixels(_widthInput, DisplayedModel.FixedWidth);
-			ChangeInputFieldToPixels(_heightInput, DisplayedModel.FixedHeight);
-			_inputFieldsEnabled = true;
-		}
 
 		private static void ChangeInputFieldToPercents(NumericUpDown inputField, float value)
 		{
@@ -72,7 +49,7 @@ namespace BatchImageEditor
 			inputField.Increment = (decimal)PercentageIncrement;
 			inputField.Value = (decimal)value;
 		}
-
+		
 		private static void ChangeInputFieldToPixels(NumericUpDown inputField, int value)
 		{
 			inputField.Minimum = ResizingSettingsModel.MinSideLength;
@@ -80,6 +57,28 @@ namespace BatchImageEditor
 			inputField.DecimalPlaces = 0;
 			inputField.Increment = 1;
 			inputField.Value = value;
+		}
+
+		private void UpdateInputFieldsInPercents()
+		{
+			ChangeInputFieldToPercents(_widthInput, DisplayedModel.WidthPercentage);
+			ChangeInputFieldToPercents(_heightInput, DisplayedModel.HeightPercentage);
+		}
+
+		private void UpdateInputFieldsInPixels()
+		{
+			ChangeInputFieldToPixels(_widthInput, DisplayedModel.FixedWidth);
+			ChangeInputFieldToPixels(_heightInput, DisplayedModel.FixedHeight);
+		}
+
+		private void ResizingTypeBox_SelectedValueChanged(object sender, EventArgs e)
+		{
+			if (!_inputFieldsEnabled)
+			{
+				return;
+			}
+			DisplayedModel.ResizingType = _resizingTypeBoxManager.SelectedValue;
+			UpdateDisplayedSettings();
 		}
 
 		private void WidthInput_ValueChanged(object sender, EventArgs e)
@@ -90,10 +89,10 @@ namespace BatchImageEditor
 			}
 			switch (DisplayedModel.ResizingType)
 			{
-				case ResizingType.Fixed:
+				case ResizingType.FixedInPixels:
 					DisplayedModel.FixedWidth = (int)_widthInput.Value;
 					break;
-				case ResizingType.Percentage:
+				case ResizingType.Percents:
 					DisplayedModel.WidthPercentage = (float)_widthInput.Value;
 					break;
 			}
@@ -108,10 +107,10 @@ namespace BatchImageEditor
 			}
 			switch (DisplayedModel.ResizingType)
 			{
-				case ResizingType.Fixed:
+				case ResizingType.FixedInPixels:
 					DisplayedModel.FixedHeight = (int)_heightInput.Value;
 					break;
-				case ResizingType.Percentage:
+				case ResizingType.Percents:
 					DisplayedModel.HeightPercentage = (float)_heightInput.Value;
 					break;
 			}

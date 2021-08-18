@@ -53,6 +53,7 @@ namespace BatchImageEditor
 			settingsFactories.Add(new Instantiator<ContrastBrightnessFilterSettings>());
 			settingsFactories.Add(new Instantiator<RotationFilterSettings>());
 			settingsFactories.Add(new Instantiator<ColorChannelsFilterSettings>());
+			settingsFactories.Add(new Instantiator<CropFilterSettings>());
 			return settingsFactories;
 		}
 
@@ -73,13 +74,13 @@ namespace BatchImageEditor
 			return rootItem;
 		}
 
-		// resizing, rotation, flip
 		private ToolStripMenuItem CreateTransformationMenuItems()
 		{
 			var rootItem = new ToolStripMenuItem("Transform");
 			rootItem.DropDownItems.Add(CreateSettingsMenuItem<ResizingFilterSettings>());
 			rootItem.DropDownItems.Add(CreateSettingsMenuItem<FlipFilterSettings>());
 			rootItem.DropDownItems.Add(CreateSettingsMenuItem<RotationFilterSettings>());
+			rootItem.DropDownItems.Add(CreateSettingsMenuItem<CropFilterSettings>());
 			return rootItem;
 		}
 

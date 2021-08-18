@@ -34,12 +34,23 @@ namespace ThrowHelpers
 			}
 		}
 
-		public static void NotNegative(float value, string name)
+		public static void Nonnegative(float value, string name)
 		{
 			if (value < 0f)
 			{
 				throw new ArgumentException(
-					$"Value of {name} cannot be negative.",
+					$"Value of {name} must be non-negative.",
+					name
+					);
+			}
+		}
+
+		public static void Nonnegative(int value, string name)
+		{
+			if (value < 0)
+			{
+				throw new ArgumentException(
+					$"Value of {name} must be non-negative.",
 					name
 					);
 			}

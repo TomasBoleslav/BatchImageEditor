@@ -8,8 +8,8 @@ namespace BatchImageEditor
 {
 	internal enum ResizingType
 	{
-		Fixed,
-		Percentage
+		FixedInPixels,
+		Percents
 	}
 
 	internal class ResizingSettingsModel : IFilterSettingsModel<ResizingSettingsModel>
@@ -98,10 +98,10 @@ namespace BatchImageEditor
 			IResizingAlgorithm algorithm = null;
 			switch (ResizingType)
 			{
-				case ResizingType.Fixed:
+				case ResizingType.FixedInPixels:
 					algorithm = new FixedResizing(FixedWidth, FixedHeight);
 					break;
-				case ResizingType.Percentage:
+				case ResizingType.Percents:
 					algorithm = new ResizingByFactor(WidthPercentage, HeightPercentage);
 					break;
 			}
@@ -110,7 +110,7 @@ namespace BatchImageEditor
 
 		private const float DefaultPercentage = 1.0f;
 		private const int DefaultSideLength = 100;
-		private const ResizingType DefaultResizingType = ResizingType.Percentage;
+		private const ResizingType DefaultResizingType = ResizingType.Percents;
 		private static readonly Size MaxSize = new Size(MaxSideLength, MaxSideLength);
 		private float _widthPercentage;
 		private float _heightPercentage;

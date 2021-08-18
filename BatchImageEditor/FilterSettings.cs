@@ -4,6 +4,7 @@ using ImageFilters;
 
 namespace BatchImageEditor
 {
+	// TODO: remove disposable from TModel, resources will be disposed by particular UserControl settings
 	public abstract class FilterSettings<TModel> : FilterSettingsBase
 		where TModel: class, IFilterSettingsModel<TModel>, new()
 	{

@@ -16,6 +16,7 @@ namespace BatchImageEditor
 
 		protected override void UpdateDisplayedSettingsWithDisabledEvents()
 		{
+			_inputFieldsEnabled = false;
 			_cropTypeBoxManager.SelectedValue = DisplayedModel.CropType;
 			switch (DisplayedModel.CropType)
 			{
@@ -26,6 +27,7 @@ namespace BatchImageEditor
 					UpdateInputFieldsAsPixels();
 					break;
 			}
+			_inputFieldsEnabled = true;
 		}
 
 		private const int PercentageDecimalPlaces = 2;
@@ -50,8 +52,8 @@ namespace BatchImageEditor
 
 		private static void ChangeSizeInputFieldToPercents(NumericUpDown inputField, float value)
 		{
-			inputField.Minimum = (decimal)CropFilterSettingsModel.MinPercentageSideLength;
-			inputField.Maximum = (decimal)CropFilterSettingsModel.MaxPercentageSideLength;
+			inputField.Minimum = (decimal)CropFilterSettingsModel.MinPercentageSize;
+			inputField.Maximum = (decimal)CropFilterSettingsModel.MaxPercentageSize;
 			inputField.DecimalPlaces = PercentageDecimalPlaces;
 			inputField.Increment = (decimal)PercentageIncrement;
 			inputField.Value = (decimal)value;
@@ -68,8 +70,8 @@ namespace BatchImageEditor
 
 		private static void ChangeSizeInputFieldToPixels(NumericUpDown inputField, int value)
 		{
-			inputField.Minimum = CropFilterSettingsModel.MinPixelSideLength;
-			inputField.Maximum = CropFilterSettingsModel.MaxPixelSideLength;
+			inputField.Minimum = CropFilterSettingsModel.MinPixelSize;
+			inputField.Maximum = CropFilterSettingsModel.MaxPixelSize;
 			inputField.DecimalPlaces = 0;
 			inputField.Increment = 1;
 			inputField.Value = value;
@@ -77,34 +79,31 @@ namespace BatchImageEditor
 
 		private void UpdateInputFieldsAsPercents()
 		{
-			_inputFieldsEnabled = false;
-			ChangeLocationInputFieldToPercents(_xInput, DisplayedModel.PercentsRectangle.X);
-			ChangeLocationInputFieldToPercents(_yInput, DisplayedModel.PercentsRectangle.Y);
-			ChangeSizeInputFieldToPercents(_widthInput, DisplayedModel.PercentsRectangle.Width);
-			ChangeSizeInputFieldToPercents(_heightInput, DisplayedModel.PercentsRectangle.Height);
-			_inputFieldsEnabled = true;
+			ChangeLocationInputFieldToPercents(_xInput, DisplayedModel.PercentsCropRect.X);
+			ChangeLocationInputFieldToPercents(_yInput, DisplayedModel.PercentsCropRect.Y);
+			ChangeSizeInputFieldToPercents(_widthInput, DisplayedModel.PercentsCropRect.Width);
+			ChangeSizeInputFieldToPercents(_heightInput, DisplayedModel.PercentsCropRect.Height);
 		}
 
 		private void UpdateInputFieldsAsPixels()
 		{
-			_inputFieldsEnabled = false;
-			ChangeLocationInputFieldToPixels(_xInput, DisplayedModel.PixelsRectangle.X);
-			ChangeLocationInputFieldToPixels(_yInput, DisplayedModel.PixelsRectangle.Y);
-			ChangeSizeInputFieldToPixels(_widthInput, DisplayedModel.PixelsRectangle.Width);
-			ChangeSizeInputFieldToPixels(_heightInput, DisplayedModel.PixelsRectangle.Height);
-			_inputFieldsEnabled = true;
+			ChangeLocationInputFieldToPixels(_xInput, DisplayedModel.PixelsCropRect.X);
+			ChangeLocationInputFieldToPixels(_yInput, DisplayedModel.PixelsCropRect.Y);
+			ChangeSizeInputFieldToPixels(_widthInput, DisplayedModel.PixelsCropRect.Width);
+			ChangeSizeInputFieldToPixels(_heightInput, DisplayedModel.PixelsCropRect.Height);
 		}
 
 		private void CropTypeBox_SelectedValueChanged(object sender, EventArgs e)
 		{
+			if (!_inputFieldsEnabled)
+			{
+				return;
+			}
 			DisplayedModel.CropType = _cropTypeBoxManager.SelectedValue;
-			DisableUpdateEvents();
-			UpdateDisplayedSettingsWithDisabledEvents();
-			EnableUpdateEvents();
-			OnDisplayedSettingsUpdated();
+			UpdateDisplayedSettings();
 		}
 
-		private void SetInputFieldDependingOnCropType(
+		private void ChangeCropRectDependingOnCropType(
 			Func<Rectangle, Rectangle> pixelRectFunc,
 			Func<RectangleF, RectangleF> percentRectFunc)
 		{
@@ -115,19 +114,20 @@ namespace BatchImageEditor
 			switch (DisplayedModel.CropType)
 			{
 				case CropType.Pixels:
-					Rectangle pixelRect = DisplayedModel.PixelsRectangle;
-					DisplayedModel.PixelsRectangle = pixelRectFunc.Invoke(pixelRect);
+					Rectangle pixelRect = DisplayedModel.PixelsCropRect;
+					DisplayedModel.PixelsCropRect = pixelRectFunc.Invoke(pixelRect);
 					break;
 				case CropType.Percents:
-					RectangleF percentRect = DisplayedModel.PercentsRectangle;
-					DisplayedModel.PercentsRectangle = percentRectFunc.Invoke(percentRect);
+					RectangleF percentRect = DisplayedModel.PercentsCropRect;
+					DisplayedModel.PercentsCropRect = percentRectFunc.Invoke(percentRect);
 					break;
 			}
+			OnDisplayedSettingsUpdated();
 		}
 
 		private void XInput_ValueChanged(object sender, EventArgs e)
 		{
-			SetInputFieldDependingOnCropType(
+			ChangeCropRectDependingOnCropType(
 				pixelRect => pixelRect.WithX((int)_xInput.Value),
 				percentRect => percentRect.WithX((float)_xInput.Value)
 				);
@@ -135,7 +135,7 @@ namespace BatchImageEditor
 
 		private void YInput_ValueChanged(object sender, EventArgs e)
 		{
-			SetInputFieldDependingOnCropType(
+			ChangeCropRectDependingOnCropType(
 				pixelRect => pixelRect.WithY((int)_yInput.Value),
 				percentRect => percentRect.WithY((float)_yInput.Value)
 				);
@@ -143,7 +143,7 @@ namespace BatchImageEditor
 
 		private void WidthInput_ValueChanged(object sender, EventArgs e)
 		{
-			SetInputFieldDependingOnCropType(
+			ChangeCropRectDependingOnCropType(
 				pixelRect => pixelRect.WithWidth((int)_widthInput.Value),
 				percentRect => percentRect.WithWidth((float)_widthInput.Value)
 				);
@@ -151,7 +151,7 @@ namespace BatchImageEditor
 
 		private void HeightInput_ValueChanged(object sender, EventArgs e)
 		{
-			SetInputFieldDependingOnCropType(
+			ChangeCropRectDependingOnCropType(
 				pixelRect => pixelRect.WithHeight((int)_heightInput.Value),
 				percentRect => percentRect.WithHeight((float)_heightInput.Value)
 				);
