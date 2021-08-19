@@ -20,7 +20,7 @@ namespace ImageFilters
 			_filters = filters;
 		}
 
-		public Action CancelCallback { get; set; }
+		public Action CancelAction { get; set; }
 
 		public Func<bool> ShouldCancelFunc { get; set; }
 
@@ -38,7 +38,7 @@ namespace ImageFilters
 		{
 			if (!TryReadImage(out DirectBitmap image, out string errorMessage))
 			{
-				FailCallback.Invoke(this, errorMessage);
+				FailCallback?.Invoke(this, errorMessage);
 				return;
 			}
 			if (ShouldCancel())
@@ -56,11 +56,11 @@ namespace ImageFilters
 			}
 			if (!TrySaveImage(image, out errorMessage))
 			{
-				FailCallback.Invoke(this, errorMessage);
+				FailCallback?.Invoke(this, errorMessage);
 				return;
 			}
 			image.Dispose();
-			SuccessCallback.Invoke(this);
+			SuccessCallback?.Invoke(this);
 		}
 
 		private readonly IEnumerable<IImageFilter> _filters;
@@ -128,15 +128,11 @@ namespace ImageFilters
 			try
 			{
 				bitmapToSave.Save(OutputFilename);
-				if (disposeRequired)
-				{
-					bitmapToSave.Dispose();
-				}
 				return true;
 			}
-			catch (ExternalException)
+			catch (Exception e) when (e is ExternalException || e is IOException) 
 			{
-				errorMessage = $"Image could not be saved in {OutputFilename}.";
+				errorMessage = $"Image could not be saved to {OutputFilename}.";
 			}
 			finally
 			{
@@ -156,7 +152,7 @@ namespace ImageFilters
 		private void OnCancel()
 		{
 			IsCancelled = true;
-			CancelCallback?.Invoke();
+			CancelAction?.Invoke();
 		}
 	}
 }

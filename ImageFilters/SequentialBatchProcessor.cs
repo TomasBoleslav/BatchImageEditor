@@ -21,16 +21,18 @@ namespace ImageFilters
 
 		public void Run()
 		{
+			_lastUpdateTime = DateTime.Now;
 			foreach (ICancellableJob job in _jobs)
 			{
 				job.ShouldCancelFunc = ShouldCancelFunc;
-				job.CancelCallback = CancelCallback;
+				job.CancelAction = CancelCallback;
 				job.Run();
 				if (job.IsCancelled)
 				{
 					return;
 				}
-				Update();
+				// TODO: update action can be called in success and fail - both measure time and decide whether to call update (DoEvents) or not
+				UpdateIfTimeoutExceeded();
 			}
 		}
 
@@ -39,14 +41,19 @@ namespace ImageFilters
 		private DateTime _lastUpdateTime;
 		private Action _updateAction;
 
-		private void Update()
+		private void UpdateIfTimeoutExceeded()
 		{
 			TimeSpan elapsedTime = DateTime.Now - _lastUpdateTime;
 			if (elapsedTime.TotalMilliseconds >= _updateTimeInterval)
 			{
-				_lastUpdateTime = _lastUpdateTime.AddMilliseconds(_updateTimeInterval);
-				_updateAction?.Invoke();
+				Update();
 			}
+		}
+
+		private void Update()
+		{
+			_lastUpdateTime = _lastUpdateTime.AddMilliseconds(_updateTimeInterval);
+			_updateAction?.Invoke();
 		}
 	}
 }

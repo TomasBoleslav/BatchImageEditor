@@ -4,7 +4,7 @@ namespace ImageFilters
 {
 	public interface ICancellableJob
 	{
-		Action CancelCallback { get; set; }
+		Action CancelAction { get; set; }
 
 		Func<bool> ShouldCancelFunc { get; set; }
 
