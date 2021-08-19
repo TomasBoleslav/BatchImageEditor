@@ -32,6 +32,7 @@ namespace BatchImageEditor
 			this._sceneTabs = new BatchImageEditor.SceneTabs();
 			this._loadScene = new BatchImageEditor.LoadScene();
 			this._editScene = new BatchImageEditor.EditScene();
+			this._processScene = new BatchImageEditor.ProcessScene();
 			this.SuspendLayout();
 			// 
 			// _sceneTabs
@@ -44,6 +45,7 @@ namespace BatchImageEditor
 			this._sceneTabs.TabIndex = 0;
 			this._sceneTabs.LoadTabSelected += new System.EventHandler(this.SceneTabs_LoadTabSelected);
 			this._sceneTabs.EditTabSelected += new System.EventHandler(this.SceneTabs_EditTabSelected);
+			this._sceneTabs.ProcessTabSelected += new System.EventHandler(this.SceneTabs_ProcessTabSelected);
 			// 
 			// _loadScene
 			// 
@@ -63,6 +65,16 @@ namespace BatchImageEditor
 			this._editScene.Padding = new System.Windows.Forms.Padding(15);
 			this._editScene.Size = new System.Drawing.Size(904, 546);
 			this._editScene.TabIndex = 2;
+			this._editScene.FilterListChanged += new System.EventHandler(this.EditScene_FilterListChanged);
+			// 
+			// _processScene
+			// 
+			this._processScene.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._processScene.Location = new System.Drawing.Point(0, 0);
+			this._processScene.Name = "_processScene";
+			this._processScene.Padding = new System.Windows.Forms.Padding(15);
+			this._processScene.Size = new System.Drawing.Size(904, 596);
+			this._processScene.TabIndex = 3;
 			// 
 			// MainForm
 			// 
@@ -72,6 +84,7 @@ namespace BatchImageEditor
 			this.Controls.Add(this._loadScene);
 			this.Controls.Add(this._editScene);
 			this.Controls.Add(this._sceneTabs);
+			this.Controls.Add(this._processScene);
 			this.Name = "MainForm";
 			this.Text = "MainForm";
 			this.ResumeLayout(false);
@@ -83,5 +96,6 @@ namespace BatchImageEditor
 		private SceneTabs _sceneTabs;
 		private LoadScene _loadScene;
 		private EditScene _editScene;
+		private ProcessScene _processScene;
 	}
 }

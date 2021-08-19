@@ -15,6 +15,8 @@ namespace BatchImageEditor
 			_previewUpdater = new UIUpdater();
 		}
 
+		public event EventHandler FilterListChanged;
+
 		public void SetFilenames(IReadOnlySet<string> filenames)
 		{
 			_fileSelectionControl.SetFilenames(filenames);
@@ -60,6 +62,7 @@ namespace BatchImageEditor
 
 		private void FilterListControl_ListChanged(object sender, EventArgs e)
 		{
+			FilterListChanged?.Invoke(this, EventArgs.Empty);
 			UpdatePreview();
 		}
 
