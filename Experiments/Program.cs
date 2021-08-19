@@ -1,91 +1,215 @@
 ﻿using System;
-//using ImageFilters;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Diagnostics;
+using ImageFilters;
 
 namespace Experiments
 {
+	class MockJob : ICancellableJob
+	{
+		public Action CancelAction { get; set; }  // TODO: this should maybe be an event - Cancelled - but maybe not, it is invoked only once
+
+		public Func<bool> ShouldCancelFunc { get; set; }
+
+		public bool IsCancelled { get; private set; }
+
+		public MockJob(int millisecondsTimeout)
+		{
+			_millisecondsTimeout = millisecondsTimeout;
+		}
+
+		public void Run()
+		{
+			Thread.Sleep(_millisecondsTimeout);
+			if (ShouldCancelFunc != null && ShouldCancelFunc.Invoke())
+			{
+				CancelAction?.Invoke();
+				IsCancelled = true;
+			}
+		}
+
+		private readonly int _millisecondsTimeout;
+	}
+
+
 	class Program
 	{
-		enum MyEnum
+		private static Task RunActionAsync(Action action, CancellationToken cancellationToken)
 		{
-			Value1 = 5,
-			Value2 = 10
+			return Task.Factory.StartNew(
+				() =>
+				{
+					action.Invoke();
+				},
+				cancellationToken, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 		}
 
-		public static Dictionary<string, int> GetNamesToValues<T>(IEnumerable<KeyValuePair<string, T>> namesToEnumValues) where T : Enum
+		private static void CallTask()
 		{
-			Dictionary<string, int> namesToIntValues = new Dictionary<string, int>();
-			IEnumerable<int> values = Enum.GetValues(typeof(T)).Cast<int>();
-			//int x = (int)values[0];
-			var values2 = Enum.GetValues(typeof(T));
-			//int x2 = (int)values[0];
-			foreach (var value in values)
-			{
+			var tokenSource = new CancellationTokenSource();
+			CancellationToken ct = tokenSource.Token;
 
-			}
-			foreach ((string name, T enumValue) in namesToEnumValues)
+			var task = Task.Run(() =>
 			{
-				if (!namesToIntValues.ContainsKey(name))
+				try
 				{
-					//namesToIntValues.Add(name, (int)enumValue);
+					throw new OperationCanceledException(ct);
+					ct.ThrowIfCancellationRequested();
+					while (true)
+					{
+						if (ct.IsCancellationRequested)
+						{
+							ct.ThrowIfCancellationRequested();
+						}
+					}
+				}
+				catch (OperationCanceledException)
+				{
+					throw;
+				}
+			}, tokenSource.Token); // Pass same token to Task.Run.
+			Thread.Sleep(500);
+			tokenSource.Cancel();
+			Console.WriteLine("Waiting");
+			task.Wait();
+		}
+
+		private static void CallTask2()
+		{
+			var task1 = Task.Run(() => { throw new OperationCanceledException("This exception is expected!"); });
+
+
+			try
+			{
+				task1.Wait();
+			}
+			catch (AggregateException ae)
+			{
+				foreach (var e in ae.InnerExceptions)
+				{
+					// Handle the custom exception.
+					if (e is OperationCanceledException)
+					{
+						Console.WriteLine(e.Message);
+					}
+					// Rethrow any other exception.
+					else
+					{
+						throw e;
+					}
 				}
 			}
-			return namesToIntValues;
 		}
 
-		abstract class A
+		private static void CallTask3()
 		{
-			public A() { Console.WriteLine("A"); }
+			CancellationTokenSource tokenSource = new();
+			ParallelOptions options = new()
+			{
+				TaskScheduler = TaskScheduler.Default,
+				MaxDegreeOfParallelism = 4,
+				CancellationToken = tokenSource.Token
+			};
+			Console.WriteLine($"Number of running threads: {Process.GetCurrentProcess().Threads.Count}");
+			Task task = null;
+			task = Task.Factory.StartNew(
+				() =>
+				{
+					throw new OperationCanceledException(tokenSource.Token);
+					Parallel.ForEach(Enumerable.Range(0, 5), options,
+						x =>
+						{
+							Console.WriteLine($"Number of running threads: {Process.GetCurrentProcess().Threads.Count}");
+							Console.WriteLine(x);
+							tokenSource.Cancel();
+						});
+				},
+				tokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+			try
+			{
+				task.Wait();
+			}
+			catch (AggregateException ae)
+			{
+				foreach (var e in ae.InnerExceptions)
+				{
+					// Handle the custom exception.
+					if (e is OperationCanceledException)
+					{
+						Console.WriteLine(e.Message);
+						Console.WriteLine("YES");
+					}
+					// Rethrow any other exception.
+					else
+					{
+						throw e;
+					}
+				}
+			}
 		}
 
-		class B : A
+		private static IEnumerable<ImageProcessingJob> CreateJobs(string inputFilename, IEnumerable<IImageFilter> filters, int count)
 		{
-			public B() { Console.WriteLine("B"); }
+			var jobs = new ImageProcessingJob[count];
+			for (int i = 0; i < count; i++)
+			{
+				jobs[i] = new ImageProcessingJob(inputFilename, $@"C:\Users\boles\Plocha\output\out-{i}.jpg", filters)
+				{
+					SuccessCallback = job => Console.WriteLine($"Successfully saved {job.InputFilename} to {job.OutputFilename}, in {Thread.CurrentThread.ManagedThreadId}"),
+					FailCallback = (job, message) => Console.WriteLine($"Job failed: {message}, in {Thread.CurrentThread.ManagedThreadId}"),
+					ShouldCancelFunc = () => false,
+					CancelAction = () => Console.WriteLine("Canceled")
+				};
+			}
+			return jobs;
 		}
 
 		static void Main(string[] args)
 		{
-			new B();
-			/*Dictionary<string, MyEnum> d = new()
+			var filters = new IImageFilter[]
 			{
-				{ "value1", MyEnum.Value1 }
+				new FlipFilter(FlipType.Horizontal),
+				new ColorAdjustingFilter(new RgbColorAdjuster(255, 0, 0)),
 			};
-			var d2 = GetNamesToValues(d);
-			foreach (var item in d2)
+			var jobs = CreateJobs(@"C:\Users\boles\Plocha\web-inspirace.jpg", filters, 100);
+			var batchProcessor = new BatchProcessor(jobs, 4);
+			batchProcessor.Run();
+			Thread.Sleep(1000);
+			batchProcessor.Cancel();
+			try
 			{
-				Console.WriteLine($"{item.Key}, {item.Value}");
-			}*/
-			/*
-			Bitmap bitmap = new Bitmap(10, 10, PixelFormat.Format32bppPArgb);
-			bitmap.SetPixel(0, 0, Color.FromArgb(100, 200, 0, 0));
-			Color color = bitmap.GetPixel(0, 0);
-			Console.WriteLine(color);
-
-			bitmap = new Bitmap(10, 10, PixelFormat.Format32bppArgb);
-			bitmap.SetPixel(0, 0, Color.FromArgb(100, 200, 0, 0));
-			color = bitmap.GetPixel(0, 0);
-			Console.WriteLine(color);*/
-		}
-
-		private static double GaussianBlurSum(int radius, double sigma)
-		{
-			double sum = 0;
-			float[] convolutionVector = new float[2 * radius + 1];
-			for (int x = -radius; x <= radius; x++)
-			{
-				double exponent = -(x * x) / (sigma * sigma);
-				double eExpression = Math.Pow(Math.E, exponent);
-				double denominator = 2 * Math.PI * sigma * sigma;
-				double vectorValue = Math.Sqrt(eExpression / denominator);
-				convolutionVector[x + radius] = (float)vectorValue;
-				sum += vectorValue;
+				batchProcessor.WaitForCompletion();
 			}
-			return sum;
+			catch (AggregateException ae)
+			{
+				foreach (var e in ae.InnerExceptions)
+				{
+					if (e is OperationCanceledException)
+					{
+						Console.WriteLine(e.Message);
+					}
+					else
+					{
+						throw e;
+					}
+				}
+			}
+			/*
+			var job = new ImageProcessingJob(@"C:\Users\boles\Plocha\web-inspirace.jpg", @"C:\Users\boles\Plocha\output.jpg", filters)
+			{
+				SuccessCallback = job => Console.WriteLine($"Successfully saved {job.InputFilename} to {job.OutputFilename}"),
+				FailCallback = (job, message) => Console.WriteLine($"Job failed: {message}"),
+				ShouldCancelFunc = () => false,
+				CancelAction = () => Console.WriteLine("Canceled")
+			};
+			job.Run();
+			*/
 		}
-
 	}
 }
