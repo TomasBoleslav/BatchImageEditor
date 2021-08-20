@@ -3,14 +3,14 @@ using ThrowHelpers;
 
 namespace ImageFilters
 {
-	// TODO: bad name
+	// TODO: bad name, ImageInsertionFilter?
 	public sealed class ImageOverlayFilter : IImageFilter
 	{
-		public ImageOverlayFilter(DirectBitmap overlayImage, ImagePlacement position, int dx, int dy)
+		public ImageOverlayFilter(Bitmap overlayImage, ImagePlacement placement, int dx, int dy)
 		{
 			ArgChecker.NotNull(overlayImage, nameof(overlayImage));
 			_overlayImage = overlayImage;
-			_position = position;
+			_placement = placement;
 			_dx = dx;
 			_dy = dy;
 		}
@@ -20,17 +20,19 @@ namespace ImageFilters
 			ArgChecker.NotNull(image, nameof(image));
 			Point destination = ComputeDestinationOfImageToDraw(image);
 			using var graphics = Graphics.FromImage(image.Bitmap);
-			graphics.DrawImage(_overlayImage.Bitmap, destination);
+			using var overlayImageCopy = new Bitmap(_overlayImage);
+			overlayImageCopy.SetResolution(graphics.DpiX, graphics.DpiY);
+			graphics.DrawImage(overlayImageCopy, destination);
 		}
 
-		private readonly DirectBitmap _overlayImage;
-		private readonly ImagePlacement _position;
+		private readonly Bitmap _overlayImage;
+		private readonly ImagePlacement _placement;
 		private readonly int _dx;
 		private readonly int _dy;
 
 		private Point ComputeDestinationOfImageToDraw(DirectBitmap image)
 		{
-			return _position switch
+			return _placement switch
 			{
 				ImagePlacement.TopLeft => new Point
 				{

@@ -36,14 +36,14 @@ namespace BatchImageEditor
 			// 
 			this._selectionBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this._selectionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this._selectionBox.FormattingEnabled = true;
 			this._selectionBox.Location = new System.Drawing.Point(3, 3);
 			this._selectionBox.Name = "_selectionBox";
 			this._selectionBox.Size = new System.Drawing.Size(300, 28);
 			this._selectionBox.Sorted = true;
 			this._selectionBox.TabIndex = 0;
-			this._selectionBox.Text = "Select file";
-			this._selectionBox.SelectionChangeCommitted += new System.EventHandler(this.SelectionBox_SelectionChangeCommitted);
+			this._selectionBox.SelectedIndexChanged += new System.EventHandler(this.SelectionBox_SelectedIndexChanged);
 			// 
 			// FileSelection
 			// 

@@ -48,6 +48,7 @@ namespace BatchImageEditor
 			// 
 			// _placementComboBox
 			// 
+			this._placementComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this._placementComboBox.FormattingEnabled = true;
 			this._placementComboBox.Location = new System.Drawing.Point(107, 39);
 			this._placementComboBox.Name = "_placementComboBox";

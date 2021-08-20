@@ -14,7 +14,7 @@ namespace BatchImageEditor
 		public static string GetDialogFilter()
 		{
 			var joinedExtensions = string.Join(';', SupportedExtensions.Select(ext => $"*.{ext}"));
-			return $"Image files ({joinedExtensions}) | {joinedExtensions} | All files (*.*) | *.*";
+			return $"Image Files({joinedExtensions})|{joinedExtensions}|All files (*.*)|*.*";
 		}
 
 		private static readonly string[] SupportedExtensions = { "jpg", "jpeg", "bmp", "gif", "png" };

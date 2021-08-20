@@ -37,7 +37,7 @@ namespace BatchImageEditor
 			_previewUpdater.Update(
 				() =>
 				{
-					// Run this in Update, there can be old updates still pending
+					// Run this in Update to execute after a pending update
 					_previewControl.PreviewImage?.Dispose();
 					_previewControl.PreviewImage = null;
 					return Task.CompletedTask;

@@ -73,12 +73,10 @@ namespace BatchImageEditor
 			// 
 			this._outputFolderBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this._outputFolderBox.Enabled = false;
 			this._outputFolderBox.Location = new System.Drawing.Point(142, 35);
 			this._outputFolderBox.Name = "_outputFolderBox";
 			this._outputFolderBox.Size = new System.Drawing.Size(438, 27);
 			this._outputFolderBox.TabIndex = 3;
-			this._outputFolderBox.Text = "path";
 			// 
 			// _outputFolderLabel
 			// 

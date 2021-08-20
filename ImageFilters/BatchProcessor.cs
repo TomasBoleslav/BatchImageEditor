@@ -53,21 +53,18 @@ namespace ImageFilters
 		{
 			if (!IsRunning)
 			{
-				throw new InvalidOperationException("Cannot cancel a process that is not running.");
+				return;
 			}
 			_tokenSource.Cancel();
 		}
 
 		public void WaitForCompletion()
 		{
-			if (!IsRunning)
+			if (!IsRunning || _runningTask == null)
 			{
-				throw new InvalidOperationException("Cannot wait for a process that is not running.");
+				return;
 			}
-			if (_runningTask != null)
-			{
-				_runningTask.Wait();	// TODO: throws aggregate exception, catch it from outside
-			}
+			_runningTask.Wait();	// TODO: throws aggregate exception, catch it from outside
 		}
 
 		private readonly IEnumerable<ICancellableJob> _jobs;

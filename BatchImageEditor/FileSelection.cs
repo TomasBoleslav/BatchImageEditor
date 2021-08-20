@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BatchImageEditor
@@ -23,29 +17,31 @@ namespace BatchImageEditor
 
 		public void SetFilenames(IReadOnlySet<string> newFilenames)
 		{
-			IEnumerable<string> currentFilenames = _selectionBox.Items.Cast<string>();
-			HashSet<string> filenamesToPreserve = currentFilenames.ToHashSet();
-			filenamesToPreserve.IntersectWith(newFilenames);
-			for (int i = _selectionBox.Items.Count - 1; i >= 0; i--)
+			_selectionBox.BeginUpdate();
+			_selectionBox.Items.Clear();
+			foreach (string filename in newFilenames)
 			{
-				string filename = (string)_selectionBox.Items[i];
-				if (!filenamesToPreserve.Contains(filename))
-				{
-					_selectionBox.Items.RemoveAt(i);
-				}
+				_selectionBox.Items.Add(filename);
 			}
-			foreach (var filename in newFilenames)
+			_selectionBox.EndUpdate();
+			if (newFilenames.Count > 0)
 			{
-				if (!filenamesToPreserve.Contains(filename))
-				{
-					_selectionBox.Items.Add(filename);
-				}
+				_selectionBox.SelectedIndex = 0;
 			}
 		}
 
-		private void SelectionBox_SelectionChangeCommitted(object sender, EventArgs e)
+		private void SelectionBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			SelectedFilename = _selectionBox.SelectedItem as string;
+			string newSelectedItem = _selectionBox.SelectedItem as string;
+			if (newSelectedItem != SelectedFilename)
+			{
+				SelectedFilename = _selectionBox.SelectedItem as string;
+				OnSelectionChange();
+			}
+		}
+
+		private void OnSelectionChange()
+		{
 			SelectionChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}
