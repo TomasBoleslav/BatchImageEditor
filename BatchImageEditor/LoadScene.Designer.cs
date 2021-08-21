@@ -32,10 +32,10 @@ namespace BatchImageEditor
 			this.label2 = new System.Windows.Forms.Label();
 			this.loadedPreviewBox = new System.Windows.Forms.PictureBox();
 			this._imageListView = new System.Windows.Forms.ListView();
-			this.nameHeader = new System.Windows.Forms.ColumnHeader();
-			this.dateHeader = new System.Windows.Forms.ColumnHeader();
-			this.sizeHeader = new System.Windows.Forms.ColumnHeader();
-			this.pathHeader = new System.Windows.Forms.ColumnHeader();
+			this._nameHeader = new System.Windows.Forms.ColumnHeader();
+			this._dateHeader = new System.Windows.Forms.ColumnHeader();
+			this._sizeHeader = new System.Windows.Forms.ColumnHeader();
+			this._pathHeader = new System.Windows.Forms.ColumnHeader();
 			this._removeButton = new System.Windows.Forms.Button();
 			this._loadFolderButton = new System.Windows.Forms.Button();
 			this._loadImageButton = new System.Windows.Forms.Button();
@@ -74,10 +74,10 @@ namespace BatchImageEditor
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this._imageListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.nameHeader,
-            this.dateHeader,
-            this.sizeHeader,
-            this.pathHeader});
+            this._nameHeader,
+            this._dateHeader,
+            this._sizeHeader,
+            this._pathHeader});
 			this._imageListView.FullRowSelect = true;
 			this._imageListView.HideSelection = false;
 			this._imageListView.Location = new System.Drawing.Point(15, 32);
@@ -92,23 +92,23 @@ namespace BatchImageEditor
 			// 
 			// nameHeader
 			// 
-			this.nameHeader.Text = "Name";
-			this.nameHeader.Width = 200;
+			this._nameHeader.Text = "Name";
+			this._nameHeader.Width = 200;
 			// 
 			// dateHeader
 			// 
-			this.dateHeader.Text = "Date modified";
-			this.dateHeader.Width = 200;
+			this._dateHeader.Text = "Date modified";
+			this._dateHeader.Width = 200;
 			// 
 			// sizeHeader
 			// 
-			this.sizeHeader.Text = "Size";
-			this.sizeHeader.Width = 100;
+			this._sizeHeader.Text = "Size";
+			this._sizeHeader.Width = 100;
 			// 
 			// pathHeader
 			// 
-			this.pathHeader.Text = "Path";
-			this.pathHeader.Width = 200;
+			this._pathHeader.Text = "Path";
+			this._pathHeader.Width = 200;
 			// 
 			// _removeButton
 			// 
@@ -183,10 +183,10 @@ namespace BatchImageEditor
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.PictureBox loadedPreviewBox;
 		private System.Windows.Forms.ListView _imageListView;
-		private System.Windows.Forms.ColumnHeader nameHeader;
-		private System.Windows.Forms.ColumnHeader dateHeader;
-		private System.Windows.Forms.ColumnHeader sizeHeader;
-		private System.Windows.Forms.ColumnHeader pathHeader;
+		private System.Windows.Forms.ColumnHeader _nameHeader;
+		private System.Windows.Forms.ColumnHeader _dateHeader;
+		private System.Windows.Forms.ColumnHeader _sizeHeader;
+		private System.Windows.Forms.ColumnHeader _pathHeader;
 		private System.Windows.Forms.Button _removeButton;
 		private System.Windows.Forms.Button _loadFolderButton;
 		private System.Windows.Forms.Button _loadImageButton;

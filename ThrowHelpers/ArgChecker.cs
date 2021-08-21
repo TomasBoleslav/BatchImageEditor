@@ -36,21 +36,10 @@ namespace ThrowHelpers
 
 		public static void Positive(double value, string name)
 		{
-			if (value <= 0f)
+			if (value <= 0.0)
 			{
 				throw new ArgumentException(
 					$"Value of {name} must be positive.",
-					name
-					);
-			}
-		}
-
-		public static void Nonnegative(float value, string name)
-		{
-			if (value < 0f)
-			{
-				throw new ArgumentException(
-					$"Value of {name} must be non-negative.",
 					name
 					);
 			}
@@ -67,12 +56,12 @@ namespace ThrowHelpers
 			}
 		}
 
-		public static void NotLessThan<T>(IComparable<T> value, string name, T other)
+		public static void Nonnegative(float value, string name)
 		{
-			if (value.LessThan(other))
+			if (value < 0f)
 			{
 				throw new ArgumentException(
-					$"Value of {name} must be greater than or equal to {other}.",
+					$"Value of {name} must be non-negative.",
 					name
 					);
 			}
@@ -84,17 +73,6 @@ namespace ThrowHelpers
 			{
 				throw new ArgumentException(
 					$"Value of {name} must be less than {other}.",
-					name
-					);
-			}
-		}
-
-		public static void NotGreaterThan<T>(IComparable<T> value, string name, T other)
-		{
-			if (value.GreaterThan(other))
-			{
-				throw new ArgumentException(
-					$"Value of {name} must be less than or equal to {other}.",
 					name
 					);
 			}
@@ -122,7 +100,6 @@ namespace ThrowHelpers
 			}
 		}
 
-		// The same for ThrowIfLessThan, ThrowIfGreaterThan, use T.ToString()
 		public static void InRangeInclusive<T>(IComparable<T> value, string name, T lowerBound, T upperBound)
 		{
 			if (value.LessThan(lowerBound) || value.GreaterThan(upperBound))

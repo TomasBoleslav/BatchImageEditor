@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using ImageFilters;
 
@@ -48,6 +49,7 @@ namespace BatchImageEditor
 		};
 
 		private readonly EnumComboBoxManager<ImagePlacement> _imagePlacementBoxManager;
+		private Bitmap _loadedImage;
 
 		private static void InitializeDeltaInputField(NumericUpDown inputField)
 		{
@@ -73,10 +75,10 @@ namespace BatchImageEditor
 				DisplayedModel.OverlayImage = null;
 				try
 				{
-					_loadedImage = DirectBitmap.FromFile(dialog.FileName);
+					_loadedImage = new Bitmap(dialog.FileName);
 					DisplayedModel.OverlayImage = _loadedImage;
 				}
-				catch (IOException)
+				catch (Exception ex) when (ex is ExternalException || ex is ArgumentException)
 				{
 					MessageBox.Show($"An image could not be loaded from {dialog.FileName}.");
 				}
@@ -95,7 +97,5 @@ namespace BatchImageEditor
 			DisplayedModel.DeltaY = (int)_dYInput.Value;
 			OnDisplayedSettingsUpdated();
 		}
-
-		private DirectBitmap _loadedImage;
 	}
 }

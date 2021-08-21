@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Drawing;
 using ImageFilters;
 using ThrowHelpers;
 
@@ -19,7 +20,7 @@ namespace BatchImageEditor
 			DeltaY = DefaultDelta;
 		}
 
-		public DirectBitmap OverlayImage { get; set; }
+		public Bitmap OverlayImage { get; set; }
 
 		public ImagePlacement ImagePlacement { get; set; }
 

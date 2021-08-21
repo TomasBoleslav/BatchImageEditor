@@ -133,7 +133,7 @@ namespace BatchImageEditor
 
 		private string GetFilenameFromItem(ListViewItem item)
 		{
-			return item.SubItems[pathHeader.Index].Text;
+			return item.SubItems[_pathHeader.Index].Text;
 		}
 
 		private void RemoveSelectedItems()
@@ -155,16 +155,16 @@ namespace BatchImageEditor
 		private ListViewItem CreateImageListItem(string filename)
 		{
 			string[] columns = new string[_imageListView.Columns.Count];
-			columns[nameHeader.Index] = NotAvailable;
-			columns[dateHeader.Index] = NotAvailable;
-			columns[sizeHeader.Index] = NotAvailable;
-			columns[pathHeader.Index] = filename;
+			columns[_nameHeader.Index] = NotAvailable;
+			columns[_dateHeader.Index] = NotAvailable;
+			columns[_sizeHeader.Index] = NotAvailable;
+			columns[_pathHeader.Index] = filename;
 			try
 			{
 				var fileInfo = new FileInfo(filename);
-				columns[nameHeader.Index] = fileInfo.Name;
-				columns[dateHeader.Index] = fileInfo.CreationTime.ToString();
-				columns[sizeHeader.Index] = $"{fileInfo.Length / 1024} kB";
+				columns[_nameHeader.Index] = fileInfo.Name;
+				columns[_dateHeader.Index] = fileInfo.CreationTime.ToString();
+				columns[_sizeHeader.Index] = $"{fileInfo.Length / 1024} kB";
 				return new ListViewItem(columns, -1);
 			}
 			catch (Exception ex) when (

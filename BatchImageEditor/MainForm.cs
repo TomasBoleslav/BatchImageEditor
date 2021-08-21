@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using ImageFilters;
 
 namespace BatchImageEditor
 {
@@ -12,7 +13,7 @@ namespace BatchImageEditor
 			ShowScene(_loadScene);
 		}
 
-		private void ShowScene(UserControl scene)
+		private static void ShowScene(UserControl scene)
 		{
 			scene.BringToFront();
 		}
@@ -22,20 +23,27 @@ namespace BatchImageEditor
 			ShowScene(_loadScene);
 		}
 
-		private void ProcessScene_Process(object sender, EventArgs e)
+		private void SceneTabs_EditTabSelected(object sender, EventArgs e)
 		{
-			// TODO: do not create this method, but provide a getter for filenames to the process scene
+			ShowScene(_editScene);
+		}
+
+		private void SceneTabs_ProcessTabSelected(object sender, EventArgs e)
+		{
+			ShowScene(_processScene);
 		}
 
 		private void LoadScene_FileSetChanged(object sender, EventArgs e)
 		{
 			IReadOnlySet<string> filenames = _loadScene.GetFilenames();
 			_editScene.SetFilenames(filenames);
+			_processScene.SetFilenames(filenames);
 		}
 
-		private void SceneTabs_EditTabSelected(object sender, EventArgs e)
+		private void EditScene_FilterListChanged(object sender, EventArgs e)
 		{
-			ShowScene(_editScene);
+			IEnumerable<IImageFilter> filters = _editScene.CreateFilters();
+			_processScene.SetFilters(filters);
 		}
 	}
 }
