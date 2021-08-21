@@ -30,17 +30,17 @@ namespace BatchImageEditor
 		private void InitializeComponent()
 		{
 			this.tabsPanel = new System.Windows.Forms.Panel();
-			this.processTabButton = new System.Windows.Forms.Button();
-			this.editTabButton = new System.Windows.Forms.Button();
-			this.loadTabButton = new System.Windows.Forms.Button();
+			this._processTabButton = new System.Windows.Forms.Button();
+			this._editTabButton = new System.Windows.Forms.Button();
+			this._loadTabButton = new System.Windows.Forms.Button();
 			this.tabsPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabsPanel
 			// 
-			this.tabsPanel.Controls.Add(this.processTabButton);
-			this.tabsPanel.Controls.Add(this.editTabButton);
-			this.tabsPanel.Controls.Add(this.loadTabButton);
+			this.tabsPanel.Controls.Add(this._processTabButton);
+			this.tabsPanel.Controls.Add(this._editTabButton);
+			this.tabsPanel.Controls.Add(this._loadTabButton);
 			this.tabsPanel.Location = new System.Drawing.Point(0, 0);
 			this.tabsPanel.Name = "tabsPanel";
 			this.tabsPanel.Size = new System.Drawing.Size(300, 50);
@@ -48,51 +48,51 @@ namespace BatchImageEditor
 			// 
 			// processTabButton
 			// 
-			this.processTabButton.FlatAppearance.BorderSize = 0;
-			this.processTabButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.ControlDark;
-			this.processTabButton.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDark;
-			this.processTabButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.processTabButton.ForeColor = System.Drawing.SystemColors.Window;
-			this.processTabButton.Location = new System.Drawing.Point(200, 0);
-			this.processTabButton.Margin = new System.Windows.Forms.Padding(0);
-			this.processTabButton.Name = "processTabButton";
-			this.processTabButton.Size = new System.Drawing.Size(100, 50);
-			this.processTabButton.TabIndex = 2;
-			this.processTabButton.Text = "PROCESS";
-			this.processTabButton.UseVisualStyleBackColor = true;
-			this.processTabButton.Click += new System.EventHandler(this.ProcessTabButton_Click);
+			this._processTabButton.FlatAppearance.BorderSize = 0;
+			this._processTabButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.ControlDark;
+			this._processTabButton.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDark;
+			this._processTabButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this._processTabButton.ForeColor = System.Drawing.SystemColors.Window;
+			this._processTabButton.Location = new System.Drawing.Point(200, 0);
+			this._processTabButton.Margin = new System.Windows.Forms.Padding(0);
+			this._processTabButton.Name = "processTabButton";
+			this._processTabButton.Size = new System.Drawing.Size(100, 50);
+			this._processTabButton.TabIndex = 2;
+			this._processTabButton.Text = "PROCESS";
+			this._processTabButton.UseVisualStyleBackColor = true;
+			this._processTabButton.Click += new System.EventHandler(this.ProcessTabButton_Click);
 			// 
 			// editTabButton
 			// 
-			this.editTabButton.FlatAppearance.BorderSize = 0;
-			this.editTabButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.ControlDark;
-			this.editTabButton.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDark;
-			this.editTabButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.editTabButton.ForeColor = System.Drawing.SystemColors.Window;
-			this.editTabButton.Location = new System.Drawing.Point(100, 0);
-			this.editTabButton.Margin = new System.Windows.Forms.Padding(0);
-			this.editTabButton.Name = "editTabButton";
-			this.editTabButton.Size = new System.Drawing.Size(100, 50);
-			this.editTabButton.TabIndex = 1;
-			this.editTabButton.Text = "EDIT";
-			this.editTabButton.UseVisualStyleBackColor = false;
-			this.editTabButton.Click += new System.EventHandler(this.EditTabButton_Click);
+			this._editTabButton.FlatAppearance.BorderSize = 0;
+			this._editTabButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.ControlDark;
+			this._editTabButton.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlDark;
+			this._editTabButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this._editTabButton.ForeColor = System.Drawing.SystemColors.Window;
+			this._editTabButton.Location = new System.Drawing.Point(100, 0);
+			this._editTabButton.Margin = new System.Windows.Forms.Padding(0);
+			this._editTabButton.Name = "editTabButton";
+			this._editTabButton.Size = new System.Drawing.Size(100, 50);
+			this._editTabButton.TabIndex = 1;
+			this._editTabButton.Text = "EDIT";
+			this._editTabButton.UseVisualStyleBackColor = false;
+			this._editTabButton.Click += new System.EventHandler(this.EditTabButton_Click);
 			// 
 			// loadTabButton
 			// 
-			this.loadTabButton.BackColor = System.Drawing.SystemColors.Control;
-			this.loadTabButton.FlatAppearance.BorderSize = 0;
-			this.loadTabButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Control;
-			this.loadTabButton.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.Control;
-			this.loadTabButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.loadTabButton.Location = new System.Drawing.Point(0, 0);
-			this.loadTabButton.Margin = new System.Windows.Forms.Padding(0);
-			this.loadTabButton.Name = "loadTabButton";
-			this.loadTabButton.Size = new System.Drawing.Size(100, 50);
-			this.loadTabButton.TabIndex = 0;
-			this.loadTabButton.Text = "LOAD";
-			this.loadTabButton.UseVisualStyleBackColor = false;
-			this.loadTabButton.Click += new System.EventHandler(this.LoadTabButton_Click);
+			this._loadTabButton.BackColor = System.Drawing.SystemColors.Control;
+			this._loadTabButton.FlatAppearance.BorderSize = 0;
+			this._loadTabButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Control;
+			this._loadTabButton.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.Control;
+			this._loadTabButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this._loadTabButton.Location = new System.Drawing.Point(0, 0);
+			this._loadTabButton.Margin = new System.Windows.Forms.Padding(0);
+			this._loadTabButton.Name = "loadTabButton";
+			this._loadTabButton.Size = new System.Drawing.Size(100, 50);
+			this._loadTabButton.TabIndex = 0;
+			this._loadTabButton.Text = "LOAD";
+			this._loadTabButton.UseVisualStyleBackColor = false;
+			this._loadTabButton.Click += new System.EventHandler(this.LoadTabButton_Click);
 			// 
 			// SceneTabs
 			// 
@@ -112,8 +112,8 @@ namespace BatchImageEditor
 		#endregion
 
 		private System.Windows.Forms.Panel tabsPanel;
-		private System.Windows.Forms.Button processTabButton;
-		private System.Windows.Forms.Button editTabButton;
-		private System.Windows.Forms.Button loadTabButton;
+		private System.Windows.Forms.Button _processTabButton;
+		private System.Windows.Forms.Button _editTabButton;
+		private System.Windows.Forms.Button _loadTabButton;
 	}
 }

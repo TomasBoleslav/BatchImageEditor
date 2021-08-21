@@ -9,29 +9,47 @@ using System.Security;
 
 namespace BatchImageEditor
 {
-	public partial class LoadScene : UserControl
+	/// <summary>
+	/// A load scene in the editor.
+	/// </summary>
+	internal partial class LoadScene : UserControl
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="LoadScene"/>.
+		/// </summary>
 		public LoadScene()
 		{
 			InitializeComponent();
 		}
 
+		/// <summary>
+		/// Gets a set of chosen filenames.
+		/// </summary>
 		public IReadOnlySet<string> GetFilenames()
 		{
 			return _filenames;
 		}
 
+		/// <summary>
+		/// Occurs when the set of filenames chaned.
+		/// </summary>
 		public event EventHandler FileSetChanged;
-
-		protected virtual void OnFileSetChanged()
-		{
-			FileSetChanged?.Invoke(this, EventArgs.Empty);
-		}
 
 		private const string NotAvailable = "N/A";
 		
 		private readonly HashSet<string> _filenames = new();
 
+		/// <summary>
+		/// Invokes the <see cref="FileSetChanged"/> event.
+		/// </summary>
+		private void OnFileSetChanged()
+		{
+			FileSetChanged?.Invoke(this, EventArgs.Empty);
+		}
+
+		/// <summary>
+		/// Loads new filenames of images using a dialog.
+		/// </summary>
 		private void LoadImageButton_Click(object sender, EventArgs e)
 		{
 			using var dialog = new OpenFileDialog();
@@ -50,6 +68,10 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Shows a preview of an image.
+		/// </summary>
+		/// <param name="filename">The name of the file containing the image.</param>
 		private void ShowLoadedImagePreview(string filename)
 		{
 			loadedPreviewBox.Image?.Dispose();
@@ -64,6 +86,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Shows a preview of the currently selected image.
+		/// </summary>
 		private void ImageListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
 		{
 			if (e.IsSelected && _imageListView.SelectedItems.Count == 1)
@@ -78,6 +103,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Loads all image filenames in a folder using a dialog.
+		/// </summary>
 		private void LoadFolderButton_Click(object sender, EventArgs e)
 		{
 			using var folderDialog = new FolderBrowserDialog();
@@ -88,6 +116,10 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Loads all filenames in the given folder recursively.
+		/// </summary>
+		/// <param name="folder">The folder to load filenames from.</param>
 		private void LoadFolder(string folder)
 		{
 			var extensions = SupportedImages.GetFileExtensions().ToHashSet();
@@ -104,11 +136,18 @@ namespace BatchImageEditor
 			_imageListView.EndUpdate();
 		}
 
+		/// <summary>
+		/// Removes all currently selected filenames.
+		/// </summary>
 		private void RemoveButton_Click(object sender, EventArgs e)
 		{
 			RemoveSelectedItems();
 		}
 
+		/// <summary>
+		/// Adds or updates information of a file in the list view.
+		/// </summary>
+		/// <param name="filename">The name of the file to add or update.</param>
 		private void AddOrUpdateFile(string filename)
 		{
 			ListViewItem item = CreateImageListItem(filename);
@@ -124,6 +163,10 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Removes a file item from stored filenames.
+		/// </summary>
+		/// <param name="item">An item to remove.</param>
 		private void RemoveFileItem(ListViewItem item)
 		{
 			string filename = GetFilenameFromItem(item);
@@ -131,11 +174,19 @@ namespace BatchImageEditor
 			_imageListView.Items.Remove(item);
 		}
 
+		/// <summary>
+		/// Gets a filename from an item in the list view.
+		/// </summary>
+		/// <param name="item">An item in the list view.</param>
+		/// <returns>A filename in the list view.</returns>
 		private string GetFilenameFromItem(ListViewItem item)
 		{
 			return item.SubItems[_pathHeader.Index].Text;
 		}
 
+		/// <summary>
+		/// Removes all currently selected filenames.
+		/// </summary>
 		private void RemoveSelectedItems()
 		{
 			// Must be copied, because the list of selected items changes on removal
@@ -152,6 +203,11 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Creates a list view item by inspecting information of the given file.
+		/// </summary>
+		/// <param name="filename">The name of the file.</param>
+		/// <returns>A list view item containing information about the given file.</returns>
 		private ListViewItem CreateImageListItem(string filename)
 		{
 			string[] columns = new string[_imageListView.Columns.Count];
@@ -176,6 +232,11 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Gets an item by the name of a file.
+		/// </summary>
+		/// <param name="filename">The name of a file.</param>
+		/// <returns>The item containing the given name of a file.</returns>
 		private ListViewItem GetItemByFilename(string filename)
 		{
 			return _imageListView.Items.Cast<ListViewItem>()

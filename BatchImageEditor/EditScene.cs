@@ -7,21 +7,38 @@ using ImageFilters;
 
 namespace BatchImageEditor
 {
-	public partial class EditScene : UserControl
+	/// <summary>
+	/// An edit scene of the editor.
+	/// </summary>
+	internal partial class EditScene : UserControl
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="EditScene"/>.
+		/// </summary>
 		public EditScene()
 		{
 			InitializeComponent();
 			_previewUpdater = new UIUpdater();
 		}
 
+		/// <summary>
+		/// Occurs when the list of filters is changed.
+		/// </summary>
 		public event EventHandler FilterListChanged;
 
+		/// <summary>
+		/// Sets input filenames.
+		/// </summary>
+		/// <param name="filenames"></param>
 		public void SetFilenames(IReadOnlySet<string> filenames)
 		{
 			_fileSelectionControl.SetFilenames(filenames);
 		}
 
+		/// <summary>
+		/// Creates a collection of <see cref="IImageFilter"/> to be used for filtering images.
+		/// </summary>
+		/// <returns>A collection of <see cref="IImageFilter"/> to be used for filtering images.</returns>
 		public IEnumerable<IImageFilter> CreateFilters()
 		{
 			return _filterListControl.CreateFilters();
@@ -29,6 +46,9 @@ namespace BatchImageEditor
 
 		private readonly UIUpdater _previewUpdater;
 
+		/// <summary>
+		/// Updates the preview image with a new input image and created filters.
+		/// </summary>
 		private void FileSelectionControl_SelectionChanged(object sender, EventArgs e)
 		{
 			_previewControl.OriginalImage?.Dispose();
@@ -60,12 +80,18 @@ namespace BatchImageEditor
 			UpdatePreview();
 		}
 
+		/// <summary>
+		/// Invokes the <see cref="FilterListChanged"/> event and updates the preview.
+		/// </summary>
 		private void FilterListControl_ListChanged(object sender, EventArgs e)
 		{
 			FilterListChanged?.Invoke(this, EventArgs.Empty);
 			UpdatePreview();
 		}
 
+		/// <summary>
+		/// Updates preview from current original image with created filters.
+		/// </summary>
 		private void UpdatePreview()
 		{
 			_previewUpdater.Update(() =>
@@ -97,6 +123,9 @@ namespace BatchImageEditor
 			});
 		}
 
+		/// <summary>
+		/// Applies a collection of filters on an image.
+		/// </summary>
 		private static void ApplyFilters(ref DirectBitmap image, IEnumerable<IImageFilter> filters)
 		{
 			foreach (var filter in filters)

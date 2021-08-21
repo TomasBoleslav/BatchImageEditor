@@ -7,8 +7,14 @@ using ImageFilters;
 
 namespace BatchImageEditor
 {
-	public partial class ProcessScene : UserControl
+	/// <summary>
+	/// The process scene of the editor.
+	/// </summary>
+	internal partial class ProcessScene : UserControl
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="ProcessScene"/>
+		/// </summary>
 		public ProcessScene()
 		{
 			InitializeComponent();
@@ -17,11 +23,19 @@ namespace BatchImageEditor
 			UpdateThreadCountInput();
 		}
 
+		/// <summary>
+		/// Sets a set of input filenames.
+		/// </summary>
+		/// <param name="filenames">A new set of input filenames.</param>
 		public void SetFilenames(IReadOnlySet<string> filenames)
 		{
 			_filenames = filenames;
 		}
 
+		/// <summary>
+		/// Sets a colletion of filters to apply to images.
+		/// </summary>
+		/// <param name="filters">A colletion of filters to apply to images.</param>
 		public void SetFilters(IEnumerable<IImageFilter> filters)
 		{
 			_filters = filters;
@@ -31,6 +45,9 @@ namespace BatchImageEditor
 		private IReadOnlySet<string> _filenames;
 		private IEnumerable<IImageFilter> _filters;
 
+		/// <summary>
+		/// Updates the displayed number of threads.
+		/// </summary>
 		private void UpdateThreadCountInput()
 		{
 			if (_coreCountCheckBox.Checked)
@@ -44,6 +61,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Lets the user select an output folder using a dialog.
+		/// </summary>
 		private void SelectOutputFolderButton_Click(object sender, EventArgs e)
 		{
 			using var folderDialog = new FolderBrowserDialog();
@@ -53,11 +73,17 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Updates the number of threads.
+		/// </summary>
 		private void CoreCountCheckBox_CheckedChanged(object sender, EventArgs e)
 		{
 			UpdateThreadCountInput();
 		}
 
+		/// <summary>
+		/// Opens an <see cref="ImageProcessingDialog"/> to process images.
+		/// </summary>
 		private void ProcessButton_Click(object sender, EventArgs e)
 		{
 			if (_filenames == null || _filenames.Count == 0)
@@ -91,6 +117,10 @@ namespace BatchImageEditor
 			processDialog.ShowDialog();
 		}
 
+		/// <summary>
+		/// Shows a <see cref="MessageBox"/> to let the user choose if they wish to continue with sequential computing.
+		/// </summary>
+		/// <returns>The result of the dialog.</returns>
 		private DialogResult ShowContinuationForOneThreadPrompt()
 		{
 			DialogResult dialogResult = MessageBox.Show(

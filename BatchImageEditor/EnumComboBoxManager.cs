@@ -5,8 +5,17 @@ using ThrowHelpers;
 
 namespace BatchImageEditor
 {
+	/// <summary>
+	/// A manager for a combo box that sets its values to values of an enum.
+	/// </summary>
+	/// <typeparam name="T">An enum type whose values will be shown on a combo box.</typeparam>
 	internal class EnumComboBoxManager<T> where T : Enum
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="EnumComboBoxManager{T}"/> that sets values to named of enum values.
+		/// </summary>
+		/// <param name="comboBox">A combo box to use.</param>
+		/// <param name="enumValuesToNames">A non-empty mapping from values of the enum type to their names.</param>
 		public EnumComboBoxManager(ComboBox comboBox, Dictionary<T, string> enumValuesToNames)
 		{
 			ArgChecker.NotNull(comboBox, nameof(comboBox));
@@ -16,6 +25,7 @@ namespace BatchImageEditor
 				throw new ArgumentException("Dictionary of enum values must not be empty.");
 			}
 			_comboBox = comboBox;
+			_comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 			_comboBox.BeginUpdate();
 			_comboBox.Items.Clear();
 			_enumValuesToIndices = new Dictionary<T, int>();
@@ -31,6 +41,9 @@ namespace BatchImageEditor
 			_comboBox.SelectedIndexChanged += ComboBox_SelectedIndexChanged;
 		}
 
+		/// <summary>
+		/// Gets or sets the currently selected value.
+		/// </summary>
 		public T SelectedValue
 		{
 			get
@@ -48,22 +61,31 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Occurs when the selected value is changed.
+		/// </summary>
 		public event EventHandler SelectedValueChanged;
 
 		private readonly ComboBox _comboBox;
 		private readonly Dictionary<T, int> _enumValuesToIndices;
 		private readonly Dictionary<int, T> _indicesToEnumValues;
 
+		/// <summary>
+		/// Checks selected index and invokes the  <see cref="SelectedValueChanged"/> event.
+		/// </summary>
 		private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (_comboBox.SelectedIndex == -1)
 			{
-				_comboBox.SelectedIndex = 0;// TODO: check if this function is called again because of index change, otherwise do not return
+				_comboBox.SelectedIndex = 0;
 				return;
 			}
 			OnSelectedValueChanged();
 		}
 
+		/// <summary>
+		/// Invokes the <see cref="SelectedValueChanged"/> event.
+		/// </summary>
 		private void OnSelectedValueChanged()
 		{
 			SelectedValueChanged?.Invoke(this, EventArgs.Empty);

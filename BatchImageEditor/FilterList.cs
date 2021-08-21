@@ -8,8 +8,14 @@ using ImageFilters;
 
 namespace BatchImageEditor
 {
-	public partial class FilterList : UserControl
+	/// <summary>
+	/// A control managing a list of <see cref="IImageFilter"/> instances.
+	/// </summary>
+	internal sealed partial class FilterList : UserControl
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="FilterList"/>.
+		/// </summary>
 		public FilterList()
 		{
 			InitializeComponent();
@@ -18,10 +24,20 @@ namespace BatchImageEditor
 			_filterSettingsList = new List<FilterSettingsBase>();
 		}
 
+		/// <summary>
+		/// Gets or sets an image to use as input image for filtering.
+		/// </summary>
 		public DirectBitmap InputImage { get; set; }
 
+		/// <summary>
+		/// Occurs when the content of the list changed.
+		/// </summary>
 		public event EventHandler ListChanged;
 
+		/// <summary>
+		/// Creates a collection of stored filters.
+		/// </summary>
+		/// <returns>A collection of stored filters.</returns>
 		public IEnumerable<IImageFilter> CreateFilters()
 		{
 			var filters = new List<IImageFilter>();
@@ -34,18 +50,17 @@ namespace BatchImageEditor
 			return filters;
 		}
 
-		protected virtual void OnListChanged()
-		{
-			ListChanged?.Invoke(this, EventArgs.Empty);
-		}
-
 		private readonly ContextMenuStrip _filterMenu;
-		private readonly FilterSettingsFactoryStorage _settingsFactories;
+		private readonly FilterSettingsFactoryCollection _settingsFactories;
 		private readonly List<FilterSettingsBase> _filterSettingsList;
-		
-		private static FilterSettingsFactoryStorage CreateSettingsFactories()
+
+		/// <summary>
+		/// Creates a collection of settings factories.
+		/// </summary>
+		/// <returns>A collection of settings factories.</returns>
+		private static FilterSettingsFactoryCollection CreateSettingsFactories()
 		{
-			var settingsFactories = new FilterSettingsFactoryStorage();
+			var settingsFactories = new FilterSettingsFactoryCollection();
 			settingsFactories.Add(new Instantiator<MedianFilterSettings>());
 			settingsFactories.Add(new Instantiator<ResizingFilterSettings>());
 			settingsFactories.Add(new Instantiator<ImageOverlayFilterSettings>());
@@ -59,6 +74,10 @@ namespace BatchImageEditor
 			return settingsFactories;
 		}
 
+		/// <summary>
+		/// Creates a <see cref="ContextMenuStrip"/> to let the user choose filter settings to open.
+		/// </summary>
+		/// <returns>A <see cref="ContextMenuStrip"/> to let the user choose filter settings to open.</returns>
 		private ContextMenuStrip CreateFilterMenu()
 		{
 			var menu = new ContextMenuStrip();
@@ -71,6 +90,9 @@ namespace BatchImageEditor
 			return menu;
 		}
 
+		/// <summary>
+		/// Creates menu items for noise reduction.
+		/// </summary>
 		private ToolStripMenuItem CreateNoiseReductionMenuItems()
 		{
 			var rootItem = new ToolStripMenuItem("Noise reduction");
@@ -78,6 +100,9 @@ namespace BatchImageEditor
 			return rootItem;
 		}
 
+		/// <summary>
+		/// Creates menu items for image transformation.
+		/// </summary>
 		private ToolStripMenuItem CreateTransformMenuItems()
 		{
 			var rootItem = new ToolStripMenuItem("Transform");
@@ -88,6 +113,9 @@ namespace BatchImageEditor
 			return rootItem;
 		}
 
+		/// <summary>
+		/// Creates menu items for color adjustment.
+		/// </summary>
 		private ToolStripMenuItem CreateColorAdjustmentMenuItems()
 		{
 			var rootItem = new ToolStripMenuItem("Adjust Colors");
@@ -96,6 +124,9 @@ namespace BatchImageEditor
 			return rootItem;
 		}
 
+		/// <summary>
+		/// Creates menu items blurring the image.
+		/// </summary>
 		private ToolStripMenuItem CreateBlurMenuItems()
 		{
 			var rootItem = new ToolStripMenuItem("Blur");
@@ -103,6 +134,9 @@ namespace BatchImageEditor
 			return rootItem;
 		}
 
+		/// <summary>
+		/// Creates menu items for sharpening the image.
+		/// </summary>
 		private ToolStripMenuItem CreateSharpenMenuItems()
 		{
 			var rootItem = new ToolStripMenuItem("Sharpen");
@@ -110,6 +144,10 @@ namespace BatchImageEditor
 			return rootItem;
 		}
 
+		/// <summary>
+		/// Creates a menu item for filter settings.
+		/// </summary>
+		/// <typeparam name="T">The type of settings.</typeparam>
 		private ToolStripMenuItem CreateSettingsMenuItem<T>() where T : FilterSettingsBase
 		{
 			string settingsName = FilterSettingsNames.GetName(typeof(T));
@@ -118,6 +156,9 @@ namespace BatchImageEditor
 			return menuItem;
 		}
 
+		/// <summary>
+		/// Creates a new settings control instance and opens a <see cref="FilterSettingsEditDialog"/> to edit it.
+		/// </summary>
 		private void FilterMenuItem_Click(object sender, EventArgs e)
 		{
 			string settingsName = ((ToolStripMenuItem)sender).Text;
@@ -140,6 +181,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Shows a menu with filter settings to choose from.
+		/// </summary>
 		private void AddButton_Click(object sender, EventArgs e)
 		{
 			Point filterMenuRelativeLocation = new Point
@@ -150,6 +194,9 @@ namespace BatchImageEditor
 			_filterMenu.Show(_addButton, filterMenuRelativeLocation);
 		}
 
+		/// <summary>
+		/// Removes the selected filter settings from the list.
+		/// </summary>
 		private void RemoveButton_Click(object sender, EventArgs e)
 		{
 			int selectedIndex = _filterListBox.SelectedIndex;
@@ -162,6 +209,9 @@ namespace BatchImageEditor
 			OnListChanged();
 		}
 
+		/// <summary>
+		/// Opens a <see cref="FilterSettingsEditDialog"/> for the selected filter settings to edit it.
+		/// </summary>
 		private void EditButton_Click(object sender, EventArgs e)
 		{
 			int selectedIndex = _filterListBox.SelectedIndex;
@@ -182,24 +232,37 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Invokes the <see cref="ListChanged"/> event, but only after the check state of the item changed.
+		/// </summary>
 		private void FilterList_ItemCheck(object sender, ItemCheckEventArgs e)
 		{
 			// Execute later when the check state will be changed
-			this.BeginInvoke((MethodInvoker)(
+			BeginInvoke((MethodInvoker)(
 				() => OnListChanged()
 				));
 		}
 
+		/// <summary>
+		/// Moves the selected filter settings up in the list.
+		/// </summary>
 		private void UpButton_Click(object sender, EventArgs e)
 		{
 			MoveSelectedSettings(-1);
 		}
 
+		/// <summary>
+		/// Moves the selected filter settings down in the list.
+		/// </summary>
 		private void DownButton_Click(object sender, EventArgs e)
 		{
 			MoveSelectedSettings(1);
 		}
 
+		/// <summary>
+		/// Moves the selected filter settings in the list depending of the given direction.
+		/// </summary>
+		/// <param name="direction">The direction and amount in which to move the selected filter settings.</param>
 		private void MoveSelectedSettings(int direction)
 		{
 			int selectedIndex = _filterListBox.SelectedIndex;
@@ -219,6 +282,12 @@ namespace BatchImageEditor
 			OnListChanged();
 		}
 
+		/// <summary>
+		/// Swaps two items in a <see cref="IList"/>.
+		/// </summary>
+		/// <param name="list">A list containing the two items.</param>
+		/// <param name="index1">An index of the first item.</param>
+		/// <param name="index2">An index of the second item.</param>
 		private static void SwapListItems(IList list, int index1, int index2)
 		{
 			object temp = list[index1];
@@ -226,5 +295,12 @@ namespace BatchImageEditor
 			list[index2] = temp;
 		}
 
+		/// <summary>
+		/// Invokes the <see cref="ListChanged"/> event.
+		/// </summary>
+		private void OnListChanged()
+		{
+			ListChanged?.Invoke(this, EventArgs.Empty);
+		}
 	}
 }

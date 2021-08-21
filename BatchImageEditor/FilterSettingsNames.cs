@@ -4,8 +4,18 @@ using ImageFilters;
 
 namespace BatchImageEditor
 {
-	public static class FilterSettingsNames
+	/// <summary>
+	/// Contains a mapping from types of <see cref="FilterSettingsBase"/> to their names to be displayed for the user.
+	/// All the names are unique.
+	/// </summary>
+	internal static class FilterSettingsNames
 	{
+		/// <summary>
+		/// Gets a name of the given type of settings.
+		/// </summary>
+		/// <param name="filterSettingsType">A type of settings.</param>
+		/// <returns>A name of the given type of settings.</returns>
+		/// <exception cref="ArgumentException">Thrown when the type is invalid or the settings are not named.</exception>
 		public static string GetName(Type filterSettingsType)
 		{
 			if (settingTypesToNames.TryGetValue(filterSettingsType, out string name))
@@ -26,7 +36,7 @@ namespace BatchImageEditor
 			{ typeof(ColorChannelsFilterSettings), "Channels" },
 			{ typeof(CropFilterSettings), "Crop" },
 			{ typeof(GaussianBlurFilterSettings), "Gaussian Blur" },
-			{ typeof(EmptyFilterSettings<HighPassFilter>), "High Pass" },
+			{ typeof(EmptyFilterSettings<HighPassFilter>), "High Pass Sharpen" },
 		};
 	}
 }
