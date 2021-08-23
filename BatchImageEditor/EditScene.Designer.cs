@@ -40,7 +40,9 @@ namespace BatchImageEditor
 			// 
 			// _filterListControl
 			// 
-			this._filterListControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._filterListControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this._filterListControl.InputImage = null;
 			this._filterListControl.Location = new System.Drawing.Point(10, 30);
 			this._filterListControl.Name = "_filterListControl";
@@ -81,6 +83,8 @@ namespace BatchImageEditor
 			this._previewControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._previewControl.Location = new System.Drawing.Point(10, 64);
 			this._previewControl.Name = "_previewControl";
+			this._previewControl.OriginalImage = null;
+			this._previewControl.PreviewImage = null;
 			this._previewControl.Size = new System.Drawing.Size(594, 466);
 			this._previewControl.TabIndex = 1;
 			// 

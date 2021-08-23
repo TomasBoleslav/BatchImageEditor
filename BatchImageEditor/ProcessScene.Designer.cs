@@ -37,23 +37,22 @@ namespace BatchImageEditor
 			this._threadCountLabel = new System.Windows.Forms.Label();
 			this._threadCountInput = new System.Windows.Forms.NumericUpDown();
 			this._coreCountCheckBox = new System.Windows.Forms.CheckBox();
-			this._cpuGroup = new System.Windows.Forms.GroupBox();
+			this._processGroup = new System.Windows.Forms.GroupBox();
 			this._outputGroup.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._threadCountInput)).BeginInit();
-			this._cpuGroup.SuspendLayout();
+			this._processGroup.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// _outputGroup
 			// 
-			this._outputGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this._outputGroup.Controls.Add(this._selectOutputFolderButton);
 			this._outputGroup.Controls.Add(this._outputFolderBox);
 			this._outputGroup.Controls.Add(this._outputFolderLabel);
-			this._outputGroup.Location = new System.Drawing.Point(18, 18);
+			this._outputGroup.Dock = System.Windows.Forms.DockStyle.Top;
+			this._outputGroup.Location = new System.Drawing.Point(15, 15);
 			this._outputGroup.Name = "_outputGroup";
 			this._outputGroup.Padding = new System.Windows.Forms.Padding(10);
-			this._outputGroup.Size = new System.Drawing.Size(711, 87);
+			this._outputGroup.Size = new System.Drawing.Size(717, 87);
 			this._outputGroup.TabIndex = 0;
 			this._outputGroup.TabStop = false;
 			this._outputGroup.Text = "Output";
@@ -61,7 +60,7 @@ namespace BatchImageEditor
 			// _selectOutputFolderButton
 			// 
 			this._selectOutputFolderButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this._selectOutputFolderButton.Location = new System.Drawing.Point(598, 33);
+			this._selectOutputFolderButton.Location = new System.Drawing.Point(604, 33);
 			this._selectOutputFolderButton.Name = "_selectOutputFolderButton";
 			this._selectOutputFolderButton.Size = new System.Drawing.Size(100, 30);
 			this._selectOutputFolderButton.TabIndex = 4;
@@ -75,7 +74,7 @@ namespace BatchImageEditor
             | System.Windows.Forms.AnchorStyles.Right)));
 			this._outputFolderBox.Location = new System.Drawing.Point(142, 35);
 			this._outputFolderBox.Name = "_outputFolderBox";
-			this._outputFolderBox.Size = new System.Drawing.Size(438, 27);
+			this._outputFolderBox.Size = new System.Drawing.Size(444, 27);
 			this._outputFolderBox.TabIndex = 3;
 			// 
 			// _outputFolderLabel
@@ -90,7 +89,7 @@ namespace BatchImageEditor
 			// _processButton
 			// 
 			this._processButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this._processButton.Location = new System.Drawing.Point(629, 422);
+			this._processButton.Location = new System.Drawing.Point(604, 310);
 			this._processButton.Name = "_processButton";
 			this._processButton.Size = new System.Drawing.Size(100, 50);
 			this._processButton.TabIndex = 0;
@@ -127,36 +126,35 @@ namespace BatchImageEditor
 			this._coreCountCheckBox.UseVisualStyleBackColor = true;
 			this._coreCountCheckBox.CheckedChanged += new System.EventHandler(this.CoreCountCheckBox_CheckedChanged);
 			// 
-			// _cpuGroup
+			// _processGroup
 			// 
-			this._cpuGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this._cpuGroup.Controls.Add(this._coreCountCheckBox);
-			this._cpuGroup.Controls.Add(this._threadCountInput);
-			this._cpuGroup.Controls.Add(this._threadCountLabel);
-			this._cpuGroup.Location = new System.Drawing.Point(18, 111);
-			this._cpuGroup.Name = "_cpuGroup";
-			this._cpuGroup.Padding = new System.Windows.Forms.Padding(10);
-			this._cpuGroup.Size = new System.Drawing.Size(711, 90);
-			this._cpuGroup.TabIndex = 9;
-			this._cpuGroup.TabStop = false;
-			this._cpuGroup.Text = "CPU";
+			this._processGroup.Controls.Add(this._processButton);
+			this._processGroup.Controls.Add(this._coreCountCheckBox);
+			this._processGroup.Controls.Add(this._threadCountInput);
+			this._processGroup.Controls.Add(this._threadCountLabel);
+			this._processGroup.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._processGroup.Location = new System.Drawing.Point(15, 102);
+			this._processGroup.Name = "_processGroup";
+			this._processGroup.Padding = new System.Windows.Forms.Padding(10);
+			this._processGroup.Size = new System.Drawing.Size(717, 373);
+			this._processGroup.TabIndex = 9;
+			this._processGroup.TabStop = false;
+			this._processGroup.Text = "Process";
 			// 
 			// ProcessScene
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this._cpuGroup);
+			this.Controls.Add(this._processGroup);
 			this.Controls.Add(this._outputGroup);
-			this.Controls.Add(this._processButton);
 			this.Name = "ProcessScene";
 			this.Padding = new System.Windows.Forms.Padding(15);
 			this.Size = new System.Drawing.Size(747, 490);
 			this._outputGroup.ResumeLayout(false);
 			this._outputGroup.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this._threadCountInput)).EndInit();
-			this._cpuGroup.ResumeLayout(false);
-			this._cpuGroup.PerformLayout();
+			this._processGroup.ResumeLayout(false);
+			this._processGroup.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -171,6 +169,6 @@ namespace BatchImageEditor
 		private System.Windows.Forms.Label _threadCountLabel;
 		private System.Windows.Forms.NumericUpDown _threadCountInput;
 		private System.Windows.Forms.CheckBox _coreCountCheckBox;
-		private System.Windows.Forms.GroupBox _cpuGroup;
+		private System.Windows.Forms.GroupBox _processGroup;
 	}
 }
