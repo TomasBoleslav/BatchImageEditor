@@ -17,6 +17,13 @@ namespace BatchImageEditor
 		{
 			InitializeComponent();
 			ShowScene(_loadScene);
+			Load += OnLoad;
+		}
+
+		private void OnLoad(object sender, EventArgs e)
+		{
+			int width = this.Width;
+			int height = this.Height;
 		}
 
 		/// <summary>
