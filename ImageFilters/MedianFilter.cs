@@ -4,8 +4,15 @@ using ThrowHelpers;
 
 namespace ImageFilters
 {
+	/// <summary>
+	/// An image filter that sets a median of colors around a pixel as a new color of the pixel.
+	/// </summary>
 	public sealed class MedianFilter : IImageFilter
 	{
+		/// <summary>
+		/// Create an instance of <see cref="MedianFilter"/> with the given radius.
+		/// </summary>
+		/// <param name="radius">Radius</param>
 		public MedianFilter(int radius)
 		{
 			if (radius < 1)
@@ -15,6 +22,7 @@ namespace ImageFilters
 			_radius = radius;
 		}
 
+		/// <inheritdoc/>
 		public void Apply(ref DirectBitmap image)
 		{
 			ArgChecker.NotNull(image, nameof(image));
@@ -25,6 +33,11 @@ namespace ImageFilters
 
 		private readonly int _radius;
 
+		/// <summary>
+		/// Applies median filter to the input image.
+		/// </summary>
+		/// <param name="inputImage">An input image.</param>
+		/// <returns>The resulting image.</returns>
 		private DirectBitmap ApplyMedian(DirectBitmap inputImage)
 		{
 			var outputImage = new DirectBitmap(inputImage.Width, inputImage.Height);

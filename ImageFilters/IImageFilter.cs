@@ -1,17 +1,16 @@
 ﻿
 namespace ImageFilters
 {
+	/// <summary>
+	/// An image filter that performs an operation on an image.
+	/// </summary>
 	public interface IImageFilter
 	{
 		/// <summary>
-		/// Applies the image filter on a <see cref="DirectBitmap"/>.
+		/// Applies the filter to an image.
+		/// The ownership of the image is passed to this function and the resulting image will be assigned to the given variable.
 		/// </summary>
-		/// <remarks>
-		/// Depending on the operation a new bitmap can be created.
-		/// In that case the old bitmap is properly disposed and the reference is set to the new bitmap.
-		/// Otherwise the reference remains the same and only the content of the bitmap is changed.
-		/// </remarks>
-		/// <param name="image">A bitmap to which the filter will be applied.</param>
+		/// <param name="image">An image the filter will be applied to.</param>
 		void Apply(ref DirectBitmap image);
 	}
 }

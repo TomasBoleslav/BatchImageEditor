@@ -4,8 +4,12 @@ using ThrowHelpers;
 
 namespace ImageFilters
 {
+	/// <summary>
+	/// An image filter that is linear but with a kernel matrix separated into a product of two vectors.
+	/// </summary>
 	public abstract class SeparableFilter : IImageFilter
 	{
+		/// <inheritdoc/>
 		public void Apply(ref DirectBitmap input)
 		{
 			ArgChecker.NotNull(HorizontalVector, nameof(HorizontalVector));
@@ -15,11 +19,21 @@ namespace ImageFilters
 			ApplyVerticalVector(intermediateResult, input);
 		}
 
-		// TODO: does not have to be protected, use private member instead?
+		/// <summary>
+		/// Gets the horizontal vector of the filter.
+		/// </summary>
 		protected float[] HorizontalVector { get; private set; }
 
+		/// <summary>
+		/// Gets the vertical vector of the filter.
+		/// </summary>
 		protected float[] VerticalVector { get; private set; }
 
+		/// <summary>
+		/// Sets vectors of the filter.
+		/// </summary>
+		/// <param name="horizontal">The horizontal vector of the filter.</param>
+		/// <param name="vertical">The vertical vector of the filter.</param>
 		protected void SetVectors(float[] horizontal, float[] vertical)
 		{
 			ArgChecker.NotNull(horizontal, nameof(horizontal));
@@ -32,6 +46,11 @@ namespace ImageFilters
 			VerticalVector = vertical;
 		}
 
+		/// <summary>
+		/// Normalize a vector by dividing it by the sum of its values.
+		/// </summary>
+		/// <param name="vector">A vector to normalize.</param>
+		/// <returns>The normalized vector.</returns>
 		protected static float[] NormalizeVector(double[] vector)
 		{
 			double sum = 0.0;
@@ -47,6 +66,11 @@ namespace ImageFilters
 			return normalizedVector;
 		}
 
+		/// <summary>
+		/// Applies the horizontal vector to the image.
+		/// </summary>
+		/// <param name="inputImage">An input image.</param>
+		/// <param name="outputImage">An output image.</param>
 		private void ApplyHorizontalVector(DirectBitmap inputImage, DirectBitmap outputImage)
 		{
 			float[] vector = HorizontalVector;
@@ -72,15 +96,20 @@ namespace ImageFilters
 					Color oldColor = inputImage.GetPixel(j, i);
 					Color outputColor = Color.FromArgb(
 						oldColor.A,
-						Utils.ClampColorChannel(sumR),
-						Utils.ClampColorChannel(sumG),
-						Utils.ClampColorChannel(sumB)
+						ColorHelper.ClampColorChannel(sumR),
+						ColorHelper.ClampColorChannel(sumG),
+						ColorHelper.ClampColorChannel(sumB)
 						);
 					outputImage.SetPixel(j, i, outputColor);
 				}
 			}
 		}
 
+		/// <summary>
+		/// Applies the vertical vector to the image.
+		/// </summary>
+		/// <param name="inputImage">An input image.</param>
+		/// <param name="outputImage">An output image.</param>
 		private void ApplyVerticalVector(DirectBitmap inputImage, DirectBitmap outputImage)
 		{
 			float[] vector = VerticalVector;
@@ -106,9 +135,9 @@ namespace ImageFilters
 					Color oldColor = inputImage.GetPixel(j, i);
 					Color outputColor = Color.FromArgb(
 						oldColor.A,
-						Utils.ClampColorChannel(sumR),
-						Utils.ClampColorChannel(sumG),
-						Utils.ClampColorChannel(sumB)
+						ColorHelper.ClampColorChannel(sumR),
+						ColorHelper.ClampColorChannel(sumG),
+						ColorHelper.ClampColorChannel(sumB)
 						);
 					outputImage.SetPixel(j, i, outputColor);
 				}

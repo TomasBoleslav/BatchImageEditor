@@ -4,13 +4,21 @@ using ThrowHelpers;
 
 namespace ImageFilters
 {
+	/// <summary>
+	/// An image filter that crops an image.
+	/// </summary>
 	public sealed class CropFilter : IImageFilter
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="CropFilter"/> that will perform the crop operation with the given algorithm.
+		/// </summary>
+		/// <param name="croppingAlgorithm">An algorithm for computing the crop area.</param>
 		public CropFilter(ICroppingAlgorithm croppingAlgorithm)
 		{
 			_croppingAlgorithm = croppingAlgorithm;
 		}
 
+		/// <inheritdoc/>
 		public void Apply(ref DirectBitmap image)
 		{
 			ArgChecker.NotNull(image, nameof(image));
@@ -21,6 +29,11 @@ namespace ImageFilters
 
 		private readonly ICroppingAlgorithm _croppingAlgorithm;
 
+		/// <summary>
+		/// Crops an image.
+		/// </summary>
+		/// <param name="inputImage">An image to crop.</param>
+		/// <returns>The cropped image.</returns>
 		private DirectBitmap Crop(DirectBitmap inputImage)
 		{
 			Rectangle cropArea = _croppingAlgorithm.ComputeCropArea(inputImage.Bitmap.Size);

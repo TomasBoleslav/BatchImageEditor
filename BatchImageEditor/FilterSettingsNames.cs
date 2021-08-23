@@ -36,7 +36,7 @@ namespace BatchImageEditor
 			{ typeof(ColorChannelsFilterSettings), "Channels" },
 			{ typeof(CropFilterSettings), "Crop" },
 			{ typeof(GaussianBlurFilterSettings), "Gaussian Blur" },
-			{ typeof(EmptyFilterSettings<HighPassFilter>), "High Pass Sharpen" },
+			{ typeof(EmptyFilterSettings<HighPassSharpenFilter>), "High Pass Sharpen" },
 		};
 	}
 }

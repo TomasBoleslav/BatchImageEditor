@@ -4,8 +4,15 @@ using ThrowHelpers;
 
 namespace ImageFilters
 {
+	/// <summary>
+	/// An algorithm for cropping an image with a fixed area of cropping that.
+	/// </summary>
 	public sealed class FixedCropping : ICroppingAlgorithm
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="FixedCropping"/> with the given fixed area for cropping.
+		/// </summary>
+		/// <param name="fixedCropArea">A fixed area the image will be cropped from.</param>
 		public FixedCropping(Rectangle fixedCropArea)
 		{
 			ArgChecker.Nonnegative(fixedCropArea.X, nameof(fixedCropArea.X));
@@ -15,6 +22,7 @@ namespace ImageFilters
 			_fixedCropArea = fixedCropArea;
 		}
 
+		/// <inheritdoc/>
 		public Rectangle ComputeCropArea(Size size)
 		{
 			return new Rectangle

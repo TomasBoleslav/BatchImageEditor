@@ -1,13 +1,20 @@
 ﻿
 namespace ImageFilters
 {
-	public class HighPassFilter : LinearFilter
+	/// <summary>
+	/// A linear image filter that performs sharpening with a convolution matrix.
+	/// </summary>
+	public class HighPassSharpenFilter : LinearFilter
 	{
-		public HighPassFilter()
+		public HighPassSharpenFilter()
 		{
 			SetKernel(CreateConvolutionKernel());
 		}
 
+		/// <summary>
+		/// Creates a convolution kernel matrix for the high pass sharpening.
+		/// </summary>
+		/// <returns></returns>
 		private static float[][] CreateConvolutionKernel()
 		{
 			double[][] kernelDouble = new[]

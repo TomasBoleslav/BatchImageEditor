@@ -3,12 +3,18 @@ using System.Drawing;
 
 namespace ImageFilters
 {
-	// TODO: instead of size, pass the whole Bitmap - there can be SmartCropping that inspects the whole image to compute ideal crop area
+	/// <summary>
+	/// A cropping algorithm that uses normalized coordinates to compute the final area for cropping.
+	/// </summary>
 	public sealed class NormalizedCropping : ICroppingAlgorithm
 	{
 		public const float MinNormalizedValue = 0.0f;
 		public const float MaxNormalizedValue = 1.0f;
 
+		/// <summary>
+		/// Creates an instance of <see cref="NormalizedCropping"/> with the given normalized area for cropping.
+		/// </summary>
+		/// <param name="normalizedCropArea">A normalized area for cropping.</param>
 		public NormalizedCropping(RectangleF normalizedCropArea)
 		{
 			if (!IsValueNormalized(normalizedCropArea.X) ||
@@ -24,6 +30,7 @@ namespace ImageFilters
 			_normalizedCropArea = normalizedCropArea;
 		}
 
+		/// <inheritdoc/>
 		public Rectangle ComputeCropArea(Size size)
 		{
 			int computedX = (int)(size.Width * _normalizedCropArea.X);
@@ -39,6 +46,11 @@ namespace ImageFilters
 			};
 		}
 
+		/// <summary>
+		/// Checks whether a value is normalized.
+		/// </summary>
+		/// <param name="value">A value.</param>
+		/// <returns>True if the given value is normalized, otherwise false.</returns>
 		private static bool IsValueNormalized(float value)
 		{
 			return MinNormalizedValue <= value && value <= MaxNormalizedValue;

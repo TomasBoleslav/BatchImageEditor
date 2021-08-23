@@ -5,14 +5,14 @@ using System.Drawing.Imaging;
 
 namespace ImageFilters.Tests
 {
+	/// <summary>
+	/// Tests of <see cref="DirectBitmap"/>.
+	/// </summary>
 	public class DirectBitmapTests
 	{ 
 		[Theory]
 		[InlineData(0, 1)]
-		[InlineData(-1, 1)]
 		[InlineData(1, 0)]
-		[InlineData(1, -1)]
-		[InlineData(0, 0)]
 		[InlineData(-1, -1)]
 		public void Constructor_WidthOrHeightNotPositive_ThrowsArgumentException(int width, int height)
 		{

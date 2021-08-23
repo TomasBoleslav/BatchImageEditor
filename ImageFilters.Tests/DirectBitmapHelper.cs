@@ -2,6 +2,9 @@
 
 namespace ImageFilters.Tests
 {
+	/// <summary>
+	/// A helper class containing functions related to <see cref="DirectBitmap"/>.
+	/// </summary>
 	internal static class DirectBitmapHelper
 	{
 		public static void Clear(DirectBitmap bitmap, Color color)

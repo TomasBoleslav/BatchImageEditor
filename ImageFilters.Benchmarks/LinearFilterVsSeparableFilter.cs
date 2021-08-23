@@ -1,13 +1,13 @@
 ﻿using BenchmarkDotNet.Attributes;
-using System.Drawing.Imaging;
 
 namespace ImageFilters.Benchmarks
 {
+	/// <summary>
+	/// A benchmark comparing the speed of <see cref="SeparableFilter"/> compared to the slower <see cref="LinearFilter"/>.
+	/// </summary>
 	[HtmlExporter]
 	public class LinearFilterVsSeparableFilter
 	{
-		private const PixelFormat PixelFormat = System.Drawing.Imaging.PixelFormat.Format24bppRgb;
-
 		[Params(3, 5, 9)]
 		public int KernelSize { get; set; }
 
@@ -15,18 +15,18 @@ namespace ImageFilters.Benchmarks
 		public int ImageSize { get; set; }
 
 		[Benchmark]
-		public void LinearFilter()
+		public void UseLinearFilter()
 		{
-			var directBitmap = new ImageFilters.DirectBitmap(ImageSize, ImageSize);
+			var directBitmap = new DirectBitmap(ImageSize, ImageSize);
 			float[][] kernel = CreateMatrixOfOnes(KernelSize, KernelSize);
 			var filter = new CustomLinearFilter(kernel);
 			filter.Apply(ref directBitmap);
 		}
 
 		[Benchmark]
-		public void SeparableFilter()
+		public void UseSeparableFilter()
 		{
-			var directBitmap = new ImageFilters.DirectBitmap(ImageSize, ImageSize);
+			var directBitmap = new DirectBitmap(ImageSize, ImageSize);
 			float[] vector = CreateVectorOfOnes(KernelSize);
 			var filter = new CustomSeparableFilter(vector, vector);
 			filter.Apply(ref directBitmap);

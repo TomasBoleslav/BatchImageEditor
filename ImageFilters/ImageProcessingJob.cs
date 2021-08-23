@@ -8,7 +8,7 @@ using ThrowHelpers;
 
 namespace ImageFilters
 {
-	public class ImageProcessingJob : ICancellableJob
+	public class ImageProcessingJob : ICancelableJob
 	{
 		public ImageProcessingJob(string inputFilename, string outputFilename, IEnumerable<IImageFilter> filters)
 		{
@@ -24,7 +24,7 @@ namespace ImageFilters
 
 		public Func<bool> ShouldCancelFunc { get; set; }
 
-		public bool IsCancelled { get; private set; }
+		public bool IsCanceled { get; private set; }
 
 		public string InputFilename { get; }
 
@@ -151,7 +151,7 @@ namespace ImageFilters
 
 		private void OnCancel()
 		{
-			IsCancelled = true;
+			IsCanceled = true;
 			CancelAction?.Invoke();
 		}
 	}

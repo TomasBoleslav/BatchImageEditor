@@ -1,10 +1,11 @@
 ﻿using Xunit;
-using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 
 namespace ImageFilters.Tests
 {
+	/// <summary>
+	/// Tests of the <see cref="CustomSeparableFilter"/>.
+	/// </summary>
 	public sealed class CustomSeparableFilterTests
 	{
 		[Fact]

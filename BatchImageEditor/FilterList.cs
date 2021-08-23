@@ -70,7 +70,7 @@ namespace BatchImageEditor
 			settingsFactories.Add(new Instantiator<ColorChannelsFilterSettings>());
 			settingsFactories.Add(new Instantiator<CropFilterSettings>());
 			settingsFactories.Add(new Instantiator<GaussianBlurFilterSettings>());
-			settingsFactories.Add(new Instantiator<EmptyFilterSettings<HighPassFilter>>());
+			settingsFactories.Add(new Instantiator<EmptyFilterSettings<HighPassSharpenFilter>>());
 			return settingsFactories;
 		}
 
@@ -140,7 +140,7 @@ namespace BatchImageEditor
 		private ToolStripMenuItem CreateSharpenMenuItems()
 		{
 			var rootItem = new ToolStripMenuItem("Sharpen");
-			rootItem.DropDownItems.Add(CreateSettingsMenuItem<EmptyFilterSettings<HighPassFilter>>());
+			rootItem.DropDownItems.Add(CreateSettingsMenuItem<EmptyFilterSettings<HighPassSharpenFilter>>());
 			return rootItem;
 		}
 

@@ -3,6 +3,9 @@ using System.Drawing;
 
 namespace ImageFilters.Tests
 {
+	/// <summary>
+	/// Tests of <see cref="MedianFilter"/>.
+	/// </summary>
 	public sealed class MedianFilterTests
 	{
 		[Fact]

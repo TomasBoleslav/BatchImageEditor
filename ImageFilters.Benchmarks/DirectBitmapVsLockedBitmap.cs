@@ -4,10 +4,14 @@ using System.Drawing;
 
 namespace ImageFilters.Benchmarks
 {
+	/// <summary>
+	/// A benchmark comparing <see cref="DirectBitmap"/> with direct access to pixels and
+	/// <see cref="Bitmap"/> that uses locking and accessing data with pointers.
+	/// </summary>
 	[HtmlExporter]
 	public class DirectBitmapVsLockedBitmap
 	{
-		private const PixelFormat PixelFormat = System.Drawing.Imaging.PixelFormat.Format32bppPArgb;
+		private const PixelFormat CommonPixelFormat = PixelFormat.Format32bppPArgb;
 
 		[Params(100, 1000, 3000)]
 		public int ImageSize { get; set; }
@@ -16,7 +20,7 @@ namespace ImageFilters.Benchmarks
 		public void GlobalSetup()
 		{
 			_directBitmap = new DirectBitmap(ImageSize, ImageSize);
-			_bitmap = new Bitmap(ImageSize, ImageSize, PixelFormat);
+			_bitmap = new Bitmap(ImageSize, ImageSize, CommonPixelFormat);
 		}
 
 		[GlobalCleanup]
@@ -41,8 +45,8 @@ namespace ImageFilters.Benchmarks
 		[Benchmark]
 		public unsafe void LockedBitmap_GetPixel()
 		{
-			BitmapData data = _bitmap.LockBits(new Rectangle(0, 0, ImageSize, ImageSize), ImageLockMode.ReadOnly, PixelFormat);
-			int pixelByteCount = Image.GetPixelFormatSize(PixelFormat) / 8;
+			BitmapData data = _bitmap.LockBits(new Rectangle(0, 0, ImageSize, ImageSize), ImageLockMode.ReadOnly, CommonPixelFormat);
+			int pixelByteCount = Image.GetPixelFormatSize(CommonPixelFormat) / 8;
 			byte* startPtr = (byte*)data.Scan0;
 			for (int i = 0; i < ImageSize; i++)
 			{
@@ -75,8 +79,8 @@ namespace ImageFilters.Benchmarks
 		[Benchmark]
 		public unsafe void LockedBitmap_SetPixel()
 		{
-			BitmapData data = _bitmap.LockBits(new Rectangle(0, 0, ImageSize, ImageSize), ImageLockMode.WriteOnly, PixelFormat);
-			int pixelByteCount = Image.GetPixelFormatSize(PixelFormat) / 8;
+			BitmapData data = _bitmap.LockBits(new Rectangle(0, 0, ImageSize, ImageSize), ImageLockMode.WriteOnly, CommonPixelFormat);
+			int pixelByteCount = Image.GetPixelFormatSize(CommonPixelFormat) / 8;
 			byte* startPtr = (byte*)data.Scan0;
 			for (int i = 0; i < ImageSize; i++)
 			{

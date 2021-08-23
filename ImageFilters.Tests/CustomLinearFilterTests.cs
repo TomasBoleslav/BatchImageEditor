@@ -3,6 +3,9 @@ using System.Drawing;
 
 namespace ImageFilters.Tests
 {
+	/// <summary>
+	/// Tests of the <see cref="CustomLinearFilter"/>.
+	/// </summary>
 	public sealed class CustomLinearFilterTests
 	{
 		[Fact]

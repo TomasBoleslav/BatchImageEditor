@@ -3,6 +3,9 @@ using System.Drawing;
 
 namespace ImageFilters.Tests
 {
+	/// <summary>
+	/// Extension methods related to colors.
+	/// </summary>
 	internal static class ColorExtensions
 	{
 		public static Color Multiply(this Color color, int factor)

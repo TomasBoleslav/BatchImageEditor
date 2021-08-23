@@ -87,7 +87,7 @@ namespace BatchImageEditor
 			{
 				return Enumerable.Empty<IImageFilter>();
 			}
-			return new[] { new ImageOverlayFilter(InsertedImage, ImagePlacement, DeltaX, DeltaY) };
+			return new[] { new ImageInsertFilter(InsertedImage, ImagePlacement, DeltaX, DeltaY) };
 		}
 
 		private int _deltaX;

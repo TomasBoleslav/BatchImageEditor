@@ -1,6 +1,9 @@
 ﻿
 namespace ImageFilters.Tests
 {
+	/// <summary>
+	/// A helper class with functions related to math.
+	/// </summary>
 	internal static class MathHelper
 	{
 		public static float[][] CreateMatrixOfOnes(int rowCount, int columnCount)

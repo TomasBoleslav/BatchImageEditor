@@ -3,8 +3,17 @@ using System.Drawing;
 
 namespace ImageFilters
 {
+	/// <summary>
+	/// A color adjuster for rgb color channels.
+	/// </summary>
 	public sealed class RgbColorAdjuster : IColorAdjuster
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="RgbColorAdjuster"/> with the given changes in color channels.
+		/// </summary>
+		/// <param name="dR">A change in red channel.</param>
+		/// <param name="dG">A change in green channel.</param>
+		/// <param name="dB">A change in blue channel.</param>
 		public RgbColorAdjuster(int dR, int dG, int dB)
 		{
 			_dR = dR;
@@ -12,6 +21,7 @@ namespace ImageFilters
 			_dB = dB;
 		}
 
+		/// <inheritdoc/>
 		public Color Adjust(Color color)
 		{
 			return Color.FromArgb(

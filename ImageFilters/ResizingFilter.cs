@@ -4,8 +4,17 @@ using ThrowHelpers;
 
 namespace ImageFilters
 {
+	/// <summary>
+	/// An image filter that resizes an image.
+	/// </summary>
 	public sealed class ResizingFilter : IImageFilter
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="ResizingFilter"/> with an algorithm for resizing and
+		/// the maximum size allowed for an image.
+		/// </summary>
+		/// <param name="resizingAlgorithm">An algorithm to use for computing new size.</param>
+		/// <param name="maxSize">The maximum size allowed for an image.</param>
 		public ResizingFilter(IResizingAlgorithm resizingAlgorithm, Size maxSize)
 		{
 			ArgChecker.Positive(maxSize.Width, nameof(maxSize.Width));
@@ -14,6 +23,7 @@ namespace ImageFilters
 			_maxSize = maxSize;
 		}
 
+		/// <inheritdoc/>
 		public void Apply(ref DirectBitmap image)
 		{
 			ArgChecker.NotNull(image, nameof(image));
@@ -25,6 +35,11 @@ namespace ImageFilters
 		private readonly IResizingAlgorithm _resizingAlgorithm;
 		private readonly Size _maxSize;
 
+		/// <summary>
+		/// Resizes an image.
+		/// </summary>
+		/// <param name="inputImage">An image to resize.</param>
+		/// <returns>The resized image.</returns>
 		private DirectBitmap Resize(DirectBitmap inputImage)
 		{
 			Size newSize = _resizingAlgorithm.ComputeNewSize(inputImage.Bitmap.Size);

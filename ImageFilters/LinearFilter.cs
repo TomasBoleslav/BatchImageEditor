@@ -4,8 +4,12 @@ using ThrowHelpers;
 
 namespace ImageFilters
 {
+	/// <summary>
+	/// An image filter that uses a convolution matrix to compute new colors.
+	/// </summary>
 	public abstract class LinearFilter : IImageFilter
 	{
+		/// <inheritdoc/>
 		public void Apply(ref DirectBitmap image)
 		{
 			ArgChecker.NotNull(image, nameof(image));
@@ -15,6 +19,10 @@ namespace ImageFilters
 			image = outputImage;
 		}
 
+		/// <summary>
+		/// Verifies and sets a convolution kernel.
+		/// </summary>
+		/// <param name="kernel">A convolution kernel.</param>
 		protected void SetKernel(float[][] kernel)
 		{
 			VerifyKernelCorrectness(kernel);
@@ -25,6 +33,11 @@ namespace ImageFilters
 			_radiusHorizontal = _kernelWidth / 2;
 		}
 
+		/// <summary>
+		/// Normalizes a convolution kernel by dividing each value by sum of all values in the kernel.
+		/// </summary>
+		/// <param name="kernel">A convolution kernel.</param>
+		/// <returns>A normalized kernel.</returns>
 		protected static float[][] NormalizeKernel(double[][] kernel)
 		{
 			int rowCount = kernel.Length;
@@ -37,10 +50,11 @@ namespace ImageFilters
 					sum += kernel[i][j];
 				}
 			}
-			float[][] normalizedKernel = Utils.CreateJagged2DArray<float>(rowCount, columnCount);
-			for (int i = 0; i < kernel.Length; i++)
+			float[][] normalizedKernel = new float[rowCount][];
+			for (int i = 0; i < rowCount; i++)
 			{
-				for (int j = 0; j < kernel[0].Length; j++)
+				normalizedKernel[i] = new float[columnCount];
+				for (int j = 0; j < columnCount; j++)
 				{
 					normalizedKernel[i][j] = (float)(kernel[i][j] / sum);
 				}
@@ -54,6 +68,10 @@ namespace ImageFilters
 		private int _radiusVertical;
 		private int _radiusHorizontal;
 
+		/// <summary>
+		/// Verifies that the given convolution kernel is valid.
+		/// </summary>
+		/// <param name="kernel">A convolution kernel.</param>
 		private static void VerifyKernelCorrectness(float[][] kernel)
 		{
 			ArgChecker.NotNull(kernel, nameof(kernel));
@@ -89,6 +107,11 @@ namespace ImageFilters
 			}
 		}
 
+		/// <summary>
+		/// Applies the kernel to an image.
+		/// </summary>
+		/// <param name="inputImage">An image the kernel will applied to.</param>
+		/// <returns>The resulting image.</returns>
 		private DirectBitmap ApplyKernel(DirectBitmap inputImage)
 		{
 			var outputImage = new DirectBitmap(inputImage.Width, inputImage.Height);
@@ -120,9 +143,9 @@ namespace ImageFilters
 					Color oldColor = inputImage.GetPixel(j, i);
 					Color outputColor = Color.FromArgb(
 						oldColor.A,
-						Utils.ClampColorChannel(sumR),
-						Utils.ClampColorChannel(sumG),
-						Utils.ClampColorChannel(sumB)
+						ColorHelper.ClampColorChannel(sumR),
+						ColorHelper.ClampColorChannel(sumG),
+						ColorHelper.ClampColorChannel(sumB)
 						);
 					outputImage.SetPixel(j, i, outputColor);
 				}
