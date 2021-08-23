@@ -12,7 +12,7 @@ namespace ImageFilters
     /// </summary>
     /// <remarks>
     /// The pixel format of the bitmap is always <see cref="PixelFormat.Format32bppArgb"/>.
-    /// Original source code: https://stackoverflow.com/a/34801225/13555057
+    /// This class was based on a stackoverflow answer: https://stackoverflow.com/a/34801225/13555057
     /// </remarks>
     public sealed class DirectBitmap : IDisposable
     {
@@ -68,6 +68,7 @@ namespace ImageFilters
         {
             ArgChecker.NotNull(bitmap, nameof(bitmap));
             var directBitmap = new DirectBitmap(bitmap.Width, bitmap.Height);
+            directBitmap.Bitmap.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
             using (Graphics graphics = Graphics.FromImage(directBitmap.Bitmap))
             {
                 graphics.DrawImage(bitmap, 0, 0);
@@ -113,6 +114,7 @@ namespace ImageFilters
         {
             var directBitmap = new DirectBitmap(Width, Height);
             Buffer.CopyTo(directBitmap.Buffer, 0);
+            directBitmap.Bitmap.SetResolution(Bitmap.HorizontalResolution, Bitmap.VerticalResolution);
             return directBitmap;
         }
 

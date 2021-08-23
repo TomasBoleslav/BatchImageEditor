@@ -41,7 +41,7 @@ namespace BatchImageEditor
 			this._sceneTabs.Dock = System.Windows.Forms.DockStyle.Top;
 			this._sceneTabs.Location = new System.Drawing.Point(0, 0);
 			this._sceneTabs.Name = "_sceneTabs";
-			this._sceneTabs.Size = new System.Drawing.Size(904, 50);
+			this._sceneTabs.Size = new System.Drawing.Size(882, 50);
 			this._sceneTabs.TabIndex = 0;
 			this._sceneTabs.LoadTabSelected += new System.EventHandler(this.SceneTabs_LoadTabSelected);
 			this._sceneTabs.EditTabSelected += new System.EventHandler(this.SceneTabs_EditTabSelected);
@@ -53,7 +53,7 @@ namespace BatchImageEditor
 			this._loadScene.Location = new System.Drawing.Point(0, 50);
 			this._loadScene.Name = "_loadScene";
 			this._loadScene.Padding = new System.Windows.Forms.Padding(20);
-			this._loadScene.Size = new System.Drawing.Size(904, 546);
+			this._loadScene.Size = new System.Drawing.Size(882, 603);
 			this._loadScene.TabIndex = 1;
 			this._loadScene.FileSetChanged += new System.EventHandler(this.LoadScene_FileSetChanged);
 			// 
@@ -63,7 +63,7 @@ namespace BatchImageEditor
 			this._editScene.Location = new System.Drawing.Point(0, 50);
 			this._editScene.Name = "_editScene";
 			this._editScene.Padding = new System.Windows.Forms.Padding(15);
-			this._editScene.Size = new System.Drawing.Size(904, 546);
+			this._editScene.Size = new System.Drawing.Size(882, 603);
 			this._editScene.TabIndex = 2;
 			this._editScene.FilterListChanged += new System.EventHandler(this.EditScene_FilterListChanged);
 			// 
@@ -73,18 +73,19 @@ namespace BatchImageEditor
 			this._processScene.Location = new System.Drawing.Point(0, 0);
 			this._processScene.Name = "_processScene";
 			this._processScene.Padding = new System.Windows.Forms.Padding(15);
-			this._processScene.Size = new System.Drawing.Size(904, 596);
+			this._processScene.Size = new System.Drawing.Size(882, 653);
 			this._processScene.TabIndex = 3;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(904, 596);
+			this.ClientSize = new System.Drawing.Size(882, 653);
 			this.Controls.Add(this._loadScene);
 			this.Controls.Add(this._editScene);
 			this.Controls.Add(this._sceneTabs);
 			this.Controls.Add(this._processScene);
+			this.MinimumSize = new System.Drawing.Size(900, 700);
 			this.Name = "MainForm";
 			this.Text = "MainForm";
 			this.ResumeLayout(false);

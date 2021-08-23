@@ -34,7 +34,7 @@ namespace BatchImageEditor
 			this._previewGroup.Location = new System.Drawing.Point(12, 12);
 			this._previewGroup.Name = "_previewGroup";
 			this._previewGroup.Padding = new System.Windows.Forms.Padding(10);
-			this._previewGroup.Size = new System.Drawing.Size(510, 446);
+			this._previewGroup.Size = new System.Drawing.Size(494, 429);
 			this._previewGroup.TabIndex = 1;
 			this._previewGroup.TabStop = false;
 			this._previewGroup.Text = "Preview";
@@ -46,13 +46,13 @@ namespace BatchImageEditor
 			this._previewControl.Name = "_previewControl";
 			this._previewControl.OriginalImage = null;
 			this._previewControl.PreviewImage = null;
-			this._previewControl.Size = new System.Drawing.Size(490, 406);
+			this._previewControl.Size = new System.Drawing.Size(474, 389);
 			this._previewControl.TabIndex = 2;
 			// 
 			// _okButton
 			// 
 			this._okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this._okButton.Location = new System.Drawing.Point(600, 423);
+			this._okButton.Location = new System.Drawing.Point(584, 406);
 			this._okButton.Name = "_okButton";
 			this._okButton.Size = new System.Drawing.Size(90, 35);
 			this._okButton.TabIndex = 3;
@@ -63,7 +63,7 @@ namespace BatchImageEditor
 			// _resetButton
 			// 
 			this._resetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this._resetButton.Location = new System.Drawing.Point(696, 423);
+			this._resetButton.Location = new System.Drawing.Point(680, 406);
 			this._resetButton.Name = "_resetButton";
 			this._resetButton.Size = new System.Drawing.Size(90, 35);
 			this._resetButton.TabIndex = 4;
@@ -75,10 +75,10 @@ namespace BatchImageEditor
 			// 
 			this._settingsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this._settingsGroup.Location = new System.Drawing.Point(528, 12);
+			this._settingsGroup.Location = new System.Drawing.Point(512, 12);
 			this._settingsGroup.Name = "_settingsGroup";
 			this._settingsGroup.Padding = new System.Windows.Forms.Padding(10);
-			this._settingsGroup.Size = new System.Drawing.Size(258, 405);
+			this._settingsGroup.Size = new System.Drawing.Size(258, 388);
 			this._settingsGroup.TabIndex = 0;
 			this._settingsGroup.TabStop = false;
 			this._settingsGroup.Text = "Settings";
@@ -87,11 +87,12 @@ namespace BatchImageEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(798, 470);
+			this.ClientSize = new System.Drawing.Size(782, 453);
 			this.Controls.Add(this._settingsGroup);
 			this.Controls.Add(this._resetButton);
 			this.Controls.Add(this._okButton);
 			this.Controls.Add(this._previewGroup);
+			this.MinimumSize = new System.Drawing.Size(800, 500);
 			this.Name = "FilterSettingsEditDialog";
 			this.Text = "FilterEditForm";
 			this._previewGroup.ResumeLayout(false);

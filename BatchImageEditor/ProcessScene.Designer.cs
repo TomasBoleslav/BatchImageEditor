@@ -90,9 +90,9 @@ namespace BatchImageEditor
 			// _processButton
 			// 
 			this._processButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this._processButton.Location = new System.Drawing.Point(629, 442);
+			this._processButton.Location = new System.Drawing.Point(629, 422);
 			this._processButton.Name = "_processButton";
-			this._processButton.Size = new System.Drawing.Size(100, 30);
+			this._processButton.Size = new System.Drawing.Size(100, 50);
 			this._processButton.TabIndex = 0;
 			this._processButton.Text = "Process";
 			this._processButton.UseVisualStyleBackColor = true;

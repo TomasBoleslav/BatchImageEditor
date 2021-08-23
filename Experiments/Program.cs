@@ -15,6 +15,14 @@ namespace Experiments
 	{
 		static void Main(string[] args)
 		{
+
+			Bitmap bitmap = new Bitmap(1, 1);
+			Console.WriteLine($"Bitmap: {bitmap.HorizontalResolution}, {bitmap.VerticalResolution}");
+			var directBitmap = new DirectBitmap(1, 1);
+			Console.WriteLine($"DirectBitmap from Bitmap: {directBitmap.Bitmap.HorizontalResolution}, {directBitmap.Bitmap.VerticalResolution}");
+			directBitmap = DirectBitmap.FromBitmap(bitmap);
+			Console.WriteLine($"DirectBitmap from Bitmap: {directBitmap.Bitmap.HorizontalResolution}, {directBitmap.Bitmap.VerticalResolution}");
+			/*
 			var guyImage = DirectBitmap.FromFile(@"C:\Users\boles\Plocha\experiment\guy.jpg");
 			using (var graphics = Graphics.FromImage(guyImage.Bitmap))
 			{
@@ -35,6 +43,7 @@ namespace Experiments
 				graphics.DrawImage(foodBitmap, 0, 0);
 			}
 			guyBitmap.Save(@"C:\Users\boles\Plocha\experiment\out2.png");
+			*/
 		}
 	}
 }

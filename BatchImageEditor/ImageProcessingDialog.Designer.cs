@@ -48,7 +48,7 @@ namespace BatchImageEditor
             | System.Windows.Forms.AnchorStyles.Right)));
 			this._progressBar.Location = new System.Drawing.Point(18, 49);
 			this._progressBar.Name = "_progressBar";
-			this._progressBar.Size = new System.Drawing.Size(637, 45);
+			this._progressBar.Size = new System.Drawing.Size(546, 45);
 			this._progressBar.TabIndex = 0;
 			// 
 			// _headingLabel
@@ -63,7 +63,7 @@ namespace BatchImageEditor
 			// _cancelButton
 			// 
 			this._cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this._cancelButton.Location = new System.Drawing.Point(555, 109);
+			this._cancelButton.Location = new System.Drawing.Point(464, 109);
 			this._cancelButton.Name = "_cancelButton";
 			this._cancelButton.Size = new System.Drawing.Size(100, 30);
 			this._cancelButton.TabIndex = 4;
@@ -101,7 +101,7 @@ namespace BatchImageEditor
 			this._errorsListView.HideSelection = false;
 			this._errorsListView.Location = new System.Drawing.Point(18, 193);
 			this._errorsListView.Name = "_errorsListView";
-			this._errorsListView.Size = new System.Drawing.Size(637, 241);
+			this._errorsListView.Size = new System.Drawing.Size(546, 142);
 			this._errorsListView.TabIndex = 8;
 			this._errorsListView.UseCompatibleStateImageBehavior = false;
 			this._errorsListView.View = System.Windows.Forms.View.Details;
@@ -143,7 +143,7 @@ namespace BatchImageEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(673, 452);
+			this.ClientSize = new System.Drawing.Size(582, 353);
 			this.Controls.Add(this._errorCountLabel);
 			this.Controls.Add(this._errorsLabel);
 			this.Controls.Add(this._errorsListView);
@@ -152,6 +152,7 @@ namespace BatchImageEditor
 			this.Controls.Add(this._cancelButton);
 			this.Controls.Add(this._headingLabel);
 			this.Controls.Add(this._progressBar);
+			this.MinimumSize = new System.Drawing.Size(600, 400);
 			this.Name = "ImageProcessingDialog";
 			this.Padding = new System.Windows.Forms.Padding(15);
 			this.Text = "Processing images";

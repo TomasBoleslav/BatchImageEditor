@@ -15,7 +15,7 @@ namespace BatchImageEditor
 		public PreviewImageControl()
 		{
 			InitializeComponent();
-			_pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+			_pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
 			SetSizeLabel(0, 0);
 		}
 
