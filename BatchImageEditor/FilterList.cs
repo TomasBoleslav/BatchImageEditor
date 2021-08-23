@@ -63,7 +63,7 @@ namespace BatchImageEditor
 			var settingsFactories = new FilterSettingsFactoryCollection();
 			settingsFactories.Add(new Instantiator<MedianFilterSettings>());
 			settingsFactories.Add(new Instantiator<ResizingFilterSettings>());
-			settingsFactories.Add(new Instantiator<ImageOverlayFilterSettings>());
+			settingsFactories.Add(new Instantiator<ImageInsertFilterSettings>());
 			settingsFactories.Add(new Instantiator<FlipFilterSettings>());
 			settingsFactories.Add(new Instantiator<ContrastBrightnessFilterSettings>());
 			settingsFactories.Add(new Instantiator<RotationFilterSettings>());
@@ -86,7 +86,7 @@ namespace BatchImageEditor
 			menu.Items.Add(CreateColorAdjustmentMenuItems());
 			menu.Items.Add(CreateBlurMenuItems());
 			menu.Items.Add(CreateSharpenMenuItems());
-			menu.Items.Add(CreateSettingsMenuItem<ImageOverlayFilterSettings>());
+			menu.Items.Add(CreateSettingsMenuItem<ImageInsertFilterSettings>());
 			return menu;
 		}
 

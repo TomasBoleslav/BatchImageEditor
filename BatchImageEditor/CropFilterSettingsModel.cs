@@ -5,13 +5,10 @@ using ThrowHelpers;
 
 namespace BatchImageEditor
 {
-	public enum CropType
-	{
-		Pixels,
-		Percents
-	}
-
-	public class CropFilterSettingsModel : IFilterSettingsModel<CropFilterSettingsModel>
+	/// <summary>
+	/// Represents a model of crop filter settings.
+	/// </summary>
+	internal sealed class CropFilterSettingsModel : IFilterSettingsModel<CropFilterSettingsModel>
 	{
 		public const int MinPixelLocation = 0;
 		public const int MaxPixelLocation = 10_000;
@@ -26,7 +23,9 @@ namespace BatchImageEditor
 		public static readonly Rectangle DefaultPixelsRectangle = new Rectangle(0, 0, 1000, 1000);
 		public static readonly RectangleF DefaultPercentsRectangle = new RectangleF(0f, 0f, 100f, 100f);
 
-
+		/// <summary>
+		/// Creates an instance of <see cref="CropFilterSettingsModel"/> with default settings.
+		/// </summary>
 		public CropFilterSettingsModel()
 		{
 			CropType = DefaultImageUnits;
@@ -34,6 +33,9 @@ namespace BatchImageEditor
 			PercentsCropRect = DefaultPercentsRectangle;
 		}
 
+		/// <summary>
+		/// Gets or sets the bounds of the cropped image in pixels.
+		/// </summary>
 		public Rectangle PixelsCropRect
 		{
 			get
@@ -50,6 +52,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the bounds of the cropped image in percents.
+		/// </summary>
 		public RectangleF PercentsCropRect
 		{
 			get
@@ -66,8 +71,12 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the crop type.
+		/// </summary>
 		public CropType CropType { get; set; }
 
+		/// <inheritdoc/>
 		public CropFilterSettingsModel Copy()
 		{
 			return new CropFilterSettingsModel
@@ -78,6 +87,7 @@ namespace BatchImageEditor
 			};
 		}
 
+		/// <inheritdoc/>
 		public IEnumerable<IImageFilter> CreateFilters()
 		{
 			ICroppingAlgorithm croppingAlgorithm = null;

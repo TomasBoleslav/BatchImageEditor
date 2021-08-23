@@ -5,7 +5,7 @@ namespace BatchImageEditor
 	/// <summary>
 	/// Extension methods for the <see cref="RectangleF"/> struct.
 	/// </summary>
-	public static class RectangleFExtensions
+	internal static class RectangleFExtensions
 	{
 		/// <summary>
 		/// Creates a <see cref="RectangleF"/> with changed X.

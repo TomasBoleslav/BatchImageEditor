@@ -12,8 +12,14 @@ using ThrowHelpers;
 
 namespace BatchImageEditor
 {
-	public partial class ImageProcessingDialog : Form
+	/// <summary>
+	/// A dialog form that processes images with filters and shows progress to the user.
+	/// </summary>
+	internal sealed partial class ImageProcessingDialog : Form
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="ImageProcessingDialog"/>.
+		/// </summary>
 		public ImageProcessingDialog()
 		{
 			InitializeComponent();
@@ -22,6 +28,9 @@ namespace BatchImageEditor
 			_errorCountLabel.Text = "0";
 		}
 
+		/// <summary>
+		/// Gets or sets the files that will be processed.
+		/// </summary>
 		public IReadOnlySet<string> Filenames
 		{
 			get
@@ -35,6 +44,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the filters that should be used.
+		/// </summary>
 		public IEnumerable<IImageFilter> Filters
 		{
 			get
@@ -48,6 +60,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the maximum number of threads that should be used for processing images.
+		/// </summary>
 		public int MaxThreadCount
 		{
 			get
@@ -61,6 +76,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the output folder where the processed images will be stored.
+		/// </summary>
 		public string OutputFolder { get; set; }
 
 		private IReadOnlySet<string> _filenames = new HashSet<string>();
@@ -76,13 +94,18 @@ namespace BatchImageEditor
 		private const int UpdateTimeInterval = 3000; // ms
 		private DateTime _lastUpdateTime;
 
+		/// <summary>
+		/// Runs the process when dialog is shown.
+		/// </summary>
 		private void ImageProcessingDialog_Shown(object sender, EventArgs e)
 		{
-			// TODO: are all controls already initialized here?
 			_headingLabel.Text = $"Processing a total of {_filenames.Count} images";
 			Run();
 		}
 
+		/// <summary>
+		/// Runs the process with the current settings.
+		/// </summary>
 		private void Run()
 		{
 			Action<ImageProcessingJob> successCallback;
@@ -90,13 +113,13 @@ namespace BatchImageEditor
 			if (MaxThreadCount > 1)
 			{
 				successCallback = ReportSuccessInParallel;
-				failCallback = ReportErrorInParallel;
+				failCallback = ReportFailureInParallel;
 			}
 			else
 			{
 				_lastUpdateTime = DateTime.Now;
 				successCallback = ReportSuccessSequentially;
-				failCallback = ReportErrorSequentially;
+				failCallback = ReportFailureSequentially;
 			}
 			var jobSource = new ImageProcessingJobSource(_filenames, GetOutputFilePathFromInput, _filters)
 			{
@@ -107,12 +130,21 @@ namespace BatchImageEditor
 			_batchProcessor.Run();
 		}
 
+		/// <summary>
+		/// Computes the path of an output file based on the path of the input file and the path of output folder.
+		/// </summary>
+		/// <param name="inputFilePath">The path of an input file.</param>
+		/// <returns>The path of the output file.</returns>
 		private string GetOutputFilePathFromInput(string inputFilePath)
 		{
 			string inputFilename = Path.GetFileName(inputFilePath);
 			return Path.Join(OutputFolder, inputFilename);
 		}
 
+		/// <summary>
+		/// Reports a success of an image processing job.
+		/// </summary>
+		/// <param name="successfulJob">A job that finished successfully.</param>
 		private void ReportSuccess(ImageProcessingJob successfulJob)
 		{
 			if (_computationCanceled)
@@ -122,38 +154,64 @@ namespace BatchImageEditor
 			IncrementProgress();
 		}
 
+		/// <summary>
+		/// Reports a success of an image processing job when run in parallel.
+		/// </summary>
+		/// <param name="successfulJob">A job that finished successfully.</param>
 		private void ReportSuccessInParallel(ImageProcessingJob successfulJob)
 		{
 			BeginInvokeIfRequired(() =>	ReportSuccess(successfulJob));
 		}
 
+		/// <summary>
+		/// Reports a success of an image processing job when run sequentially.
+		/// </summary>
+		/// <param name="successfulJob">A job that finished successfully.</param>
 		private void ReportSuccessSequentially(ImageProcessingJob successfulJob)
 		{
 			ReportSuccess(successfulJob);
 			UpdateDialogAfterTimeInterval();
 		}
 
-		private void ReportError(ImageProcessingJob failedJob, string errorMessage)
+		/// <summary>
+		/// Reports a failure of an image processing job.
+		/// </summary>
+		/// <param name="failedJob">A job that failed.</param>
+		/// <param name="errorMessage">An error message.</param>
+		private void ReportFailure(ImageProcessingJob failedJob, string errorMessage)
 		{
 			if (_computationCanceled)
 			{
 				return;
 			}
-			AddNewError(failedJob.InputFilename, failedJob.OutputFilename, errorMessage);
+			AddNewErrorToList(failedJob.InputFilename, failedJob.OutputFilename, errorMessage);
 			IncrementProgress();
 		}
 
-		private void ReportErrorInParallel(ImageProcessingJob failedJob, string errorMessage)
+		/// <summary>
+		/// Reports a failure of an image processing job when run in parallel.
+		/// </summary>
+		/// <param name="failedJob">A job that failed.</param>
+		/// <param name="errorMessage">An error message.</param>
+		private void ReportFailureInParallel(ImageProcessingJob failedJob, string errorMessage)
 		{
-			BeginInvokeIfRequired(() => ReportError(failedJob, errorMessage));
+			BeginInvokeIfRequired(() => ReportFailure(failedJob, errorMessage));
 		}
 
-		private void ReportErrorSequentially(ImageProcessingJob failedJob, string errorMessage)
+		/// <summary>
+		/// Reports a failure of an image processing job when run sequentially.
+		/// </summary>
+		/// <param name="failedJob">A job that failed.</param>
+		/// <param name="errorMessage">An error message.</param>
+		private void ReportFailureSequentially(ImageProcessingJob failedJob, string errorMessage)
 		{
-			ReportError(failedJob, errorMessage);
+			ReportFailure(failedJob, errorMessage);
 			UpdateDialogAfterTimeInterval();
 		}
 
+		/// <summary>
+		/// Increments the progress when an image processing job finished.
+		/// </summary>
 		private void IncrementProgress()
 		{
 			_processedImageCount++;
@@ -169,7 +227,13 @@ namespace BatchImageEditor
 			}
 		}
 
-		private void AddNewError(string inputFilename, string outputFilename, string errorMessage)
+		/// <summary>
+		/// Adds an error to a list that is shown to the user.
+		/// </summary>
+		/// <param name="inputFilename">A name of a file containing an input image.</param>
+		/// <param name="outputFilename">A name of a file where the processed image should be stored.</param>
+		/// <param name="errorMessage">An error message.</param>
+		private void AddNewErrorToList(string inputFilename, string outputFilename, string errorMessage)
 		{
 			_errorCount++;
 			_errorCountLabel.Text = $"{_errorCount}";
@@ -180,6 +244,10 @@ namespace BatchImageEditor
 			_errorsListView.Items.Add(new ListViewItem(columns, -1));
 		}
 
+		/// <summary>
+		/// If required, runs BeginInvoke with the given action, otherwise executes the action normally.
+		/// </summary>
+		/// <param name="action"></param>
 		private void BeginInvokeIfRequired(Action action)
 		{
 			if (InvokeRequired)
@@ -192,6 +260,10 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Updates this dialog after time interval.
+		/// This is used only for sequential computation.
+		/// </summary>
 		private void UpdateDialogAfterTimeInterval()
 		{
 			TimeSpan elapsedTime = DateTime.Now - _lastUpdateTime;
@@ -201,12 +273,18 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Performs a cleanup when the form is closing.
+		/// </summary>
 		private void ImageProcessingDialog_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			CancelComputation();
 			_batchProcessor?.Dispose();
 		}
 
+		/// <summary>
+		/// Cancels the computation.
+		/// </summary>
 		private void CancelComputation()
 		{
 			if (_batchProcessor.IsRunning && !_computationCanceled)
@@ -233,6 +311,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Cancels the computation and closes the dialog with Cancel dialog result.
+		/// </summary>
 		private void CancelButton_Click(object sender, EventArgs e)
 		{
 			CancelComputation();

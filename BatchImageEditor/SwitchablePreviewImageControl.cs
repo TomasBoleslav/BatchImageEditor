@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.Threading.Tasks;
-using System.Threading;
 using ImageFilters;
 
 namespace BatchImageEditor
 {
-	public partial class SwitchablePreviewImageControl : UserControl
+	/// <summary>
+	/// A control for showing an original or a preview image and allows the user to switch between them.
+	/// </summary>
+	internal sealed partial class SwitchablePreviewImageControl : UserControl
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="SwitchablePreviewImageControl"/>.
+		/// </summary>
 		public SwitchablePreviewImageControl()
 		{
 			InitializeComponent();
@@ -15,6 +19,9 @@ namespace BatchImageEditor
 			UpdatePreviewSwitchButton(_isPreviewShown);
 		}
 
+		/// <summary>
+		/// Gets or sets the preview image.
+		/// </summary>
 		public DirectBitmap PreviewImage
 		{
 			get
@@ -31,6 +38,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the original image.
+		/// </summary>
 		public DirectBitmap OriginalImage
 		{
 			get
@@ -47,60 +57,13 @@ namespace BatchImageEditor
 			}
 		}
 
-		// TODO: remove
-		public void DisposeOriginalImage()
-		{
-			DirectBitmap oldImage = OriginalImage;
-			OriginalImage = null;
-			oldImage?.Dispose();
-		}
-
-		// TODO: remove
-		public void DisposePreviewImage()
-		{
-			DirectBitmap oldImage = PreviewImage;
-			PreviewImage = null;
-			oldImage?.Dispose();
-		}
-
-		// NOTE: disposing of old preview image should be done in acquireImageFunc
-		public void UpdatePreviewAsync(Func<DirectBitmap> acquireImageFunc)
-		{
-			if (_currentUpdateTask.IsCompleted)
-			{
-				RunUpdatePreviewAsync(acquireImageFunc);
-			}
-			else
-			{
-				_acquireImageFunc = acquireImageFunc;
-			}
-		}
-
-		private void RunUpdatePreviewAsync(Func<DirectBitmap> acquireImageFunc)
-		{
-			_currentUpdateTask = Task.Run(() =>
-			{
-				DirectBitmap previewImage = acquireImageFunc();
-				BeginInvoke((MethodInvoker)(
-					() =>
-					{
-						PreviewImage = previewImage;
-						if (_acquireImageFunc != null)
-						{
-							Func<DirectBitmap> nextAcquireImageFunc = _acquireImageFunc;
-							_acquireImageFunc = null;
-							RunUpdatePreviewAsync(_acquireImageFunc);
-						}
-					}));
-			});
-		}
-
 		private bool _isPreviewShown;
 		private DirectBitmap _previewImage;
 		private DirectBitmap _originalImage;
-		private Task _currentUpdateTask;
-		private Func<DirectBitmap> _acquireImageFunc;
 
+		/// <summary>
+		/// Switches between the original and the preview image.
+		/// </summary>
 		private void PreviewSwitchButton_Click(object sender, EventArgs e)
 		{
 			_isPreviewShown = !_isPreviewShown;
@@ -108,6 +71,10 @@ namespace BatchImageEditor
 			UpdateDisplayedImage(_isPreviewShown);
 		}
 
+		/// <summary>
+		/// Updates the text of the button that switches between the original and the preview image.
+		/// </summary>
+		/// <param name="isPreviewShown">True if the preview image is shown, else false.</param>
 		private void UpdatePreviewSwitchButton(bool isPreviewShown)
 		{
 			if (isPreviewShown)
@@ -120,6 +87,10 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Displays the original of the preview image.
+		/// </summary>
+		/// <param name="isPreviewShown">True if the preview image is shown, else false.</param>
 		private void UpdateDisplayedImage(bool isPreviewShown)
 		{
 			if (isPreviewShown)

@@ -10,7 +10,7 @@ namespace BatchImageEditor
 	/// <summary>
 	/// An edit scene of the editor.
 	/// </summary>
-	internal partial class EditScene : UserControl
+	internal sealed partial class EditScene : UserControl
 	{
 		/// <summary>
 		/// Creates an instance of <see cref="EditScene"/>.

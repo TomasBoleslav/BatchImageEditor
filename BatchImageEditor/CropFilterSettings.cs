@@ -5,8 +5,14 @@ using System.Drawing;
 
 namespace BatchImageEditor
 {
-	public partial class CropFilterSettings : FilterSettings<CropFilterSettingsModel>
+	/// <summary>
+	/// Filter settings control for image cropping.
+	/// </summary>
+	internal sealed partial class CropFilterSettings : FilterSettings<CropFilterSettingsModel>
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="CropFilterSettings"/>.
+		/// </summary>
 		public CropFilterSettings()
 		{
 			InitializeComponent();
@@ -14,6 +20,7 @@ namespace BatchImageEditor
 			_cropTypeBoxManager.SelectedValueChanged += CropTypeBox_SelectedValueChanged;
 		}
 
+		/// <inheritdoc/>
 		protected override void UpdateDisplayedSettingsWithDisabledEvents()
 		{
 			_inputFieldsEnabled = false;
@@ -21,10 +28,10 @@ namespace BatchImageEditor
 			switch (DisplayedModel.CropType)
 			{
 				case CropType.Percents:
-					UpdateInputFieldsAsPercents();
+					ChangeInputFieldsToPercents();
 					break;
 				case CropType.Pixels:
-					UpdateInputFieldsAsPixels();
+					ChangeInputFieldsToPixels();
 					break;
 			}
 			_inputFieldsEnabled = true;
@@ -41,6 +48,11 @@ namespace BatchImageEditor
 		private readonly EnumComboBoxManager<CropType> _cropTypeBoxManager;
 		private bool _inputFieldsEnabled = true;
 
+		/// <summary>
+		/// Changes an input field for cropped image location to be an input for percents.
+		/// </summary>
+		/// <param name="inputField">An input field to change.</param>
+		/// <param name="value">A value to set.</param>
 		private static void ChangeLocationInputFieldToPercents(NumericUpDown inputField, float value)
 		{
 			inputField.Minimum = (decimal)CropFilterSettingsModel.MinPercentageLocation;
@@ -50,6 +62,11 @@ namespace BatchImageEditor
 			inputField.Value = (decimal)value;
 		}
 
+		/// <summary>
+		/// Changes an input field for cropped image size to be an input for percents.
+		/// </summary>
+		/// <param name="inputField">An input field to change.</param>
+		/// <param name="value">A value to set.</param>
 		private static void ChangeSizeInputFieldToPercents(NumericUpDown inputField, float value)
 		{
 			inputField.Minimum = (decimal)CropFilterSettingsModel.MinPercentageSize;
@@ -59,6 +76,11 @@ namespace BatchImageEditor
 			inputField.Value = (decimal)value;
 		}
 
+		/// <summary>
+		/// Changes an input field for cropped image location to be an input for pixels.
+		/// </summary>
+		/// <param name="inputField">An input field to change.</param>
+		/// <param name="value">A value to set.</param>
 		private static void ChangeLocationInputFieldToPixels(NumericUpDown inputField, int value)
 		{
 			inputField.Minimum = CropFilterSettingsModel.MinPixelLocation;
@@ -68,6 +90,11 @@ namespace BatchImageEditor
 			inputField.Value = value;
 		}
 
+		/// <summary>
+		/// Changes an input field for cropped image size to be an input for pixels.
+		/// </summary>
+		/// <param name="inputField">An input field to change.</param>
+		/// <param name="value">A value to set.</param>
 		private static void ChangeSizeInputFieldToPixels(NumericUpDown inputField, int value)
 		{
 			inputField.Minimum = CropFilterSettingsModel.MinPixelSize;
@@ -77,7 +104,10 @@ namespace BatchImageEditor
 			inputField.Value = value;
 		}
 
-		private void UpdateInputFieldsAsPercents()
+		/// <summary>
+		/// Changes input fields to hold percents.
+		/// </summary>
+		private void ChangeInputFieldsToPercents()
 		{
 			ChangeLocationInputFieldToPercents(_xInput, DisplayedModel.PercentsCropRect.X);
 			ChangeLocationInputFieldToPercents(_yInput, DisplayedModel.PercentsCropRect.Y);
@@ -85,7 +115,10 @@ namespace BatchImageEditor
 			ChangeSizeInputFieldToPercents(_heightInput, DisplayedModel.PercentsCropRect.Height);
 		}
 
-		private void UpdateInputFieldsAsPixels()
+		/// <summary>
+		/// Changes input fields to hold pixels.
+		/// </summary>
+		private void ChangeInputFieldsToPixels()
 		{
 			ChangeLocationInputFieldToPixels(_xInput, DisplayedModel.PixelsCropRect.X);
 			ChangeLocationInputFieldToPixels(_yInput, DisplayedModel.PixelsCropRect.Y);
@@ -93,6 +126,9 @@ namespace BatchImageEditor
 			ChangeSizeInputFieldToPixels(_heightInput, DisplayedModel.PixelsCropRect.Height);
 		}
 
+		/// <summary>
+		/// Updates the <see cref="CropType"/> based on the user's input.
+		/// </summary>
 		private void CropTypeBox_SelectedValueChanged(object sender, EventArgs e)
 		{
 			if (!_inputFieldsEnabled)
@@ -103,6 +139,11 @@ namespace BatchImageEditor
 			UpdateDisplayedSettings();
 		}
 
+		/// <summary>
+		/// Changes the bounds of the cropped image based on the current crop type.
+		/// </summary>
+		/// <param name="pixelRectFunc">A function computing the bounds of the cropped image from the current bounds in pixels.</param>
+		/// <param name="percentRectFunc">A function computing the bounds of the cropped image from the current bounds in percents.</param>
 		private void ChangeCropRectDependingOnCropType(
 			Func<Rectangle, Rectangle> pixelRectFunc,
 			Func<RectangleF, RectangleF> percentRectFunc)
@@ -125,6 +166,9 @@ namespace BatchImageEditor
 			OnDisplayedSettingsUpdated();
 		}
 
+		/// <summary>
+		/// Updates the X location of the cropped image based on the user's input.
+		/// </summary>
 		private void XInput_ValueChanged(object sender, EventArgs e)
 		{
 			ChangeCropRectDependingOnCropType(
@@ -133,6 +177,9 @@ namespace BatchImageEditor
 				);
 		}
 
+		/// <summary>
+		/// Updates the Y location of the cropped image based on the user's input.
+		/// </summary>
 		private void YInput_ValueChanged(object sender, EventArgs e)
 		{
 			ChangeCropRectDependingOnCropType(
@@ -141,6 +188,9 @@ namespace BatchImageEditor
 				);
 		}
 
+		/// <summary>
+		/// Updates the width of the cropped image based on the user's input.
+		/// </summary>
 		private void WidthInput_ValueChanged(object sender, EventArgs e)
 		{
 			ChangeCropRectDependingOnCropType(
@@ -149,6 +199,9 @@ namespace BatchImageEditor
 				);
 		}
 
+		/// <summary>
+		/// Updates the height of the cropped image based on the user's input.
+		/// </summary>
 		private void HeightInput_ValueChanged(object sender, EventArgs e)
 		{
 			ChangeCropRectDependingOnCropType(

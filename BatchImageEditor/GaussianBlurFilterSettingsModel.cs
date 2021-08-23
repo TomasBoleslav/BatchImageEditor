@@ -4,7 +4,10 @@ using ThrowHelpers;
 
 namespace BatchImageEditor
 {
-	public class GaussianBlurFilterSettingsModel : IFilterSettingsModel<GaussianBlurFilterSettingsModel>
+	/// <summary>
+	/// Represents a model of Gaussian blur filter settings.
+	/// </summary>
+	internal sealed class GaussianBlurFilterSettingsModel : IFilterSettingsModel<GaussianBlurFilterSettingsModel>
 	{
 		public const int MinRadius = 1;
 		public const int MaxRadius = 5;
@@ -13,12 +16,18 @@ namespace BatchImageEditor
 		public const double MaxSigma = 10.0;
 		public const double DefaultSigma = MinSigma;
 
+		/// <summary>
+		/// Creates an instance of <see cref="GaussianBlurFilterSettingsModel"/> with default settings.
+		/// </summary>
 		public GaussianBlurFilterSettingsModel()
 		{
 			Radius = DefaultRadius;
 			Sigma = DefaultSigma;
 		}
 
+		/// <summary>
+		/// Gets or sets the radius of the Gaussian blur.
+		/// </summary>
 		public int Radius
 		{
 			get
@@ -32,6 +41,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the sigma value of the Gaussian blur.
+		/// </summary>
 		public double Sigma
 		{
 			get
@@ -45,6 +57,7 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <inheritdoc/>
 		public GaussianBlurFilterSettingsModel Copy()
 		{
 			return new GaussianBlurFilterSettingsModel()
@@ -54,6 +67,7 @@ namespace BatchImageEditor
 			};
 		}
 
+		/// <inheritdoc/>
 		public IEnumerable<IImageFilter> CreateFilters()
 		{
 			yield return new GaussianBlurFilter(Radius, Sigma);

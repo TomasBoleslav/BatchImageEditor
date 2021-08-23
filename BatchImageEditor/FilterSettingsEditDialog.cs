@@ -6,14 +6,23 @@ using ImageFilters;
 
 namespace BatchImageEditor
 {
-	internal partial class FilterSettingsEditDialog : Form
+	/// <summary>
+	/// A dialog form that allows user to modify filter settings and shows a preview image.
+	/// </summary>
+	internal sealed partial class FilterSettingsEditDialog : Form
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="FilterSettingsEditDialog"/>.
+		/// </summary>
 		public FilterSettingsEditDialog()
 		{
 			InitializeComponent();
 			_previewUpdater = new UIUpdater();
 		}
 
+		/// <summary>
+		/// Gets or sets an input image that will be used for computing previews.
+		/// </summary>
 		public DirectBitmap InputImage
 		{
 			get
@@ -26,6 +35,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a filter settings control.
+		/// </summary>
 		public FilterSettingsBase FilterSettings
 		{
 			get
@@ -60,6 +72,9 @@ namespace BatchImageEditor
 		private readonly UIUpdater _previewUpdater;
 		private FilterSettingsBase _filterSettings;
 
+		/// <summary>
+		/// Attaches filter settings to the form.
+		/// </summary>
 		private void AttachFilterSettings()
 		{
 			_settingsGroup.Controls.Add(_filterSettings);
@@ -70,6 +85,9 @@ namespace BatchImageEditor
 			_filterSettings.DisplaySettings(); // Invokes DisplayedSettingsUpdated event
 		}
 
+		/// <summary>
+		/// Detaches filter settings from the form.
+		/// </summary>
 		private void DetachFilterSettings()
 		{
 			foreach (FilterSettingsBase filterSettings in _settingsGroup.Controls)
@@ -80,6 +98,9 @@ namespace BatchImageEditor
 			_settingsGroup.Controls.Clear();
 		}
 
+		/// <summary>
+		/// Saves the displayed settings and closes with OK dialog result.
+		/// </summary>
 		private void OkButton_Click(object sender, EventArgs e)
 		{
 			_filterSettings.SaveDisplayedSettings();
@@ -87,11 +108,17 @@ namespace BatchImageEditor
 			this.DialogResult = DialogResult.OK;
 		}
 
+		/// <summary>
+		/// Resets displayed settings to their default values.
+		/// </summary>
 		private void ResetButton_Click(object sender, EventArgs e)
 		{
 			_filterSettings.ResetDisplayedSettings();
 		}
 
+		/// <summary>
+		/// Updates preview image.
+		/// </summary>
 		private void UpdatePreview()
 		{
 			_previewUpdater.Update(() =>
@@ -126,6 +153,11 @@ namespace BatchImageEditor
 			});
 		}
 
+		/// <summary>
+		/// Applies filters to an image.
+		/// </summary>
+		/// <param name="image">An image the filters should be applied to.</param>
+		/// <param name="filters">A collection of filters to apply.</param>
 		private static void ApplyFilters(ref DirectBitmap image, IEnumerable<IImageFilter> filters)
 		{
 			foreach (var filter in filters)
@@ -134,6 +166,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Updates preview image, because the settings were changed.
+		/// </summary>
 		private void FilterSettings_DisplayedSettingsUpdated(object sender, EventArgs e)
 		{
 			UpdatePreview();

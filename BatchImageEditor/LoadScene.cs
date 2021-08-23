@@ -12,7 +12,7 @@ namespace BatchImageEditor
 	/// <summary>
 	/// A load scene in the editor.
 	/// </summary>
-	internal partial class LoadScene : UserControl
+	internal sealed partial class LoadScene : UserControl
 	{
 		/// <summary>
 		/// Creates an instance of <see cref="LoadScene"/>.

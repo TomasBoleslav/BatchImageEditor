@@ -4,8 +4,14 @@ using ImageFilters;
 
 namespace BatchImageEditor
 {
-	public partial class FlipFilterSettings : FilterSettings<FlipFilterSettingsModel>
+	/// <summary>
+	/// Filter settings control for a <see cref="FlipFilter"/>.
+	/// </summary>
+	internal sealed partial class FlipFilterSettings : FilterSettings<FlipFilterSettingsModel>
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="FlipFilterSettings"/>.
+		/// </summary>
 		public FlipFilterSettings()
 		{
 			InitializeComponent();
@@ -13,6 +19,7 @@ namespace BatchImageEditor
 			_flipTypeBoxManager.SelectedValueChanged += FlipTypeBox_SelectedValueChanged;
 		}
 
+		/// <inheritdoc/>
 		protected override void UpdateDisplayedSettingsWithDisabledEvents()
 		{
 			_flipTypeBoxManager.SelectedValue = DisplayedModel.FlipType;
@@ -27,6 +34,9 @@ namespace BatchImageEditor
 
 		private readonly EnumComboBoxManager<FlipType> _flipTypeBoxManager;
 
+		/// <summary>
+		/// Updates flip type according to the input.
+		/// </summary>
 		private void FlipTypeBox_SelectedValueChanged(object sender, EventArgs e)
 		{
 			DisplayedModel.FlipType = _flipTypeBoxManager.SelectedValue;

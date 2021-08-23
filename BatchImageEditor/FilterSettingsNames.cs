@@ -29,7 +29,7 @@ namespace BatchImageEditor
 		{
 			{ typeof(MedianFilterSettings), "Median" },
 			{ typeof(ResizingFilterSettings), "Resize" },
-			{ typeof(ImageOverlayFilterSettings), "Image Overlay" },
+			{ typeof(ImageInsertFilterSettings), "Insert Image" },
 			{ typeof(FlipFilterSettings), "Flip" },
 			{ typeof(ContrastBrightnessFilterSettings), "Contrast And Brightness" },
 			{ typeof(RotationFilterSettings), "Rotate" },

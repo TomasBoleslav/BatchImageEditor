@@ -8,15 +8,15 @@ namespace BatchImageEditor
 	/// <summary>
 	/// A manager for a combo box that sets its values to values of an enum.
 	/// </summary>
-	/// <typeparam name="T">An enum type whose values will be shown on a combo box.</typeparam>
-	internal class EnumComboBoxManager<T> where T : Enum
+	/// <typeparam name="TEnum">An enum type whose values will be shown on a combo box.</typeparam>
+	internal sealed class EnumComboBoxManager<TEnum> where TEnum : Enum
 	{
 		/// <summary>
-		/// Creates an instance of <see cref="EnumComboBoxManager{T}"/> that sets values to named of enum values.
+		/// Creates an instance of <see cref="EnumComboBoxManager{TEnum}"/> that sets values to named of enum values.
 		/// </summary>
 		/// <param name="comboBox">A combo box to use.</param>
 		/// <param name="enumValuesToNames">A non-empty mapping from values of the enum type to their names.</param>
-		public EnumComboBoxManager(ComboBox comboBox, Dictionary<T, string> enumValuesToNames)
+		public EnumComboBoxManager(ComboBox comboBox, Dictionary<TEnum, string> enumValuesToNames)
 		{
 			ArgChecker.NotNull(comboBox, nameof(comboBox));
 			ArgChecker.NotNull(enumValuesToNames, nameof(enumValuesToNames));
@@ -28,9 +28,9 @@ namespace BatchImageEditor
 			_comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 			_comboBox.BeginUpdate();
 			_comboBox.Items.Clear();
-			_enumValuesToIndices = new Dictionary<T, int>();
-			_indicesToEnumValues = new Dictionary<int, T>();
-			foreach ((T enumValue, string name) in enumValuesToNames)
+			_enumValuesToIndices = new Dictionary<TEnum, int>();
+			_indicesToEnumValues = new Dictionary<int, TEnum>();
+			foreach ((TEnum enumValue, string name) in enumValuesToNames)
 			{
 				int index = _comboBox.Items.Add(name);
 				_enumValuesToIndices.Add(enumValue, index);
@@ -44,7 +44,7 @@ namespace BatchImageEditor
 		/// <summary>
 		/// Gets or sets the currently selected value.
 		/// </summary>
-		public T SelectedValue
+		public TEnum SelectedValue
 		{
 			get
 			{
@@ -67,8 +67,8 @@ namespace BatchImageEditor
 		public event EventHandler SelectedValueChanged;
 
 		private readonly ComboBox _comboBox;
-		private readonly Dictionary<T, int> _enumValuesToIndices;
-		private readonly Dictionary<int, T> _indicesToEnumValues;
+		private readonly Dictionary<TEnum, int> _enumValuesToIndices;
+		private readonly Dictionary<int, TEnum> _indicesToEnumValues;
 
 		/// <summary>
 		/// Checks selected index and invokes the  <see cref="SelectedValueChanged"/> event.

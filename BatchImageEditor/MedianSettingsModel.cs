@@ -4,16 +4,25 @@ using ThrowHelpers;
 
 namespace BatchImageEditor
 {
-	public class MedianSettingsModel : IFilterSettingsModel<MedianSettingsModel>
+	/// <summary>
+	/// Represents a model of median filter settings.
+	/// </summary>
+	internal sealed class MedianSettingsModel : IFilterSettingsModel<MedianSettingsModel>
 	{
 		public const int MinRadius = 1;
 		public const int MaxRadius = 5;
 
+		/// <summary>
+		/// Creates an instance of <see cref="MedianSettingsModel"/> with default settings.
+		/// </summary>
 		public MedianSettingsModel()
 		{
 			Radius = DefaultRadius;
 		}
 
+		/// <summary>
+		/// Gets or sets the radius.
+		/// </summary>
 		public int Radius
 		{
 			get
@@ -27,6 +36,7 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <inheritdoc/>
 		public MedianSettingsModel Copy()
 		{
 			return new MedianSettingsModel
@@ -35,6 +45,7 @@ namespace BatchImageEditor
 			};
 		}
 
+		/// <inheritdoc/>
 		public IEnumerable<IImageFilter> CreateFilters()
 		{
 			var filter = new MedianFilter(Radius);

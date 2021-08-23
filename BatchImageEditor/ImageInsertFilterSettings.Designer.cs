@@ -1,7 +1,7 @@
 ﻿
 namespace BatchImageEditor
 {
-	partial class ImageOverlayFilterSettings
+	partial class ImageInsertFilterSettings
 	{
 		/// <summary> 
 		/// Required designer variable.

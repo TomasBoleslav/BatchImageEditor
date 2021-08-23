@@ -4,18 +4,27 @@ using ThrowHelpers;
 
 namespace BatchImageEditor
 {
-	public class ContrastBrightnessFilterSettingsModel : IFilterSettingsModel<ContrastBrightnessFilterSettingsModel>
+	/// <summary>
+	/// Represents a model of contrast and brightness filter settings.
+	/// </summary>
+	internal sealed class ContrastBrightnessFilterSettingsModel : IFilterSettingsModel<ContrastBrightnessFilterSettingsModel>
 	{
 		public const int MaxDelta = ContrastBrightnessAdjuster.MaxChange;
 		public const int MinDelta = ContrastBrightnessAdjuster.MinChange;
 		public const int DefaultDelta = 0;
 
+		/// <summary>
+		/// Creates an instance of <see cref="ContrastBrightnessFilterSettingsModel"/> with default settings.
+		/// </summary>
 		public ContrastBrightnessFilterSettingsModel()
 		{
 			ContrastDelta = DefaultDelta;
 			BrightnessDelta = DefaultDelta;
 		}
 
+		/// <summary>
+		/// Gets or sets a change in the contrast.
+		/// </summary>
 		public int ContrastDelta
 		{
 			get
@@ -29,6 +38,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a change in the brightness.
+		/// </summary>
 		public int BrightnessDelta
 		{
 			get
@@ -42,6 +54,7 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <inheritdoc/>
 		public ContrastBrightnessFilterSettingsModel Copy()
 		{
 			return new ContrastBrightnessFilterSettingsModel
@@ -51,6 +64,7 @@ namespace BatchImageEditor
 			};
 		}
 
+		/// <inheritdoc/>
 		public IEnumerable<IImageFilter> CreateFilters()
 		{
 			var colorAdjuster = new ContrastBrightnessAdjuster(ContrastDelta, BrightnessDelta);

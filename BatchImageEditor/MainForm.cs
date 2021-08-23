@@ -8,7 +8,7 @@ namespace BatchImageEditor
 	/// <summary>
 	/// The main form of the editor.
 	/// </summary>
-	internal partial class MainForm : Form
+	internal sealed partial class MainForm : Form
 	{
 		/// <summary>
 		/// Creates an instance of <see cref="MainForm"/>.

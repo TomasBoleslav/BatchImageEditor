@@ -81,7 +81,7 @@ namespace BatchImageEditor
 
 		/// <summary>
 		/// Updates displayed settings according to the <see cref="DisplayedModel"/>.
-		/// Is called only after update events were disabled.
+		/// Should be called only when update events are disabled.
 		/// </summary>
 		protected abstract void UpdateDisplayedSettingsWithDisabledEvents();
 

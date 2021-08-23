@@ -4,12 +4,18 @@ using ThrowHelpers;
 
 namespace BatchImageEditor
 {
-	public class ColorChannelsFilterSettingsModel : IFilterSettingsModel<ColorChannelsFilterSettingsModel>
+	/// <summary>
+	/// Represents a model of color channels filter settings.
+	/// </summary>
+	internal sealed class ColorChannelsFilterSettingsModel : IFilterSettingsModel<ColorChannelsFilterSettingsModel>
 	{
 		public const int MinDelta = -255;
 		public const int MaxDelta = 255;
 		public const int DefaultDelta = 0;
 
+		/// <summary>
+		/// Creates an instance of <see cref="ColorChannelsFilterSettingsModel"/> with default settings.
+		/// </summary>
 		public ColorChannelsFilterSettingsModel()
 		{
 			DeltaR = DefaultDelta;
@@ -17,6 +23,9 @@ namespace BatchImageEditor
 			DeltaB = DefaultDelta;
 		}
 
+		/// <summary>
+		/// Gets or sets a change in the red channel.
+		/// </summary>
 		public int DeltaR
 		{
 			get
@@ -30,6 +39,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a change in the green channel.
+		/// </summary>
 		public int DeltaG
 		{
 			get
@@ -43,6 +55,9 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a change in the blue channel.
+		/// </summary>
 		public int DeltaB
 		{
 			get
@@ -56,6 +71,7 @@ namespace BatchImageEditor
 			}
 		}
 
+		/// <inheritdoc/>
 		public ColorChannelsFilterSettingsModel Copy()
 		{
 			return new ColorChannelsFilterSettingsModel
@@ -66,6 +82,7 @@ namespace BatchImageEditor
 			};
 		}
 
+		/// <inheritdoc/>
 		public IEnumerable<IImageFilter> CreateFilters()
 		{
 			var colorAdjuster = new RgbColorAdjuster(DeltaR, DeltaG, DeltaB);

@@ -7,7 +7,7 @@ namespace BatchImageEditor
 	/// <summary>
 	/// A control for selecting one item from a set of filenames.
 	/// </summary>
-	internal partial class FileSelection : UserControl
+	internal sealed partial class FileSelection : UserControl
 	{
 		/// <summary>
 		/// Creates an instance of <see cref="FileSelection"/>.

@@ -7,9 +7,15 @@ using ImageFilters;
 
 namespace BatchImageEditor
 {
-	public partial class ImageOverlayFilterSettings : FilterSettings<ImageOverlayFilterSettingsModel>
+	/// <summary>
+	/// Filter settings control for inserting an image.
+	/// </summary>
+	internal sealed partial class ImageInsertFilterSettings : FilterSettings<ImageInsertFilterSettingsModel>
 	{
-		public ImageOverlayFilterSettings()
+		/// <summary>
+		/// Creates an instance of <see cref="ImageInsertFilterSettings"/>.
+		/// </summary>
+		public ImageInsertFilterSettings()
 		{
 			InitializeComponent();
 			_imagePlacementBoxManager = new EnumComboBoxManager<ImagePlacement>(_placementComboBox, ImagePlacementToText);
@@ -18,6 +24,7 @@ namespace BatchImageEditor
 			InitializeDeltaInputField(_dYInput);
 		}
 
+		/// <inheritdoc/>
 		protected override void UpdateDisplayedSettingsWithDisabledEvents()
 		{
 			_imagePlacementBoxManager.SelectedValue = DisplayedModel.ImagePlacement;
@@ -51,18 +58,28 @@ namespace BatchImageEditor
 		private readonly EnumComboBoxManager<ImagePlacement> _imagePlacementBoxManager;
 		private Bitmap _loadedImage;
 
+		/// <summary>
+		/// Initializes an input field for changing the location of the inserted image.
+		/// </summary>
+		/// <param name="inputField">An input field for inserted image location.</param>
 		private static void InitializeDeltaInputField(NumericUpDown inputField)
 		{
-			inputField.Minimum = ImageOverlayFilterSettingsModel.MinDelta;
-			inputField.Maximum = ImageOverlayFilterSettingsModel.MaxDelta;
+			inputField.Minimum = ImageInsertFilterSettingsModel.MinDelta;
+			inputField.Maximum = ImageInsertFilterSettingsModel.MaxDelta;
 		}
 
+		/// <summary>
+		/// Updates the placement of the image according to the input.
+		/// </summary>
 		private void ImagePlacementBox_SelectedValueChanged(object sender, EventArgs e)
 		{
 			DisplayedModel.ImagePlacement = _imagePlacementBoxManager.SelectedValue;
 			OnDisplayedSettingsUpdated();
 		}
 
+		/// <summary>
+		/// Loads an image to insert.
+		/// </summary>
 		private void LoadImageButton_Click(object sender, EventArgs e)
 		{
 			using var dialog = new OpenFileDialog();
@@ -72,11 +89,11 @@ namespace BatchImageEditor
 			{
 				_loadedImage?.Dispose();
 				_loadedImage = null;
-				DisplayedModel.OverlayImage = null;
+				DisplayedModel.InsertedImage = null;
 				try
 				{
 					_loadedImage = new Bitmap(dialog.FileName);
-					DisplayedModel.OverlayImage = _loadedImage;
+					DisplayedModel.InsertedImage = _loadedImage;
 				}
 				catch (Exception ex) when (ex is ExternalException || ex is ArgumentException)
 				{
@@ -86,12 +103,18 @@ namespace BatchImageEditor
 			OnDisplayedSettingsUpdated();
 		}
 
+		/// <summary>
+		/// Updates the X location of the inserted image according to the input.
+		/// </summary>
 		private void DXInput_ValueChanged(object sender, EventArgs e)
 		{
 			DisplayedModel.DeltaX = (int)_dXInput.Value;
 			OnDisplayedSettingsUpdated();
 		}
 
+		/// <summary>
+		/// Updates the Y location of the inserted image according to the input.
+		/// </summary>
 		private void DYInput_ValueChanged(object sender, EventArgs e)
 		{
 			DisplayedModel.DeltaY = (int)_dYInput.Value;

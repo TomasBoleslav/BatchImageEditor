@@ -4,8 +4,14 @@ using System.Windows.Forms;
 
 namespace BatchImageEditor
 {
-	internal partial class ResizingFilterSettings : FilterSettings<ResizingSettingsModel>
+	/// <summary>
+	/// Filter settings control for resizing an image.
+	/// </summary>
+	internal sealed partial class ResizingFilterSettings : FilterSettings<ResizingFilterSettingsModel>
 	{
+		/// <summary>
+		/// Creates an instance of <see cref="ResizingFilterSettings"/>.
+		/// </summary>
 		public ResizingFilterSettings()
 		{
 			InitializeComponent();
@@ -13,13 +19,14 @@ namespace BatchImageEditor
 			_resizingTypeBoxManager.SelectedValueChanged += ResizingTypeBox_SelectedValueChanged;
 		}
 		
+		/// <inheritdoc/>
 		protected override void UpdateDisplayedSettingsWithDisabledEvents()
 		{
 			_inputFieldsEnabled = false;
 			_resizingTypeBoxManager.SelectedValue = DisplayedModel.ResizingType;
 			switch (DisplayedModel.ResizingType)
 			{
-				case ResizingType.FixedInPixels:
+				case ResizingType.Pixels:
 					UpdateInputFieldsInPixels();
 					break;
 				case ResizingType.Percents:
@@ -38,39 +45,58 @@ namespace BatchImageEditor
 		private static readonly Dictionary<ResizingType, string> ResizingTypesToText = new()
 		{
 			{ ResizingType.Percents, "In percents" },
-			{ ResizingType.FixedInPixels, "In pixels" }
+			{ ResizingType.Pixels, "In pixels" }
 		};
 
+		/// <summary>
+		/// Changes an input field to hold percents.
+		/// </summary>
+		/// <param name="inputField">An input field to change.</param>
+		/// <param name="value">A value to set.</param>
 		private static void ChangeInputFieldToPercents(NumericUpDown inputField, float value)
 		{
-			inputField.Minimum = (decimal)ResizingSettingsModel.MinPercentage;
-			inputField.Maximum = (decimal)ResizingSettingsModel.MaxPercentage;
+			inputField.Minimum = (decimal)ResizingFilterSettingsModel.MinPercentage;
+			inputField.Maximum = (decimal)ResizingFilterSettingsModel.MaxPercentage;
 			inputField.DecimalPlaces = PercentageDecimalPlaces;
 			inputField.Increment = (decimal)PercentageIncrement;
 			inputField.Value = (decimal)value;
 		}
-		
+
+		/// <summary>
+		/// Changes an input field to hold pixels.
+		/// </summary>
+		/// <param name="inputField">An input field to change.</param>
+		/// <param name="value">A value to set.</param>
 		private static void ChangeInputFieldToPixels(NumericUpDown inputField, int value)
 		{
-			inputField.Minimum = ResizingSettingsModel.MinSideLength;
-			inputField.Maximum = ResizingSettingsModel.MaxSideLength;
+			inputField.Minimum = ResizingFilterSettingsModel.MinSideLength;
+			inputField.Maximum = ResizingFilterSettingsModel.MaxSideLength;
 			inputField.DecimalPlaces = 0;
 			inputField.Increment = 1;
 			inputField.Value = value;
 		}
 
+		/// <summary>
+		/// Updates input fields to contain set percents. 
+		/// </summary>
 		private void UpdateInputFieldsInPercents()
 		{
-			ChangeInputFieldToPercents(_widthInput, DisplayedModel.WidthPercentage);
-			ChangeInputFieldToPercents(_heightInput, DisplayedModel.HeightPercentage);
+			ChangeInputFieldToPercents(_widthInput, DisplayedModel.WidthInPercents);
+			ChangeInputFieldToPercents(_heightInput, DisplayedModel.HeightInPercents);
 		}
 
+		/// <summary>
+		/// Updates input fields to contain set pixels. 
+		/// </summary>
 		private void UpdateInputFieldsInPixels()
 		{
-			ChangeInputFieldToPixels(_widthInput, DisplayedModel.FixedWidth);
-			ChangeInputFieldToPixels(_heightInput, DisplayedModel.FixedHeight);
+			ChangeInputFieldToPixels(_widthInput, DisplayedModel.WidthInPixels);
+			ChangeInputFieldToPixels(_heightInput, DisplayedModel.HeightPixels);
 		}
 
+		/// <summary>
+		/// Updates the type of resizing according to the input.
+		/// </summary>
 		private void ResizingTypeBox_SelectedValueChanged(object sender, EventArgs e)
 		{
 			if (!_inputFieldsEnabled)
@@ -81,6 +107,9 @@ namespace BatchImageEditor
 			UpdateDisplayedSettings();
 		}
 
+		/// <summary>
+		/// Updates the width according to the input.
+		/// </summary>
 		private void WidthInput_ValueChanged(object sender, EventArgs e)
 		{
 			if (!_inputFieldsEnabled)
@@ -89,16 +118,19 @@ namespace BatchImageEditor
 			}
 			switch (DisplayedModel.ResizingType)
 			{
-				case ResizingType.FixedInPixels:
-					DisplayedModel.FixedWidth = (int)_widthInput.Value;
+				case ResizingType.Pixels:
+					DisplayedModel.WidthInPixels = (int)_widthInput.Value;
 					break;
 				case ResizingType.Percents:
-					DisplayedModel.WidthPercentage = (float)_widthInput.Value;
+					DisplayedModel.WidthInPercents = (float)_widthInput.Value;
 					break;
 			}
 			OnDisplayedSettingsUpdated();
 		}
 
+		/// <summary>
+		/// Updates the height according to the input.
+		/// </summary>
 		private void HeightInput_ValueChanged(object sender, EventArgs e)
 		{
 			if (!_inputFieldsEnabled)
@@ -107,11 +139,11 @@ namespace BatchImageEditor
 			}
 			switch (DisplayedModel.ResizingType)
 			{
-				case ResizingType.FixedInPixels:
-					DisplayedModel.FixedHeight = (int)_heightInput.Value;
+				case ResizingType.Pixels:
+					DisplayedModel.HeightPixels = (int)_heightInput.Value;
 					break;
 				case ResizingType.Percents:
-					DisplayedModel.HeightPercentage = (float)_heightInput.Value;
+					DisplayedModel.HeightInPercents = (float)_heightInput.Value;
 					break;
 			}
 			OnDisplayedSettingsUpdated();

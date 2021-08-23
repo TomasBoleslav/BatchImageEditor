@@ -7,7 +7,7 @@ namespace BatchImageEditor
 	/// <summary>
 	/// Scene tabs control used in the editor.
 	/// </summary>
-	internal partial class SceneTabs : UserControl
+	internal sealed partial class SceneTabs : UserControl
 	{
 		/// <summary>
 		/// Occurs when the load tab was selected.
