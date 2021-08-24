@@ -81,19 +81,73 @@ Ve vrchní části okna můžete sledovat postup. Proces můžete kdykoliv přer
 
 ## Vývojová dokumentace
 
-Dokumentace 
+TODO úvod do programu - představení hlavních problémů a image processingu
+
+součástí dokumentace je zdrojový kód a jeho komentáře
 
 ### Struktura programu
 
-TODO
+Program je dohromady složen z 5 projektů, z toho 1 jsou testy s použitím knihovny [xUnit](https://xunit.net/) a 1 je projekt benchmarků v [BenchmarkDotNet](https://benchmarkdotnet.org/).
+
+Zbývající 3 projekty už přispívají ke kódu editoru:
+
+- [ImageFilters](#projekt-imagefilters) - knihovna pro image processing.
+- [BatchImageEditor](#projekt-batchimageeditor) - editor pro dávkovou úpravu obrázků využívající knihovnu ImageFilters.
+- ThrowHelpers - knihovna obsahující pomocné třídy pro vyhazování výjimek. Není nijak zvlášť důležitá, proto dále není zmíněna.
 
 ### Projekt ImageFilters
 
+Účelem knihovny ImageFilters je zpracování obrázků pomocí různých filtrů. Tyto operace mohou být velmi náročné a jedním z hlavních problémů bylo právě balancování rozšiřitelnosti a výkonu.
+
+Tento projekt mimo jiné obsahuje třídy pro paralelní zpracování. Pro jediný obrázek to nejde jinak, než na něj aplikovat filtry sekvenčně. Pokud je ale obrázků více, může být posloupnost filtrů aplikována na každý ve stejnou chvíli.
+
+#### Filtry
+
+Pro kompatibilitu s *Windows Forms* byly použity třídy a struktury ze jmenného prostoru `System.Drawing`. V něm slouží pro reprezentaci obrázku třída `Bitmap`, ale přístup k jejím datům pomocí metod `GetPixel` a `SetPixel` je velmi pomalý. Pro náročné operace jsou k dispozici metody `LockBits` a `UnlockBits`, které nedovolí garbage collectoru přesouvat data obrázku a umožní tak přístup pomocí pointerů. Nakonec bylo použito řešení ze [stackoverflow](https://stackoverflow.com/a/34801225/13555057), které zavádí třídu `DirectBitmap` s přímým přístupem k datům v bufferu. Tento způsob je jednodušší a dokonce i rychlejší než zamykání, což bylo vyzkoušeno v projektu s benchmarky.
+
+Důležitým rozhraním je `IImageFilter`, které předepisuje jedinou funkci `void Apply(ref DirectBitmap image)` V některých případech je nutné vytvořit obrázek nový a starý smazat, jindy stačí operaci vykonat přímo na vstupním obrázku. Aby bylo sémanticky jasné, že se při zavolání funkce obrázku vzdáváme, je předáván jako reference. Všechny filtry toto rozhraní implementují.
+
+Některé filtry, např. `ResizingFilter`, používají návrhový vzor [Strategy](https://en.wikipedia.org/wiki/Strategy_pattern). Je definováno rozhraní reprezentující algoritmus, který se nějakým způsobem použije na filtrování obrázku. Pro změnu velikosti je to např. `IResizingAlgorithm`, který podle vstupního obrázku spočítá jeho výstupní velikost. Toto rozhraní implementují`FixedResizing` a `ResizingByFactor`, které počítají novou velikost jako fixní počet pixelů, respektive jako násobek staré velikosti.
+
+Jiné filtry jsou rozšiřitelné pomocí dědičnosti. To platí například pro `LinearFilter`, jehož potomci mají společné to, že definují matici vah, která je jako okno "přiložena" na pixel a jeho výstupní hodnota bude spočítána jako součet pixelů vynásobených přiloženými vahami. Odvozené třídy tedy volají metodu `SetKernel`, čímž danou matici nastaví.
+
+Filtry, u kterých se další rozšíření nepředpokládá (např. `FlipFilter`), ale u kterých je potřeba rozlišit způsob chování, mají na vstupu hodnotu typu `enum`. Pro převrácení obrázku je to například typ `FlipType` s hodnotami `Horizontal`, `Vertical` a `Both`.
+
+U jiných filtrů je rozšiřitelnost Jiné filtry jsou implementovány pomocí dědičnosti
+
+Knihovna ImageFilters mimo jiné obsahuje třídy pro paralelní zpracování. Pro jediný obrázek to nejde jinak, než na něj aplikovat filtry sekvenčně. Pokud je ale obrázků více, může na ně být posloupnost filtrů aplikována Na jeden obrázek musíme seznam filtrů aplikovat sekvenčně 
+
+#### Paralelní zpracování
+
+
+
 TODO
 
-### Projekt 
+- úvod
+
+- DirectBitmap - rychlé kreslení - problém se standardní Bitmap (proč se musí volat lock? co dělá? zamyká bitmapu pro garbage collection?) - zmínit odkaz ze stackoverflow, vysvětlit proč nebyl ideální Strategy pattern
+- filtry, oop návrh
+- paralelismus
+
+#### Stará řešení a jiné poznámky
+
+- 
+- přehnané strategy - např. AdjustColors
+
+### Projekt BatchImageEditor
+
+TODO
+
+- úvod
+
+- zmínit absenci MVP, rozdělení do UserControl - např. scény a jiné prvky
+- dock kvůli rozlišení
+- návrh FilterSettings a modelů, problémy s designerem a generickými/abstraktními předky
+- UIUpdater - stojí za zmínku kvůli paralelismu, "fronta tasků"
 
 ## Možná vylepšení
 
 TODO
 
+- hlavně MVP - testovatelnost
+- Lepší návrh filtrů
