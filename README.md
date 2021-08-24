@@ -92,7 +92,7 @@ Program je dohromady složen z 5 projektů, z toho 1 jsou testy s použitím kni
 Zbývající 3 projekty už přispívají ke kódu editoru:
 
 - [ImageFilters](#projekt-imagefilters) - knihovna pro image processing.
-- [BatchImageEditor](#projekt-batchimageeditor) - editor pro dávkovou úpravu obrázků využívající knihovnu ImageFilters.
+- [BatchImageEditor](#projekt-batchimageeditor) - editor pro dávkovou úpravu obrázků využívající knihovnu *ImageFilters*.
 - ThrowHelpers - knihovna obsahující pomocné třídy pro vyhazování výjimek. Není nijak zvlášť důležitá, proto dále není zmíněna.
 
 ### Projekt ImageFilters
@@ -103,7 +103,7 @@ Tento projekt mimo jiné obsahuje třídy pro paralelní zpracování. Pro jedin
 
 #### Filtry
 
-Pro kompatibilitu s *Windows Forms* byly použity třídy a struktury ze jmenného prostoru `System.Drawing`. V něm slouží pro reprezentaci obrázku třída `Bitmap`, ale přístup k jejím datům pomocí metod `GetPixel` a `SetPixel` je velmi pomalý. Pro náročné operace jsou k dispozici metody `LockBits` a `UnlockBits`, které nedovolí garbage collectoru přesouvat data obrázku a umožní tak přístup pomocí pointerů. Nakonec bylo použito řešení ze [stackoverflow](https://stackoverflow.com/a/34801225/13555057), které zavádí třídu `DirectBitmap` s přímým přístupem k datům v bufferu. Tento způsob je jednodušší a dokonce i rychlejší než zamykání, což bylo vyzkoušeno v projektu s benchmarky.
+Pro kompatibilitu s *Windows Forms* byly použity třídy a struktury ze jmenného prostoru [`System.Drawing`](https://docs.microsoft.com/en-us/dotnet/api/system.drawing?view=net-5.0). V něm slouží pro reprezentaci obrázku třída [`Bitmap`](https://docs.microsoft.com/en-us/dotnet/api/system.drawing.bitmap?view=net-5.0), ale přístup k jejím datům pomocí metod `GetPixel` a `SetPixel` je velmi pomalý. Pro náročné operace jsou k dispozici metody `LockBits` a `UnlockBits`, které nedovolí garbage collectoru přesouvat data obrázku a umožní tak přístup pomocí pointerů. Nakonec bylo použito řešení ze [stackoverflow](https://stackoverflow.com/a/34801225/13555057), které zavádí třídu `DirectBitmap` s přímým přístupem k datům v bufferu. Tento způsob je jednodušší a dokonce i rychlejší než zamykání, což bylo vyzkoušeno v projektu s benchmarky.
 
 Důležitým rozhraním je `IImageFilter`, které předepisuje jedinou funkci `void Apply(ref DirectBitmap image)` V některých případech je nutné vytvořit obrázek nový a starý smazat, jindy stačí operaci vykonat přímo na vstupním obrázku. Aby bylo sémanticky jasné, že se při zavolání funkce obrázku vzdáváme, je předáván jako reference. Všechny filtry toto rozhraní implementují.
 
@@ -113,37 +113,39 @@ Jiné filtry jsou rozšiřitelné pomocí dědičnosti. To platí například pr
 
 Filtry, u kterých se další rozšíření nepředpokládá (např. `FlipFilter`), ale u kterých je potřeba rozlišit způsob chování, mají na vstupu hodnotu typu `enum`. Pro převrácení obrázku je to například typ `FlipType` s hodnotami `Horizontal`, `Vertical` a `Both`.
 
-U jiných filtrů je rozšiřitelnost Jiné filtry jsou implementovány pomocí dědičnosti
-
-Knihovna ImageFilters mimo jiné obsahuje třídy pro paralelní zpracování. Pro jediný obrázek to nejde jinak, než na něj aplikovat filtry sekvenčně. Pokud je ale obrázků více, může na ně být posloupnost filtrů aplikována Na jeden obrázek musíme seznam filtrů aplikovat sekvenčně 
-
 #### Paralelní zpracování
 
+Třídy pro zpracování obrázků byly vytvořeny s vědomím, že budou výsledky průběžně hlášeny uživateli, a tomu byly také přizpůsobeny.
 
+Třída `ImageProcessingJob` představuje úlohu na zpracování obrázku, která zahrnuje i jeho načtení a uložení. Tento proces může být zrušen, čehož je dosaženo pomocí delegátů (`Func<bool> ShouldCancelFunc`), kterých se třída průběžně dotazuje. Místo toho, aby při chybách vznikaly výjimky, jsou spouštěny delegáty pro selhání s chybovou zprávou a také úspěch, pokud výpočet bez problémů doběhl až do konce.
 
-TODO
-
-- úvod
-
-- DirectBitmap - rychlé kreslení - problém se standardní Bitmap (proč se musí volat lock? co dělá? zamyká bitmapu pro garbage collection?) - zmínit odkaz ze stackoverflow, vysvětlit proč nebyl ideální Strategy pattern
-- filtry, oop návrh
-- paralelismus
+Úlohy jsou paralelizovány pomocí třídy `BatchProcessor`, která volá metodu [`System.Threading.Tasks.Parallel.Foreach`](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.parallel.foreach?view=net-5.0) na kolekci `ImageProcessingJob`.
 
 #### Stará řešení a jiné poznámky
 
-- 
-- přehnané strategy - např. AdjustColors
+`DirectBitmap` byla dříve implementována také pomocí návrhového vzoru `Strategy` za účelem rozšíření pro různé formáty pixelu ([`System.Drawing.Imaging.PixelFormat`](https://docs.microsoft.com/en-us/dotnet/api/system.drawing.imaging.pixelformat?view=net-5.0)). `DirectBitmap` byla vytvořena z instance `Bitmap` a v jejím konstruktoru byl zvolen algoritmus (strategy), který z pozice v bufferu bytů dokázal najít a spočítat barvu pixelu. Tento postup se ukázal jako příliš těžkopádný a značně zpomaloval výpočty, především kvůli volání funkce z `interface`.
+
+`ColorAdjustingFilter` používá `IColorAdjuster` pro výpočet nové barvy pixelu z pouhé znalosti jeho staré barvy. I tady se ukazuje vzor Strategy jako přehnaný, protože třída `ColorAdjustingFilter` není vůbec složitá a ušetření kódu tímto způsobem je zanedbatelné.
 
 ### Projekt BatchImageEditor
 
-TODO
+Delší čas jsem strávil rozhodováním, jaký návrh vybrat pro editor. Hlavním kandidátem byl návrhový vzor [MVP](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter), ale nepodařilo se mi vymyslet, jak jednotlivé komponenty propojit. Nakonec jsem se rozhodl komponenty rozdělit do samostatných [`UserControl`](https://docs.microsoft.com/en-us/dotnet/api/system.windows.controls.usercontrol?view=net-5.0), kde vnější `UserControl` ovládá pomocí rozhraní další `UserControl`-s, která sama vlastní. Tímto způsobem je hlavní formulář rozdělen na scény, které jsou dále děleny na další samostatné části. Některé komponenty tak mohly být použity na více různých místech, jako například náhled obrázku.
 
-- úvod
+Dalšími problémy bylo propojení knihovny `ImageFilters` a umožnění uživateli jednotlivé filtry nastavovat. Nastavení musí být uložena v polymorfním seznamu, kde jsou připravena pro vytvoření filtrů nebo další úpravu.
 
-- zmínit absenci MVP, rozdělení do UserControl - např. scény a jiné prvky
-- dock kvůli rozlišení
-- návrh FilterSettings a modelů, problémy s designerem a generickými/abstraktními předky
-- UIUpdater - stojí za zmínku kvůli paralelismu, "fronta tasků"
+Všechna nastavení byla vytvořena jako `UserControl`-s se společným rozhraním definovaným v abstraktní třídě `FilterSettingsBase` a společnou implementací (částečnou) v odvozené generické třídě `FilterSettings<TModel>`. Každé nastavení obsahuje *model*, ve kterém jsou uložena všechna data nutná pro vytvoření filtru. Tyto modely mají společné rozhraní `IFilterSettingsModel<TModel>`, které jim předepisuje funkci `IEnumerable<IImageFilter> CreateFilters()`. Pokud je nastavení filtru potvrzeno, model se uloží a nastavení (`UserControl`) se začlení do seznamu, kde je připraveno na další použití.
+
+Toto řešení má háček v tom, že kvůli abstraktním či generickým předkům (`FilterSettingsBase` a `FilterSettings<TModel>`) nelze nastavení zobrazit v designeru *Visual Studia*. Provizorním řešením je při práci s designerem předka dočasně nahradit za `UserControl`. 
+
+Za zmínku stojí třída `UIUpdater`, která byla použita pro asynchronní výpočet náhledu obrázku. Pokud by se 
+
+
+
+
+
+
+
+Při spouštění aplikace na různých počítačích vyvstaly problémy s rozlišením. Ty byly vyřešeny uzavřením komponent do `Panel`-ů, kterým byla nastavena vlastnost `Dock` na hodnotu jinou než `None`.
 
 ## Možná vylepšení
 
