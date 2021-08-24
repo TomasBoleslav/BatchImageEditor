@@ -40,9 +40,7 @@ namespace BatchImageEditor
 			// 
 			// _filterListControl
 			// 
-			this._filterListControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this._filterListControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._filterListControl.InputImage = null;
 			this._filterListControl.Location = new System.Drawing.Point(10, 30);
 			this._filterListControl.Name = "_filterListControl";
@@ -90,6 +88,7 @@ namespace BatchImageEditor
 			this._fileSelectionControl.Dock = System.Windows.Forms.DockStyle.Top;
 			this._fileSelectionControl.Location = new System.Drawing.Point(10, 30);
 			this._fileSelectionControl.Name = "_fileSelectionControl";
+			this._fileSelectionControl.Padding = new System.Windows.Forms.Padding(0, 3, 0, 3);
 			this._fileSelectionControl.Size = new System.Drawing.Size(606, 34);
 			this._fileSelectionControl.TabIndex = 0;
 			this._fileSelectionControl.SelectionChanged += new System.EventHandler(this.FileSelectionControl_SelectionChanged);
