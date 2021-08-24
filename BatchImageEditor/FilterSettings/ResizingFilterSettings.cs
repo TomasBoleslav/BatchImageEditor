@@ -37,7 +37,7 @@ namespace BatchImageEditor
 		}
 
 		private const int PercentageDecimalPlaces = 2;
-		private const float PercentageIncrement = 0.1f;
+		private const float PercentageIncrement = 1.0f;
 		private readonly EnumComboBoxManager<ResizingType> _resizingTypeBoxManager;
 
 		private bool _inputFieldsEnabled = true;

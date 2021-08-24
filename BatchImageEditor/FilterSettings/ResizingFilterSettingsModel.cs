@@ -10,7 +10,7 @@ namespace BatchImageEditor
 	/// </summary>
 	internal sealed class ResizingFilterSettingsModel : IFilterSettingsModel<ResizingFilterSettingsModel>
 	{
-		public const float MinPercentage = 0.01f;
+		public const float MinPercentage = 1.0f;
 		public const float MaxPercentage = 1000.0f;
 		public const int MinSideLength = 1;
 		public const int MaxSideLength = 5000;
@@ -118,13 +118,13 @@ namespace BatchImageEditor
 					algorithm = new FixedResizing(WidthInPixels, HeightPixels);
 					break;
 				case ResizingType.Percents:
-					algorithm = new ResizingByFactor(WidthInPercents, HeightInPercents);
+					algorithm = new ResizingByFactor(WidthInPercents / 100.0f, HeightInPercents / 100.0f);
 					break;
 			}
 			yield return new ResizingFilter(algorithm, MaxSize);
 		}
 
-		private const float DefaultPercentage = 1.0f;
+		private const float DefaultPercentage = 100.0f;
 		private const int DefaultSideLength = 100;
 		private const ResizingType DefaultResizingType = ResizingType.Percents;
 		private static readonly Size MaxSize = new Size(MaxSideLength, MaxSideLength);
