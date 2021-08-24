@@ -37,9 +37,10 @@ namespace BatchImageEditor
 			// 
 			// _previewSwitchButton
 			// 
-			this._previewSwitchButton.Location = new System.Drawing.Point(0, 3);
+			this._previewSwitchButton.Location = new System.Drawing.Point(0, 2);
+			this._previewSwitchButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this._previewSwitchButton.Name = "_previewSwitchButton";
-			this._previewSwitchButton.Size = new System.Drawing.Size(120, 35);
+			this._previewSwitchButton.Size = new System.Drawing.Size(105, 26);
 			this._previewSwitchButton.TabIndex = 8;
 			this._previewSwitchButton.Text = "Show original";
 			this._previewSwitchButton.UseVisualStyleBackColor = true;
@@ -49,9 +50,10 @@ namespace BatchImageEditor
 			// 
 			this._previewImageControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._previewImageControl.Image = null;
-			this._previewImageControl.Location = new System.Drawing.Point(0, 0);
+			this._previewImageControl.Location = new System.Drawing.Point(0, 32);
+			this._previewImageControl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this._previewImageControl.Name = "_previewImageControl";
-			this._previewImageControl.Size = new System.Drawing.Size(485, 410);
+			this._previewImageControl.Size = new System.Drawing.Size(424, 276);
 			this._previewImageControl.TabIndex = 9;
 			// 
 			// _controlPanel
@@ -59,18 +61,20 @@ namespace BatchImageEditor
 			this._controlPanel.Controls.Add(this._previewSwitchButton);
 			this._controlPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this._controlPanel.Location = new System.Drawing.Point(0, 0);
+			this._controlPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this._controlPanel.Name = "_controlPanel";
-			this._controlPanel.Size = new System.Drawing.Size(485, 43);
+			this._controlPanel.Size = new System.Drawing.Size(424, 32);
 			this._controlPanel.TabIndex = 10;
 			// 
 			// SwitchablePreviewImageControl
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this._controlPanel);
 			this.Controls.Add(this._previewImageControl);
+			this.Controls.Add(this._controlPanel);
+			this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.Name = "SwitchablePreviewImageControl";
-			this.Size = new System.Drawing.Size(485, 410);
+			this.Size = new System.Drawing.Size(424, 308);
 			this._controlPanel.ResumeLayout(false);
 			this.ResumeLayout(false);
 

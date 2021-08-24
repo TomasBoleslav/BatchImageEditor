@@ -42,9 +42,9 @@ namespace BatchImageEditor
 			// 
 			this._sizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this._sizeLabel.AutoSize = true;
-			this._sizeLabel.Location = new System.Drawing.Point(0, 10);
+			this._sizeLabel.Location = new System.Drawing.Point(0, 8);
 			this._sizeLabel.Name = "_sizeLabel";
-			this._sizeLabel.Size = new System.Drawing.Size(92, 20);
+			this._sizeLabel.Size = new System.Drawing.Size(71, 15);
 			this._sizeLabel.TabIndex = 5;
 			this._sizeLabel.Text = "500 x 500 px";
 			// 
@@ -53,17 +53,19 @@ namespace BatchImageEditor
 			this._pictureBox.BackColor = System.Drawing.Color.White;
 			this._pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._pictureBox.Location = new System.Drawing.Point(0, 0);
+			this._pictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this._pictureBox.Name = "_pictureBox";
-			this._pictureBox.Size = new System.Drawing.Size(437, 360);
+			this._pictureBox.Size = new System.Drawing.Size(382, 239);
 			this._pictureBox.TabIndex = 4;
 			this._pictureBox.TabStop = false;
 			// 
 			// _fitButton
 			// 
 			this._fitButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this._fitButton.Location = new System.Drawing.Point(251, 3);
+			this._fitButton.Location = new System.Drawing.Point(220, 2);
+			this._fitButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this._fitButton.Name = "_fitButton";
-			this._fitButton.Size = new System.Drawing.Size(90, 35);
+			this._fitButton.Size = new System.Drawing.Size(79, 26);
 			this._fitButton.TabIndex = 7;
 			this._fitButton.Text = "Fit";
 			this._fitButton.UseVisualStyleBackColor = true;
@@ -72,9 +74,10 @@ namespace BatchImageEditor
 			// _centerButton
 			// 
 			this._centerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this._centerButton.Location = new System.Drawing.Point(347, 3);
+			this._centerButton.Location = new System.Drawing.Point(304, 2);
+			this._centerButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this._centerButton.Name = "_centerButton";
-			this._centerButton.Size = new System.Drawing.Size(90, 35);
+			this._centerButton.Size = new System.Drawing.Size(79, 26);
 			this._centerButton.TabIndex = 8;
 			this._centerButton.Text = "Center";
 			this._centerButton.UseVisualStyleBackColor = true;
@@ -86,19 +89,21 @@ namespace BatchImageEditor
 			this._controlPanel.Controls.Add(this._sizeLabel);
 			this._controlPanel.Controls.Add(this._centerButton);
 			this._controlPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this._controlPanel.Location = new System.Drawing.Point(0, 319);
+			this._controlPanel.Location = new System.Drawing.Point(0, 239);
+			this._controlPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this._controlPanel.Name = "_controlPanel";
-			this._controlPanel.Size = new System.Drawing.Size(437, 41);
+			this._controlPanel.Size = new System.Drawing.Size(382, 31);
 			this._controlPanel.TabIndex = 9;
 			// 
 			// PreviewImageControl
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this._controlPanel);
 			this.Controls.Add(this._pictureBox);
+			this.Controls.Add(this._controlPanel);
+			this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.Name = "PreviewImageControl";
-			this.Size = new System.Drawing.Size(437, 360);
+			this.Size = new System.Drawing.Size(382, 270);
 			((System.ComponentModel.ISupportInitialize)(this._pictureBox)).EndInit();
 			this._controlPanel.ResumeLayout(false);
 			this._controlPanel.PerformLayout();
