@@ -8,6 +8,14 @@ Program je naprogramován v jazyce C# jako okenní aplikace WindowsForms.
 
 - [Sestavení](#sestavení)
 - [Návod k použití](#návod-k-použití)
+  - [Načtení obrázků](#načtení-obrázků)
+  - [Úprava obrázků](#úprava-obrázků)
+  - [Zpracování](#zpracování)
+- [Vývojová dokumentace](#vývojová-dokumentace)
+  - [Struktura programu](#struktura-programu)
+  - [Projekt ImageFilters](#projekt-imagefilters)
+  - [Projekt BatchImageEditor](#projekt-batchimageeditor)
+- [Pohled zpět a možná vylepšení](#pohled-zpět-a-možná-vylepšení)
 
 ## Sestavení
 
@@ -113,7 +121,7 @@ Jiné filtry jsou rozšiřitelné pomocí dědičnosti. To platí například pr
 
 Filtry, u kterých se další rozšíření nepředpokládá (např. `FlipFilter`), ale u kterých je potřeba rozlišit způsob chování, mají na vstupu hodnotu typu `enum`. Pro převrácení obrázku je to například typ `FlipType` s hodnotami `Horizontal`, `Vertical` a `Both`.
 
-#### Paralelní zpracování
+#### Paralelní zpracování obrázků
 
 Třídy pro zpracování obrázků byly vytvořeny s vědomím, že budou výsledky průběžně hlášeny uživateli, a tomu byly také přizpůsobeny.
 
@@ -131,25 +139,43 @@ Třída `ImageProcessingJob` představuje úlohu na zpracování obrázku, kter�
 
 Delší čas jsem strávil rozhodováním, jaký návrh vybrat pro editor. Hlavním kandidátem byl návrhový vzor [MVP](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter), ale nepodařilo se mi vymyslet, jak jednotlivé komponenty propojit. Nakonec jsem se rozhodl komponenty rozdělit do samostatných [`UserControl`](https://docs.microsoft.com/en-us/dotnet/api/system.windows.controls.usercontrol?view=net-5.0), kde vnější `UserControl` ovládá pomocí rozhraní další `UserControl`-s, která sama vlastní. Tímto způsobem je hlavní formulář rozdělen na scény, které jsou dále děleny na další samostatné části. Některé komponenty tak mohly být použity na více různých místech, jako například náhled obrázku.
 
-Dalšími problémy bylo propojení knihovny `ImageFilters` a umožnění uživateli jednotlivé filtry nastavovat. Nastavení musí být uložena v polymorfním seznamu, kde jsou připravena pro vytvoření filtrů nebo další úpravu.
+#### Nastavení filtrů
+
+Jedním z problémů bylo propojení knihovny `ImageFilters` a umožnění uživateli jednotlivé filtry nastavovat. Nastavení musí být uložena v polymorfním seznamu, kde jsou připravena pro vytvoření filtrů nebo další úpravu.
 
 Všechna nastavení byla vytvořena jako `UserControl`-s se společným rozhraním definovaným v abstraktní třídě `FilterSettingsBase` a společnou implementací (částečnou) v odvozené generické třídě `FilterSettings<TModel>`. Každé nastavení obsahuje *model*, ve kterém jsou uložena všechna data nutná pro vytvoření filtru. Tyto modely mají společné rozhraní `IFilterSettingsModel<TModel>`, které jim předepisuje funkci `IEnumerable<IImageFilter> CreateFilters()`. Pokud je nastavení filtru potvrzeno, model se uloží a nastavení (`UserControl`) se začlení do seznamu, kde je připraveno na další použití.
 
 Toto řešení má háček v tom, že kvůli abstraktním či generickým předkům (`FilterSettingsBase` a `FilterSettings<TModel>`) nelze nastavení zobrazit v designeru *Visual Studia*. Provizorním řešením je při práci s designerem předka dočasně nahradit za `UserControl`. 
 
-Za zmínku stojí třída `UIUpdater`, která byla použita pro asynchronní výpočet náhledu obrázku. Pokud by se 
+Při testování aplikace na různých počítačích vyvstaly problémy s rozlišením. Ty byly vyřešeny uzavřením komponent do `Panel`-ů, kterým byla nastavena vlastnost `Dock` na hodnotu jinou než `None`.
 
+#### Paralelní výpočty v UI
 
+Za zmínku stojí třída `UIUpdater`, která byla použita pro asynchronní výpočet náhledu obrázku. Pokaždé, když uživatel změní seznam filtrů nebo nastavení jednoho z nich, vytvoří se nový obrázek, na který se aplikují všechny filtry a výsledek se ukáže v náhledu. Tato operace může být drahá už při použití jednoho filtru, natož ve chvíli, kdy uživatel pracuje s větším množstvím filtrů. Proto je žádoucí, aby se neprováděla sekvenčně, čímž by mohla brzdit celou aplikaci. Aktualizace nemohou být spouštěny nezávisle. Musí být totiž zajištěno, že nová úloha nepředběhne starší, jinak bychom v náhledu viděli nejprve novější a poté starší obrázek. Řešením není jednoduchá fronta čekajících [Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task?view=net-5.0)-ů, protože ta by mohla narůstat rychleji, než by se úlohy stačily dokončovat - například při rychlé změně výšky a šířky obrázku.
 
+`UIUpdater` spouští najednou pouze 1 aktualizaci a ukládá si 1-prvkovou čekající frontu. Pro začlenění nové aktualizace do "fronty" vyžaduje `UIUpdater` funkci (delegáta), která vrací `Task`. Tento `Task` už musí být rozdělený na paralelní část (výpočet náhledu) a sekvenční část (ukázání náhledu v okně) volajícím pomocí *pokračování* ([continuations](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.continuewith?view=net-5.0)). Při prvním zavolání se tento `Task` spustí a nyní běží jeho paralelní část v pozadí. Uživatel provedl změnu a `UIUpdater` je požádán o začlenění nové aktualizace. První `Task` ale stále běží, proto je delegát na výrobu druhého `Task`-u uložen do proměnné jako *čekající úloha*. Uživatel opět provedl změnu a `UIUpdater` je potřetí dotázán o začlenění nové aktualizace, přičemž ta první stále běží. Tato třetí úloha se zapíše do čekací fronty a tím se zahodí druhá úloha. Nyní konečně skončila první aktualizace. V jejím *pokračování* se kontroluje, jestli je nějaká úloha v čekací frontě. Protože třetí úloha je zapsána jako *čekající*, je v tomto pokračování spuštěna a čekací místo se uvolní pro další úlohu.
 
+#### Poznámky k návrhu
 
+Návrh editoru se postupem času ukázal jako nevhodný, protože je z velké části špatně testovatelný a chyby se v něm velmi špatně odhalovaly. Lepším návrhem by byl zmíněný MVP, který odděluje konkrétní pohled (*View*) od jeho prezentační logiky (*Presenter*) a dat (*Model*). Musela by ale být nějakým způsobem vyřešena komunikace mezi jednotlivými Presentery a také vnoření jednotlivých *MVP* celků. Kupříkladu scéna obsahuje další komponenty, se kterými musí komunikovat, případně i dané komponenty musí komunikovat mezi sebou.
 
+## Pohled zpět a možná vylepšení
 
-Při spouštění aplikace na různých počítačích vyvstaly problémy s rozlišením. Ty byly vyřešeny uzavřením komponent do `Panel`-ů, kterým byla nastavena vlastnost `Dock` na hodnotu jinou než `None`.
+Cílem tohoto projektu bylo procvičení více-vláknového programování a malý výlet do světa UI a grafiky. Nakonec se ukázalo, že moje nároky byly příliš vysoké a vše se mi podařilo spíše částečně. Z mého pohledu jsem ale splnil původní zadání specifikace.
 
-## Možná vylepšení
+Ačkoliv jsem se domníval, že pro image processing budu používat samé `Task`-y, nakonec byla většina paralelismu odbyta jedním `Parallel.Foreach`. Na druhou stranu jsem si nějaký paralelismus vyzkoušel v uživatelském rozhraní. 
 
-TODO
+Chtěl jsem vytvořit vhodný návrh pro UI, což se mi nepodařilo a tak jsem skončil s pouhým rozdělením na `UserControl`-s. Alespoň jsem si vyzkoušel, že tudy cesta nevede a pro přehlednost, rozšiřitelnost a testovatelnost je zapotřebí komplexnějšího návrhu.
 
-- hlavně MVP - testovatelnost
-- Lepší návrh filtrů
+Původně jsem se chtěl dostat k zajímavějším obrázkovým filtrům, například k ostření nebo různým efektům jako je třeba olejomalba. Překvapilo mě, jak s pokročilejšími filtry ubývají jednodušší dostupné zdroje na internetu a informace se nacházejí spíše ve vědeckých pracích. Nakonec mi na přidávání těchto zajímavějších filtrů nezbyl čas.
+
+Mezi možné způsoby, jak program vylepšit, patří:
+
+* Vložení textu do obrázku.
+* Efekty:
+    * Olejomalba, mozaika, emboss, ...
+    * Uživatelem definovaný lineární filtr (matice).
+* Masky pro ořezávání.
+* Uložení seznamu filtrů jako šablony, která může být načtena a použita znovu.
+* Přejmenování obrázků podle data poslední změny, pořadí ve složkách, nebo jiným způsobem.
+* Dodávání nových filtrů pomocí pluginů.
