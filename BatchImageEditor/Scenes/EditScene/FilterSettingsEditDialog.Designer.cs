@@ -31,10 +31,11 @@ namespace BatchImageEditor
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this._previewGroup.Controls.Add(this._previewControl);
-			this._previewGroup.Location = new System.Drawing.Point(12, 12);
+			this._previewGroup.Location = new System.Drawing.Point(10, 9);
+			this._previewGroup.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this._previewGroup.Name = "_previewGroup";
-			this._previewGroup.Padding = new System.Windows.Forms.Padding(10);
-			this._previewGroup.Size = new System.Drawing.Size(494, 429);
+			this._previewGroup.Padding = new System.Windows.Forms.Padding(9, 8, 9, 8);
+			this._previewGroup.Size = new System.Drawing.Size(432, 322);
 			this._previewGroup.TabIndex = 1;
 			this._previewGroup.TabStop = false;
 			this._previewGroup.Text = "Preview";
@@ -42,19 +43,21 @@ namespace BatchImageEditor
 			// _previewControl
 			// 
 			this._previewControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._previewControl.Location = new System.Drawing.Point(10, 30);
+			this._previewControl.Location = new System.Drawing.Point(9, 24);
+			this._previewControl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this._previewControl.Name = "_previewControl";
 			this._previewControl.OriginalImage = null;
 			this._previewControl.PreviewImage = null;
-			this._previewControl.Size = new System.Drawing.Size(474, 389);
+			this._previewControl.Size = new System.Drawing.Size(414, 290);
 			this._previewControl.TabIndex = 2;
 			// 
 			// _okButton
 			// 
 			this._okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this._okButton.Location = new System.Drawing.Point(584, 406);
+			this._okButton.Location = new System.Drawing.Point(511, 304);
+			this._okButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this._okButton.Name = "_okButton";
-			this._okButton.Size = new System.Drawing.Size(90, 35);
+			this._okButton.Size = new System.Drawing.Size(79, 26);
 			this._okButton.TabIndex = 3;
 			this._okButton.Text = "Ok";
 			this._okButton.UseVisualStyleBackColor = true;
@@ -63,9 +66,10 @@ namespace BatchImageEditor
 			// _resetButton
 			// 
 			this._resetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this._resetButton.Location = new System.Drawing.Point(680, 406);
+			this._resetButton.Location = new System.Drawing.Point(595, 304);
+			this._resetButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this._resetButton.Name = "_resetButton";
-			this._resetButton.Size = new System.Drawing.Size(90, 35);
+			this._resetButton.Size = new System.Drawing.Size(79, 26);
 			this._resetButton.TabIndex = 4;
 			this._resetButton.Text = "Reset";
 			this._resetButton.UseVisualStyleBackColor = true;
@@ -75,26 +79,28 @@ namespace BatchImageEditor
 			// 
 			this._settingsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this._settingsGroup.Location = new System.Drawing.Point(512, 12);
+			this._settingsGroup.Location = new System.Drawing.Point(448, 9);
+			this._settingsGroup.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this._settingsGroup.Name = "_settingsGroup";
-			this._settingsGroup.Padding = new System.Windows.Forms.Padding(10);
-			this._settingsGroup.Size = new System.Drawing.Size(258, 388);
+			this._settingsGroup.Padding = new System.Windows.Forms.Padding(9, 8, 9, 8);
+			this._settingsGroup.Size = new System.Drawing.Size(226, 291);
 			this._settingsGroup.TabIndex = 0;
 			this._settingsGroup.TabStop = false;
 			this._settingsGroup.Text = "Settings";
 			// 
 			// FilterSettingsEditDialog
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(782, 453);
+			this.ClientSize = new System.Drawing.Size(686, 346);
 			this.Controls.Add(this._settingsGroup);
 			this.Controls.Add(this._resetButton);
 			this.Controls.Add(this._okButton);
 			this.Controls.Add(this._previewGroup);
-			this.MinimumSize = new System.Drawing.Size(800, 500);
+			this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+			this.MinimumSize = new System.Drawing.Size(702, 385);
 			this.Name = "FilterSettingsEditDialog";
-			this.Text = "FilterEditForm";
+			this.Text = "FilterEdit";
 			this._previewGroup.ResumeLayout(false);
 			this.ResumeLayout(false);
 
