@@ -90,6 +90,7 @@ namespace ImageFilters
 
 		private readonly IEnumerable<IImageFilter> _filters;
 		private PixelFormat _originalPixelFormat;
+		private ImageFormat _originalImageFormat;
 
 		/// <summary>
 		/// Tries to read an image from the input file.
@@ -105,6 +106,7 @@ namespace ImageFilters
 			{
 				using var bitmap = new Bitmap(InputFilename);
 				_originalPixelFormat = bitmap.PixelFormat;
+				_originalImageFormat = bitmap.RawFormat;
 				image = DirectBitmap.FromBitmap(bitmap);
 				return true;
 			}
@@ -140,6 +142,7 @@ namespace ImageFilters
 		private static Bitmap ReformatBitmap(Bitmap image, PixelFormat newPixelFormat)
 		{
 			var reformattedBitmap = new Bitmap(image.Width, image.Height, newPixelFormat);
+			reformattedBitmap.SetResolution(image.HorizontalResolution, image.VerticalResolution);
 			using (var graphics = Graphics.FromImage(reformattedBitmap))
 			{
 				graphics.DrawImage(image, 0, 0);
@@ -170,7 +173,7 @@ namespace ImageFilters
 			}
 			try
 			{
-				bitmapToSave.Save(OutputFilename);
+				bitmapToSave.Save(OutputFilename, _originalImageFormat);
 				return true;
 			}
 			catch (Exception e) when (e is ExternalException || e is IOException) 
