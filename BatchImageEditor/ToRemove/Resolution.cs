@@ -3,6 +3,7 @@ using System.Windows.Forms;
 
 namespace BatchImageEditor
 {
+    // TODO: remove
 	internal static class Resolution
 	{
         public static void ScaleForm(Form form, int designedWidth, int designedHeight)

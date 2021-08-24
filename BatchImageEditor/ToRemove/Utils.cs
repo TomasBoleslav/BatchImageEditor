@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace BatchImageEditor
 {
+	// TODO: remove
 	internal static class Utils
 	{
 		public static void DockFill(Control control)

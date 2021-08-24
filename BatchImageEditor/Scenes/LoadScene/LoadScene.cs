@@ -78,7 +78,8 @@ namespace BatchImageEditor
 			loadedPreviewBox.Image = null;
 			try
 			{
-				loadedPreviewBox.Image = new Bitmap(filename);
+				using var loadedImage = new Bitmap(filename);
+				loadedPreviewBox.Image = new Bitmap(loadedImage);
 			}
 			catch (Exception ex) when (ex is ArgumentException || ex is FileNotFoundException)
 			{

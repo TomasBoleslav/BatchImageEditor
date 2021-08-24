@@ -53,7 +53,7 @@ namespace ImageFilters
             Width = width;
             Height = height;
             Buffer = new int[width * height];
-            int strideInBytes = width * 4; // Does not have to be correct for other pixel formats
+            int strideInBytes = width * 4; // Can be incorrect for other pixel formats
             _bufferHandle = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
             Bitmap = new Bitmap(width, height, strideInBytes, DefaultPixelFormat, _bufferHandle.AddrOfPinnedObject());
         }
